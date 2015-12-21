@@ -1,0 +1,152 @@
+<script type="text/javascript" src="<?=APPLICATION_URL?>tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+
+
+<div class="mws-panel grid_8">
+                	<div class="mws-panel-header">
+                    	<span class="mws-i-24 i-check"><?=$this->pageTitle?></span>
+                    </div>
+                    <div class="mws-panel-body">
+                         <form name="myform" id="myform" class="mws-form" action="<?php echo $this->url(array('controller'=>'dashboard', 'action'=>'updatedesc','desc_id'=>$this->desc_id), 'default', true)?>" method="post" enctype="multipart/form-data">
+						 
+
+                        	<div style="display:none;" class="mws-form-message error" id="mws-validate-error"></div>
+                        	<div class="mws-form-inline">
+                            	 
+                            	<div class="mws-form-row">
+                                	<label>Site Description<span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->site_desc?><!--<input type="text" class="mws-textinput required" name="reqField">-->
+                                    </div>
+                                </div>
+                                 
+                            </div>
+                            <div class="mws-button-row">
+                            	<input type="submit" name="Update" id="Update" value="Update" class="mws-button red">
+                            </div>
+                        </form>
+                    </div>    	
+                </div>
+<script type="text/javascript">
+function show()
+{
+
+  document.getElementById('password').style.display='block'	;
+  document.getElementById('msg').style.display='none';
+}
+</script>
+
+<script language="javascript">
+function AddOptiontoListBox(listBoxId,Value,Text)
+{
+	var elSel = document.getElementById(listBoxId);	
+	var opt = document.createElement("option");
+	elSel.options.add(opt);
+	opt.text=Text;
+	opt.value=Value;
+}
+function RemoveItems(optinoId)
+{
+  var elSel = document.getElementById(optinoId);
+	for (i = elSel.length - 1; i>0; i--) {
+		elSel.remove(i);   
+	}
+}
+function SettingDob()
+{
+	var monthValue=document.getElementById('dob_month').value;
+	var yearValue=document.getElementById('dob_year').value;
+	var dayValue=document.getElementById('dob_day').value;
+	var totDay=31;
+	if(monthValue=='04' || monthValue=='06' || monthValue=='09' || monthValue=='11') 
+	{
+		totDay=30;
+	}
+	else if(monthValue=='02')
+	{
+		if(yearValue%4=='1')
+		{
+		totDay=28;
+		}
+		else
+		{
+		totDay=29;
+		}
+	}
+	else
+	{
+		totDay=31;
+	}
+	RemoveItems('dob_day');
+	var valText;
+	for(var i=1;i<=totDay;i++)
+	{
+		valText=i;
+		if(i<=9)
+		{
+		valText="0"+i;
+		}
+		AddOptiontoListBox('dob_day',valText,valText)
+	}
+	document.getElementById('dob_day').value=dayValue;
+}
+function ChangeCountry()
+{
+	document.getElementById('DisplayCountry').style.display="none";
+	document.getElementById('ChooseCountry').style.display="block";
+}
+function getCountryState(countryId)
+{
+	$.ajax({ url: "<?=APPLICATION_URL."index/getstatebycountry"?>",
+	type: "POST",
+	data: ({countryId:countryId}),
+	success: function(data)
+	{
+		EmptyListbox('state_id');
+		AddOptiontoListBox('state_id','','- - State - -');
+		if(data!="")
+		{
+			var ArrData=data.split("***");
+			if(ArrData.length>0)
+			{
+				for(var i=0;i<ArrData.length;i++)
+				{
+					var mySplit=ArrData[i].split("|||");
+					var OptionValue=mySplit[0];
+					var OptionText=mySplit[1];
+					AddOptiontoListBox('state_id',OptionValue,OptionText);
+				}
+			}
+		}
+		
+	}});	
+}
+function getStateCity(stateId)
+{
+	$.ajax({ url: "<?=APPLICATION_URL."index/getcitiesbystate"?>",
+	type: "POST",
+	data: ({stateId:stateId}),
+	success: function(data)
+	{
+		EmptyListbox('city_id');
+		AddOptiontoListBox('city_id','','- - City - -');
+		if(data!="")
+		{
+			var ArrData=data.split("***");
+			if(ArrData.length>0)
+			{
+				for(var i=0;i<ArrData.length;i++)
+				{
+					var mySplit=ArrData[i].split("|||");
+					var OptionValue=mySplit[0];
+					var OptionText=mySplit[1];
+
+					AddOptiontoListBox('city_id',OptionValue,OptionText);
+				}
+			}
+		}
+		
+	}});	
+}
+</script>
+
+                

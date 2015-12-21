@@ -1,0 +1,158 @@
+
+    	<div class="container">
+    		<div id="recreation-container">
+            
+            
+    		</div>  
+    	</div>
+<script type="text/javascript">
+  function dataURLtoBlob(dataURL) {
+    // Decode the dataURL    
+    var binary = atob(dataURL.split(',')[1]);
+    // Create 8-bit unsigned array
+    var array = [];
+    for(var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+    // Return our Blob object
+	var data=new Uint8Array(array);
+	var datatype='image/png';
+	var out='';
+/*	  try {
+		//out=  new Blob([new Uint8Array(array)], {type: 'image/png'});
+       out = new Blob([data], {type: datatype});
+        console.debug("case 1");
+    }
+	 catch (e) {
+        window.BlobBuilder = window.BlobBuilder ||
+                window.WebKitBlobBuilder ||
+                window.MozBlobBuilder ||
+                window.MSBlobBuilder;
+
+        if (e.name == 'TypeError' && window.BlobBuilder) {
+            var bb = new BlobBuilder([new Uint8Array(array)], {type: 'image/png'});
+            bb.append(data);
+            out = bb.getBlob(datatype);
+            console.debug("case 2");
+        }
+        else if (e.name == "InvalidStateError") {
+            // InvalidStateError (tested on FF13 WinXP)
+            out = new Blob([data], {type: datatype});
+            console.debug("case 3");
+        }
+        else {
+            // We're screwed, blob constructor unsupported entirely   
+            console.debug("Errore");
+        }*/
+/*var blobBuilder = new BlobBuilder();
+blobBuilder.append(fileData);
+var blob = blobBuilder.getBlob('image/png');
+
+
+var blob = new Blob([fileData], {type: 'image/png'});
+
+alert(blob);
+if (typeof blob !== "undefined") {
+alert("if1");
+// use the Blob constructor
+
+} else if (window.MSBlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder) {
+alert("if2");
+// use the supported vendor-prefixed BlobBuilder
+
+} else {
+alert("if3");
+// neither Blob constructor nor BlobBuilder is supported
+
+}*/
+
+    return new Blob([new Uint8Array(array)], {type: 'image/png'});
+  }
+  
+  //}
+      $(document).ready(function() {
+	/*	  $('#recreation-container > div:lt(1)').wrapAll('<div class="pack1" id="frontTeesDiv"></div>');
+		  $('#recreation-container > div:lt(2)').wrapAll('<div class="pack2" id="backTeesDiv"></div>');*/
+        html2canvas( $('#Tees0'), {
+          onrendered: function(canvas) {
+            //document.body.appendChild(canvas);
+			 
+			// var img = canvas.toDataURL()
+			//window.open(img);
+			  // Send IT
+ // $("#upCanvas").live("click", function()
+  {
+  //  $("#upCanvas").html("<img src='img/load.gif' alt='load'>&nbsp;&nbsp;&nbsp;Uploading ..");
+    // Convert Canvas DataURL
+    var dataURL= canvas.toDataURL();
+
+    // Get Our File
+    var file= dataURLtoBlob(dataURL);
+
+    // Create new form data
+    var fd = new FormData();
+    
+    // Append our image
+	//alert(file);
+    fd.append("imageNameHere", file);
+
+    $.ajax({
+       url: "http://192.168.2.99/sites/dulaney/creator/uploadFile.php",
+       type: "POST",
+       data: fd,
+       processData: false,
+       contentType: false,
+    }).done(function(respond){alert(respond);
+   //   $("#upCanvas").html("Upload This Canvas");
+       // $(".return-data").html("Uploaded Canvas image link: <a href="+respond+">"+respond+"</a>").hide().fadeIn("fast");
+    });
+  }//);
+          }
+        });
+		  html2canvas( $('#Tees1'), {
+          onrendered: function(canvas) {
+            //document.body.appendChild(canvas);
+			 
+			// var img = canvas.toDataURL()
+			//window.open(img);
+			  // Send IT
+ // $("#upCanvas").live("click", function()
+  {
+  //  $("#upCanvas").html("<img src='img/load.gif' alt='load'>&nbsp;&nbsp;&nbsp;Uploading ..");
+    // Convert Canvas DataURL
+    var dataURL= canvas.toDataURL();
+
+    // Get Our File
+    var file= dataURLtoBlob(dataURL);
+
+    // Create new form data
+    var fd = new FormData();
+    
+    // Append our image
+	//alert(file);
+    fd.append("imageNameHere", file);
+
+    $.ajax({
+       url: "http://192.168.2.99/sites/dulaney/creator/uploadFile.php",
+       type: "POST",
+       data: fd,
+       processData: false,
+       contentType: false,
+    }).done(function(respond){alert(respond);
+   //   $("#upCanvas").html("Upload This Canvas");
+       // $(".return-data").html("Uploaded Canvas image link: <a href="+respond+">"+respond+"</a>").hide().fadeIn("fast");
+    });
+  }//);
+          }
+        });
+      });
+	
+/*	  		html2canvas($('#recreation-container'){
+ 				 onrendered: function(canvas) {
+    var img = canvas.toDataURL()
+    window.open(img);
+  }
+			});*/
+			
+			
+    </script>

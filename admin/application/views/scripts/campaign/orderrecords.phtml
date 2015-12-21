@@ -1,0 +1,148 @@
+
+<table>
+<tr>
+<td align="left" valign="top" class="mws-button red"><a href="<?=APPLICATION_URL_ADMIN?>campaign/bookingxls/name/<?=$this->sql[0]['teeurl']?>" id="new_user_btn" style="width:80px; text-decoration:none;" title="View/Download Booking Reports">Export</a>
+</td>
+
+</tr>
+</table>
+
+<div class="mws-panel grid_8">
+                	<div class="mws-panel-header">
+                    	<span class="mws-i-24 i-table-1"><?=$this->pageHeading?></span>
+                    </div>
+                    <div class="mws-panel-body">
+                        <div class="mws-panel-toolbar top clearfix ">
+                        <ul>
+                       <li>
+                       
+
+                        <!--<a href="<?php echo $this->url(array('controller'=>'pages', 'action'=>'add'), 'default', true)?>" class="mws-ic-16 ic-accept" href="<?=APPLICATION_URL_ADMIN?>users/adduser/uType/<?=$this->uType?>" title="Add">Add</a></li>-->
+                       <!-- <li><a class="mws-ic-16 ic-cross" href="javascript:void(0)" title="Delete"  onclick="deleteRecord();">Delete</a></li>-->
+                        </ul>
+                        </div>
+                        <table class="mws-datatable-fn mws-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%">S.No.</th>
+                                    <th width="45%">Name</th>
+                                    <th width="30%">Email Id</th>
+                                    <th width="45%">TEE URL</th>
+                                    <th width="45%">Image</th>
+                                     <th width="45%">Quantity</th>
+                                      <th width="45%">Total Amount</th>
+                                      <th width="45%">Order Date</th>
+                                      
+                                      <th width="45%">Shipping Address</th>
+                                    
+                                    <!--<th width="5%" class="">Edit</th>-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<?php
+								
+								
+					for($i=0;$i<count($this->sql);$i++)
+					{
+					?>
+									
+									<tr class="gradeX">
+                                        <td><?=$i+1;?></td>
+                                        <td><?=$this->sql[$i]['name']?></td>
+                                          <td><?=$this->sql[$i]['emailid']?></td>
+                                            <td><?=$this->sql[$i]['teeurl']?></td>
+                                          <td>    <img src="<?=IMAGES_URL?><?=$this->sql[$i]['t_image']?>" height="40" width="40" /> </td>
+												
+                                          <?php /*?> <?php 
+										     $size=explode(",",$this->sql[$i]['size']);
+                                                for($i=0;$i<count($size); $i++)
+                                                {   
+                                                $individual=explode("*",$size[$i]);
+                                               ?>
+                                                <td> <?php echo $individual[0].$individual[1];?>  </td>
+                                           <?php    }
+												?><?php */?>
+                                           
+                                              <td><?=$this->sql[$i]['size']?></td>
+                                             <td><?=$this->sql[$i]['totalamt']?></td>
+                                        <td><?=$this->sql[$i]['order_date']?></td>
+                                        
+                                        <td><?=$this->sql[$i]['shipping_address']?></td>
+                                        
+                                      <!--  <td class="center">
+                                         <a href="<?=APPLICATION_URL_ADMIN?>pages/edit/pageId/<?=$this->sql[$i]['page_id']?>">
+            <img src="<?=APPLICATION_URL_ADMIN;?>css/icons/16/edit.png" border='0' />
+            </a>   
+                                        </td> 
+                                       -->
+                                        <!--<td>
+             <input type="checkbox" name="checkbox[]" id="checkbox[]" value="<?=$this->sql[$i]['page_id']?>"  onClick="return check1();"/>
+                 
+                                        </td>-->
+	                                </tr>
+									<?php
+								}
+								?>
+                                
+                                 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Panels End -->
+            </div>
+         
+            
+<script type="text/javascript">
+
+function deleteRecord()
+{ 
+
+var pIds='';
+var userrows=new Array();
+var cboxes=document.getElementsByName("checkbox[]");
+
+for(i=0;i<cboxes.length;i++){ 
+if(cboxes[i].checked==true)
+{
+	pIds+=cboxes[i].value+','; 
+	userrows[i]=cboxes[i].value;
+	
+		
+	}
+}
+if(pIds==""){alert("Please select atleast one record.");return;}
+
+
+if(confirm("Are you sure to delete these records?"))
+{
+
+
+
+$.ajax({ 
+    type: "POST", 
+    url: "<?=APPLICATION_URL_ADMIN."pages/deletepages/pID/"?>"+pIds,
+    data: ({userId:pIds}),
+    cache: false, 
+
+    success: function(data){
+   window.location ="<?=APPLICATION_URL_ADMIN?>pages/index";		
+	   }
+   }); 
+
+
+
+
+}
+
+}
+
+
+
+</script>
+
+            
+            
+            
+            

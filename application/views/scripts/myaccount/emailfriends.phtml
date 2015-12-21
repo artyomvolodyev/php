@@ -1,0 +1,94 @@
+<?php
+global $mySession;
+$db=new Db();
+?>
+<div style="width:700px;" style="float:left">
+
+	<div style="width:700px; float:left">
+
+        <div style="margin-left:10px; margin-top:10px; margin-bottom:30px; float:left; width:500px">
+        	<label class="myaccheading">Email Buyers<br /></label>
+
+            <hr style="width:500px; color:#999;" align="left"/>
+
+            <?php
+			$quremailid=$db->runquery("SELECT * FROM  ".ORDER_RECORD." WHERE teeurl='".$this->name."'");
+					if($quremailid!="" and count($quremailid)>0)
+					{
+						?>
+
+                         <div>
+               <form method="post" action="<?=$this->url(array('controller'=>'myaccount', 'action'=>'emailit'), 'default', true)?>">
+
+                   <div style="margin-top:10px">
+                   	  <label class="myaccsubtitles">From (Your Email ID)</label>
+                   </div>
+
+                   <div style="margin-top:5px;">
+                   	  <?=$this->myform->emailid?>
+                   </div>
+
+
+
+                   <!-- <div style="margin-top:10px">
+                   		 <label class="myaccsubtitles">To (Friends Email ID)</label>
+                   </div>-->
+
+                    <div style="margin-top:5px;">
+                     	<?=$this->myform->friendsemailid?>
+                   </div>
+
+
+                   <div style="margin-top:10px">
+                   		 <label class="myaccsubtitles">Subject</label>
+                   </div>
+
+                    <div style="margin-top:5px;">
+                     	<?=$this->myform->subject?>
+                   </div>
+
+
+                <div style="margin-top:10px">
+                   		 <label class="myaccsubtitles">Content</label>
+                   </div>
+
+                    <div style="margin-top:5px;">
+                     	<?=$this->myform->content?>
+                   </div>
+
+
+
+                 <div style="margin-top:20px;">
+                 	<input type="submit" name="submit" id="submit" value="Send Email" class="accbutton">
+      <a href="<?=APPLICATION_URL?>myaccount/profile" style="text-decoration:none;"> <input type="button" name="cancel" id="cancel" value="Cancel" class="accbutton"> </a>
+                 </div>
+
+
+
+               </form>
+
+           </div>
+
+                        <?php
+					}
+				else
+				{
+					 ?>
+
+                   <div style="margin-top:5px;">
+                   		<label class="myaccsubtitles">You Don't Have any buyers</label>
+                   </div>
+                <?php
+				}
+				?>
+
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+

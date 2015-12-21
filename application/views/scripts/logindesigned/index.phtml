@@ -1,0 +1,215 @@
+<?php global $mySession; ?>
+
+<div style="width:100%">
+
+ <?php
+if($this->testing!="")
+{
+?>
+<div id="signupdiv" style="display:block">
+<?php
+}
+else
+{
+	?>
+<div id="signupdiv" style="display:none">
+
+    <?php
+}
+?>
+
+<?php
+if(isset($mySession->errorMsg))
+{
+?>
+<!--<tr>
+	<td colspan="3" >-->
+
+    	<div id="myInformationDiv" align="center" style="position:absolute; font-family:'Arial Black'; color:#00C; font-size:14px; width:500px; top:10px;">
+    		<?=$mySession->errorMsg?>
+			<div id="myInformationDivBlank" style="display:none;">&nbsp;</div>
+		</div>
+
+   <!-- </td>
+</tr>-->
+<?php
+}
+unset($mySession->errorMsg);
+?>
+
+
+
+
+   <!-- signup page when t-shirt is designed-->
+
+    <form method="post" name="signup" action="<?=$this->url(array('controller'=>'logindesigned', 'action'=>'signup'), 'default', true)?>">
+        <table cellpadding="0" cellspacing="0" border="0" align="left">
+        	<tr>
+            	<td class="loginfont" style="padding-top:5px">
+                	<label><b>Email Id</b></label>
+                </td>
+             </tr>
+
+             <tr>
+               <td style="padding-top:5px">
+			       <?=$this->myformsignup->signupemailid?>
+               </td>
+            </tr>
+
+
+            <tr>
+            	<td class="loginfont" style="padding-top:5px">
+                	<label><b>Password</b></label>
+                </td>
+             </tr>
+             <tr>
+                 <td style="padding-top:5px">
+				    <?=$this->myformsignup->signuppass?>
+                 </td>
+            </tr>
+
+             <tr>
+                   <td>
+                        	<label style="font-family:Calibri; font-size:16px; color:#666;">
+                               Must be atleast 6 characters!
+                            </label>
+                    </td>
+            </tr>
+
+            <tr>
+            	<td class="loginfont" style="padding-top:5px">
+                	<label><b>Confirm Password</b></label>
+                </td>
+             </tr>
+             <tr>
+                 <td style="padding-top:5px">
+				    <?=$this->myformsignup->signupcnfrmpass?>
+                 </td>
+            </tr>
+
+            <tr>
+            	<td style="padding-top:10px">
+                	<input class="loginbutton" type="submit" id="submit1" name="submit1" value="Create Your Account >>">
+                </td>
+            </tr>
+
+            <tr>
+            	<td style="padding-top:15px">
+                	<label onclick="opennewdiv();" style="cursor:pointer">Already Have an Account ?</label>
+                </td>
+            </tr>
+        </table>
+        </form>
+
+ <?php
+if($this->testing!="")
+{
+?>
+</div>
+<?php
+}
+else
+{
+	?>
+</div>
+
+    <?php
+}
+?>
+
+
+
+ <?php
+if($this->testing=="")
+{
+?>
+<div id="logindiv" style="display:block">
+<?php
+}
+else
+{
+	?>
+<div id="logindiv" style="display:none">
+	<?php
+}
+?>
+   <!-- signup page when t-shirt is designed-->
+
+    <form method="post" name="login" action="<?=$this->url(array('controller'=>'logindesigned', 'action'=>'login'), 'default', true)?>" onsubmit="return validformdata();">
+        <table cellpadding="0" cellspacing="0" border="0" align="left">
+        	<tr>
+            	<td class="loginfont" style="padding-top:5px">
+                	<label><b>Email Id</b></label>
+                </td>
+             </tr>
+             <tr>
+               <td style="padding-top:5px">
+			       <?=$this->myform->emailid?>
+               </td>
+            </tr>
+
+
+            <tr>
+            	<td class="loginfont" style="padding-top:5px">
+                	<label><b>Password</b></label>
+                </td>
+             </tr>
+             <tr>
+                 <td style="padding-top:5px">
+				    <?=$this->myform->pass?>
+                 </td>
+            </tr>
+
+
+
+            <tr>
+            	<td style="padding-top:10px">
+                	<input class="loginbutton" type="submit" id="submit2" name="submit2" value="Login To Your Account >>">
+                </td>
+            </tr>
+
+            <tr>
+            	<td style="padding-top:15px">
+                	<label onclick="opennewdiv();" style="cursor:pointer">Want to Create a Account ?</label>
+                </td>
+            </tr>
+        </table>
+        </form>
+
+
+		<?php
+        if($this->testing=="")
+        {
+        ?>
+        </div>
+        <?php
+		}
+        else
+        {
+        ?>
+        </div>
+        <?php
+        }
+        ?>
+
+
+<script type="text/javascript">
+function opennewdiv()
+{
+	//alert("fdgvdgb");
+	if(document.getElementById('signupdiv').style.display=="block")
+	{
+
+	document.getElementById('logindiv').style.display="block";
+	document.getElementById('signupdiv').style.display="none";
+	}
+	else
+	{
+
+	document.getElementById('signupdiv').style.display="block";
+	document.getElementById('logindiv').style.display="none";
+	}
+}
+
+
+</script>

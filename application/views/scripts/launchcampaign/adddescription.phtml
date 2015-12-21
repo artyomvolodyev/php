@@ -1,0 +1,742 @@
+<?php
+global $mySession;
+$db=new Db();
+$sql = false;
+//error_log('adddescription.phtml session '.print_r($_SESSION['default'], true));
+?>
+
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/jquery.fancyProductDesigner.css" />
+<link rel="stylesheet" href="<?=APPLICATION_URL?>fancybox/source/jquery.fancybox.css?v=2.1.0" media="screen"  />
+
+<script src="<?=APPLICATION_URL?>js/jquery.blockUI.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/js/recreator.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?=APPLICATION_URL?>fancybox/source/jquery.fancybox.js?v=2.1.0"></script>
+<script type="text/javascript" src="<?=APPLICATION_URL?>tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+
+<script type="text/javascript">
+	// O2k7 skin (silver)
+	tinyMCE.init({
+		// General options
+		mode : "exact",
+		elements : "description",
+		theme : "advanced",
+		relative_urls : false,
+		skin : "o2k7",
+		skin_variant : "silver",
+		plugins : "layer,advhr,advimage,advlink,noneditable,template",
+		// Theme options
+		theme_advanced_buttons1 : "bold,italic, |,link,unlink,image, ",
+		theme_advanced_buttons2 : "",
+		theme_advanced_buttons3 : "",
+		theme_advanced_buttons4 : "",
+		theme_advanced_resizing_use_cookie : false,
+		theme_advanced_toolbar_location : "top",
+		theme_advanced_toolbar_align : "left",
+		theme_advanced_statusbar_location : "bottom",
+		width:300,
+		theme_advanced_resizing : true,
+		content_css : "css/content.css"
+	});
+</script>
+
+<style>
+    .fpd-product-container > div > ul.fpd-views {
+        bottom: 20px;
+        list-style: outside none none;
+        position: absolute;
+        right: 10px;
+    }
+    ul.fpd-views > li {
+        background: #fafafa none repeat scroll 0 0;
+        cursor: pointer;
+        float: left;
+        margin-right: 10px;
+        padding: 5px;
+    }
+    ul.fpd-views > li:hover {
+        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.3);
+        transition: all 300ms ease-out 0s;
+    }
+    ul.fpd-views > li > img {
+        display: block;
+        margin: 0 auto;
+        max-height: 40px;
+        max-width: 50px;
+    }
+    fpd-recreation {
+        margin-left: 0px !important;
+        width: auto !important;
+    }
+    .frontBack {
+        position: relative !important;
+        right: 0px !important;
+        top: -69px !important;
+        width: 26% !important;
+        height: 0px  !important;
+        margin-top: 0px  !important;
+        padding-left: 0px  !important;
+        float:right;
+    }
+
+    #bothdatakmanikaPreview
+    {
+        display:none;
+    }
+
+    #onlyFrontDataKPreview
+    {
+        display:none;
+    }
+
+    #Teespreview0
+    {
+        display:block;
+    }
+
+    #Teespreview1
+    {
+        display:none;
+    }
+
+    .frontBackPreview {
+        color: #0099CC;
+        font-family: Calibri;
+        font-size: 18px;
+        height: 20px;
+        margin-top: 31px;
+        padding-left: 50px;
+        position: absolute;
+        width: 379px;
+    }
+
+</style>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+
+        jQuery(document).bind("ajaxStart", function(){
+            jQuery.blockUI({ message: '<h1 style="padding:50px 0px;text-align:center;"><img src="<?=APPLICATION_URL?>images/ajax-loader.gif" alt="loading" />  Please Wait...</h1>' });
+         }).bind("ajaxComplete", function(){
+           jQuery.unblockUI();
+         });
+
+        //pass the sent product from $_POST
+        // recreateProduct('#recreation-container',<?php echo $mySession->recreation_product; ?>);
+
+        $('#edit1').fancybox();
+        $('#campaign_category>option:eq(0)').attr('selected', true);
+        $('#campaign_category').css('display','none');
+
+    });
+
+    function uniqueurl(x)
+    {
+        $('#submit').addClass('disabled');
+        $('#submit').attr('disabled', 'disabled')
+        var x = document.getElementById('url').value;
+        var sp = x.split(" ");
+        if(sp.length>1) {
+            document.getElementById('msg').innerHTML='Please Do Not Enter Spaces In Your Url';
+            document.getElementById('msg').style.display='block';
+            document.getElementById('Urlerrorblock').innerHTML='Please Do Not Enter Spaces In Your Url';
+            document.getElementById('Urlerrorblock').style.display='block';
+            document.getElementById('validform').value='failed';
+        } else {
+            if(x == ""){
+                document.getElementById('Urlerrorblock').style.display='block';
+                document.getElementById('Urlerrorblock').innerHTML='Please enter a URL!';
+                document.getElementById('validform').value='failed';
+                return false;
+            }
+            $.ajax({ url: "<?=APPLICATION_URL."launchcampaign/uniqurl"?>",
+                type: "POST",
+                data: ({campurl:x}),
+                dataSync:false,
+                success: function(data) {	//alert(data);
+                    if(data>0) {
+                        document.getElementById('msg').style.display='block';
+                        document.getElementById('msg').innerHTML='This url already in use. Choose another';
+                        document.getElementById('validform').value='failed';
+                        //return false;
+                    } else {
+                        if(document.getElementById('Urlerrorblock').style.display=='block'){
+                            document.getElementById('Urlerrorblock').style.display='none';
+                        }
+                        if(document.getElementById('validform').value == 'failed'){
+                            document.getElementById('validform').value = 'success';
+                        }
+                        document.getElementById('msg').style.display='none';
+                        $('#submit').removeClass('disabled');
+                        $('#submit').removeAttr('disabled');
+                    }
+                }
+            });
+        }
+    }
+</script>
+
+<!--------------top info end--------------->
+<?php if($this->cid!="") {  //echo "if1";die; ?>
+<form method="post" action="<?=$this->url(array('controller'=>'launchcampaign', 'action'=>'launch', 'cid'=>$this->cid), 'default', true)?>" onsubmit="return validformdata();" name="myform" id="myform" enctype="multipart/form-data">
+<?php } if($this->cidresume!="") { //echo "if2";die; ?>
+<form method="post" action="<?=$this->url(array('controller'=>'launchcampaign', 'action'=>'resume', 'cidresume'=>$this->cidresume), 'default', true)?>" onsubmit="return validformdata();" name="myform" id="myform"  enctype="multipart/form-data">
+<?php } else {  //echo "else";die; ?>
+<form method="post" action="<?=$this->url(array('controller'=>'launchcampaign', 'action'=>'launch', 'lid'=>$this->lid), 'default', true)?>" onsubmit="return validformdata();" name="myform" id="myform"  enctype="multipart/form-data">
+<?php } ?>
+
+<section id="content">
+	<div class="zerogrid">
+		<div class="row block">
+			<div class="breadcrumb_code">
+				<ul class="breadcrumb">
+					<li class="create_bread1" id="add_a_description"><a href="<?=APPLICATION_URL?>launchcampaign/index">
+                            <img src="<?php echo IMAGES_URL;?>Layer-21.png" alt="<?php echo SITE_NAME; ?>"/>
+                            <div style="font-size: 15px; font-weight: bolder; position: relative; left: -30px;">
+                                START YOUR COMPAIGN
+                            </div>
+                        </a></li>
+					<li style="position: relative; top: -20px" class="set_bread1" id="add_a_description"><a href="<?=APPLICATION_URL?>launchcampaign/setgoal" >
+                            <img src="<?php echo IMAGES_URL;?>Layer-22.png" alt="<?php echo SITE_NAME; ?>"/>
+                            <div style="font-size: 15px; font-weight: bolder;  position: relative; left: 5px;">
+                                SET YOUR GOAL
+                            </div>
+                        </a></li>
+					<li style="position: relative; top: -20px" class="add_bread1" id="add_a_description"><a href="<?=APPLICATION_URL?>launchcampaign/adddescription" >
+                            <img src="<?php echo IMAGES_URL;?>Layer-23.png" alt="<?php echo SITE_NAME; ?>"/>
+                            <div style="font-size: 15px; font-weight: bolder;">
+                                ADD DESCRIPTION
+                            </div>
+                        </a></li>
+				</ul>
+			</div>
+			<div id="capmaingn_main_page_wrap">
+				<div class="bot_cam" id="main-container">
+					<div class="goal_section_left">
+						<div class="launch_sales_title">campaign title</div>
+						<div class="title_input_launch">
+						  <?=$this->myform->camptitle?>
+						</div>
+						<div class="launch_discp">Summarize your campaign in 40 characters or less</div>
+						<div class="selling_title_3">description</div>
+						<div class="launch_area_txt">
+						  <?=$this->myform->description?>
+						</div>
+						<div class="launch_three_dec">Let your buyers know why they should buy your tee in 300 characters or less. You can also include info on the design or designer!</div>
+						<div class="launch_profit">Campaign Length</div>
+						<div class="launch_day">
+						  <?=$this->myform->no_ofdays?>
+						</div>
+						<div class="launch_days_des">US orders will arrive 10-14 days after the end of the campaign. <a href="<?=APPLICATION_URL?>about/index/page/shipping_rates" target="_blank">Learn More </a></div>
+						<div class="launch_profit_3">Choose a URL</div>
+						<div class="launch_day_3"><span> <?php echo rtrim(preg_replace('#^https?://#', '', APPLICATION_URL), "/"); ?> /</span>
+							<?=$this->myform->url?>
+						    <div id="msg" style="display:none; padding:15px 0px; color:#B42F00; "> </div>
+
+
+						</div>
+						<div class="launch_days_des_3">This is where you will send buyers to view your campaign.</div>
+
+						<?=$this->myform->campaign_category?>
+
+					</div>
+					<div class="goal_section_two">
+						<!--------------------------------------------- preview div --------------------------------->
+						<div id="inline1" style="display:none;" style=" width: 960px;">
+						<?php
+						if($this->lid!="") {
+							$sql=$db->runquery("select * from ".LAUNCHCAMPAIGN." where campaign_id='".$this->lid."'");
+						}
+
+						if($this->cid!="") {
+							$sql=$db->runquery("select * from ".LAUNCHCAMPAIGN." where campaign_id='".$this->cid."'");
+						}
+
+						if($this->cidresume!="") {
+							$sql=$db->runquery("select * from ".LAUNCHCAMPAIGN." where campaign_id='".$this->cidresume."'");
+						}
+						?>
+						<div class="banner">
+                          <div class="zerogrid">
+                            <div class="row block" style="margin-bottom:0px;">
+                              <div id="align_both">
+                                <div class="top_info" style="height: auto;">
+                                  <div class="info_left" id="titlecamp1" style="padding:10px 4px;"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+						<div id="capmaingn_main_page_wrap" style=" width: 960px;">
+							<div class="bot_cam" id="main-container">
+								<div class="tee_view">
+									<div id="product-container"> </div>
+                                    <?php
+                                    if($mySession->front_img){
+                                        ?>
+                                        <div id="Teespreview0">
+                                            <img src="<?php echo APPLICATION_URL.'images/usersdesign/'.$mySession->front_img; ?>" />
+                                        </div><?php
+                                    }
+                                    if($mySession->back_img){
+                                        ?>
+                                        <div id="Teespreview1">
+                                            <img src="<?php echo APPLICATION_URL.'images/usersdesign/'.$mySession->back_img; ?>" />
+                                        </div><?php
+                                    }
+                                    ?>
+                                    <div style="position: absolute; left: 100px; bottom: -40px">
+                                        <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count"></div>
+                                    </div>
+
+                                    <input type="hidden" name="kfrontendDataImage" id="kfrontendDataImage" value="<?php echo $mySession->front_img; ?>"  />
+                                    <input type="hidden" name="kbackendDataImage" id="kbackendDataImage" value="<?php echo $mySession->back_img; ?>"  />
+
+									<div align="center" class="frontBackPreview" id="onlyFrontDataKPreview" >	           <span  style="cursor:pointer;">front</span>
+									</div>
+									<div align="center" class="frontBackPreview" id="bothdatakmanikaPreview" >
+										<span onclick="showteepreview();" style="cursor:pointer;">front</span>/<span  onclick="showteepreview1();" style="cursor:pointer;">back</span>
+									</div>
+
+								</div>
+								<div class="tee_all_dec">
+									<div class="sec_one_camp">About <label id="titnleK"></label></div>
+								    <div class="sec_one_camp">Description</div>
+									<div class="sec_two_camp" id="descrip">
+									<?php
+                                        $data = str_replace("width:"," ", $sql ? $sql[0]['description'] : '');
+                                        $data = str_replace("height:"," ",$data);
+                                        $data = str_replace("float:"," ",$data);
+                                        echo $data = str_replace("nowrap"," ",$data);
+									?>
+									</div>
+
+									<span style="display:block;" id="titlecamp">
+									   <?php
+                                       if($sql && $sql[0]['campaign_category']==1)
+											echo "Discover";
+										else if($sql && $sql[0]['campaign_category']==2)
+											echo "Support";
+									   ?>
+								   </span>
+									<div class="pri_cap" id="SellingPriceKM">$<?php echo $sql ? $sql[0]['selling_price'] : $mySession->priceValueKM;?></div>
+									<div class="cart_cap">
+
+                                        <div class="cart_cap"><a id="edit1"  href="#inline1">
+                                                <div class="sec_three_camp btn1">
+                                                    <div style="margin-left:40px;">buy now</div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                    </div>
+
+
+									<div class="sec_four_camp">
+									  <div class="txt_cap">The design will only print if reached its goal! <br><div style="font-family:GothamMediumRegular;padding-top:10px"><span><?php echo $sql ? $sql[0]['sold'] : ''; ?></span> shirts were reserved towards a goal of <span><?php echo $sql ? $sql[0]['goal'] : ''; ?></span></div></div>
+
+									  <?php
+									  $s = $sql ? $sql[0]['sold'] : 0;
+									  $g = $sql ? $sql[0]['goal'] : ($mySession->no_of_t > 0 ? $mySession->no_of_t : 1);
+									  $w = ($s/$g)*100;
+									  ?>
+									  <div class="cap_pr">
+										<div style="background-image:url(<?php echo IMAGES_URL;?>process_new.png);height:27px; width:375px;" class="pro_image">
+										 <?php if($w<100) { ?>
+
+										  <div style="background-color:#006853;width:<?=($w*2.75)?>px; height:27px;" class="pro_count">&nbsp;</div>
+										</div>
+										<div class="proc_txt"><span><?=@$w?>%</span> Funded</div>
+										<?php } else { ?>
+										<div style="background-color:#006853;width:1px; height:27px;" class="pro_count">&nbsp;</div>
+										</div>
+										<div class="proc_txt"><span>0%</span> Funded</div>
+										<?php } ?>
+										<?php
+
+                                        $row1 = $db->runQuery("select DATE_ADD('".$sql[0]['launch_date']."', INTERVAL '".$sql[0]['campaign_length']."' DAY) AS nextDate,DATE_ADD('".$sql[0]['launch_date']."', INTERVAL -1 DAY) AS prevDate");
+                                        $enddate=$row1[0]['nextDate'];
+                                        $newdat2=explode(" ",$enddate);// function breaks string into ARRAY
+                                        $newdat3=explode("-",$newdat2[0]);                            // comes in Y-M-D format
+                                        if(count($newdat3) >= 3){
+                                            $newdat4=$newdat3[2]."/".$newdat3[1]."/".$newdat3[0];                // D/m/Y format
+                                            $diff = strtotime($enddate) - strtotime(date('Y-m-d H:i:s'));
+                                            $day_difference = floor($diff / (60*60*24));
+                                            $hours=	$day_difference*24;
+                                        }else{
+                                            $day_difference = 0;
+                                        }
+                                        if($day_difference>0 )  {
+											$today= date('Y-m-d H:i:s');
+											$days=$sql[0]['campaign_length'];
+											$totaldate= strtotime((date('Y-m-d H:i:s', strtotime($sql[0]['launch_date']. ' + '.$days.' day')))) - (strtotime($today));
+										?>
+										    <script type="text/javascript">
+											    var start<?=$sql[0]['campaign_id']?>=<?=$totaldate?>;
+                                                start<?=$sql[0]['campaign_id']?> = parseFloat(start<?=$sql[0]['campaign_id']?>);
+                                                var end<?=$sql[0]['campaign_id']?> = 0
+                                                var refresh=1000;
+                                                if(start<?=$sql[0]['campaign_id']?> >= end<?=$sql[0]['campaign_id']?> ){
+											        mytime<?=$sql[0]['campaign_id']?>=setTimeout('display_ct_<?=$sql[0]['campaign_id']?>(start<?=$sql[0]['campaign_id']?>)',refresh)
+											    } else {
+                                                    window.location.href="<?=APPLICATION_URL?>product/index";
+                                                }
+
+                                                function display_c<?=$sql[0]['campaign_id']?>(start1<?=$sql[0]['campaign_id']?>){
+                                                    start<?=$sql[0]['campaign_id']?> = parseFloat(start1<?=$sql[0]['campaign_id']?>);
+                                                    var end<?=$sql[0]['campaign_id']?> = 0
+                                                    var refresh=1000;
+                                                    if(start<?=$sql[0]['campaign_id']?> >= end<?=$sql[0]['campaign_id']?> ){
+                                                        mytime<?=$sql[0]['campaign_id']?>=setTimeout('display_ct_<?=$sql[0]['campaign_id']?>(start<?=$sql[0]['campaign_id']?>)',refresh)
+                                                    }
+                                                    else {
+                                                        window.location.href="<?=APPLICATION_URL?>product/index";
+                                                    }
+                                                }
+
+
+                                                function display_ct_<?=$sql[0]['campaign_id']?>(start<?=$sql[0]['campaign_id']?>) {
+                                                    var days<?=$sql[0]['campaign_id']?>=Math.floor(start<?=$sql[0]['campaign_id']?> / 86400);
+                                                    var hours<?=$sql[0]['campaign_id']?> = Math.floor((start<?=$sql[0]['campaign_id']?> - (days<?=$sql[0]['campaign_id']?> * 86400 ))/3600)
+                                                    var minutes<?=$sql[0]['campaign_id']?> = Math.floor((start<?=$sql[0]['campaign_id']?> - (days<?=$sql[0]['campaign_id']?> * 86400 ) - (hours<?=$sql[0]['campaign_id']?> *3600 ))/60)
+                                                    var secs<?=$sql[0]['campaign_id']?> = Math.floor((start<?=$sql[0]['campaign_id']?> - (days<?=$sql[0]['campaign_id']?> * 86400 ) - (hours<?=$sql[0]['campaign_id']?> *3600 ) - (minutes<?=$sql[0]['campaign_id']?>*60)))
+                                                    minutes<?=$sql[0]['campaign_id']?> = ((minutes<?=$sql[0]['campaign_id']?>>0) ? ((minutes<?=$sql[0]['campaign_id']?>>9) ? minutes<?=$sql[0]['campaign_id']?> : '0'+minutes<?=$sql[0]['campaign_id']?>) + "" : "0");
+                                                    secs<?=$sql[0]['campaign_id']?> = ((secs<?=$sql[0]['campaign_id']?>>0) ? ((secs<?=$sql[0]['campaign_id']?>>9) ? secs<?=$sql[0]['campaign_id']?> : '0'+secs<?=$sql[0]['campaign_id']?>) + "" : "0");
+                                                    var x<?=$sql[0]['campaign_id']?> =days<?=$sql[0]['campaign_id']?> + "D, " + hours<?=$sql[0]['campaign_id']?> + "H, " + minutes<?=$sql[0]['campaign_id']?> + "M, " + secs<?=$sql[0]['campaign_id']?>+"S" ;
+                                                    document.getElementById('ct_<?=$sql[0]['campaign_id']?>').innerHTML = x<?=$sql[0]['campaign_id']?>;
+                                                    start<?=$sql[0]['campaign_id']?>=start<?=$sql[0]['campaign_id']?>- 1;
+                                                    tt<?=$sql[0]['campaign_id']?>=display_c<?=$sql[0]['campaign_id']?>(start<?=$sql[0]['campaign_id']?>);
+                                                }
+											</script>
+
+										    <div class="proc_time_cam">Time left: <span id="ct_<?=$sql[0]['campaign_id']?>">6D, 13H, 23M</span></div>
+										<?php
+                                        } else {
+                                            ?>
+										    <div class="proc_time_cam">Time left: </div>
+										<?php
+                                        }
+                                        ?>
+									  </div>
+									</div>
+							</div>
+						</div>
+						</div>
+						</div>
+
+						<!-- ----------t shirt image ------------- -->
+                    <div class="container1">
+							<div id="recreation-container"></div>
+                            <?php
+                            if($mySession->front_img){
+                                ?>
+                                <div id="Tees0">
+                                <img src="<?php echo APPLICATION_URL.'images/usersdesign/'.$mySession->front_img; ?>" />
+                                </div><?php
+                            }
+                            if($mySession->back_img){
+                                ?>
+                                <div id="Tees1">
+                                <img src="<?php echo APPLICATION_URL.'images/usersdesign/'.$mySession->back_img; ?>" />
+                                </div><?php
+                            }
+                            ?>
+						</div>
+
+						<div align="center" class="frontBack" id="onlyFrontDataK" >
+							<span  style="cursor:pointer;">front</span>
+						</div>
+						<div align="center" class="frontBack" id="bothdatakmanika" >
+							<?php
+							$product = Zend_Json::decode($mySession->recreation_product);
+                            //error_log('product: '.print_r($product, true));
+                            $frontimg = '';
+                            $backimg = '';
+                            if(array_key_exists('elements', $product)){
+                                // product has only site (most likely only front)
+                                $product = $product['elements'];
+                            }else{
+                                // there are multiple parts, let us iterate through them
+                                $product = $product;
+                            }
+							foreach($product AS $key=>$value) {
+								if($value['title'] == 'front') {
+									$frontimg = $value['elements'][0]['source'];
+								}
+								if($value['title'] == 'back') {
+									$backimg = $value['elements'][0]['source'];
+								}
+							}
+                            if(empty($frontimg) && count($product) >= 2){
+                                $frontimg = $product[0]['elements'][0]['source'];
+                            }
+                            if(empty($backimg) && count($product) >= 2){
+                                $backimg = $product[1]['elements'][0]['source'];
+                            }
+							?>
+							<?php if(!empty($frontimg) && !empty($backimg)) { ?>
+							<ul class="fpd-views fpd-clearfix">
+								<li onclick="showtee();"><img src="<?php echo $frontimg; ?>" title="front"></li>
+								<li onclick="showtee1();"><img src="<?php echo $backimg; ?>" title="back"></li>
+							</ul>
+							<?php } ?>
+						</div>
+						<div id="Urlerrorblock" style="display:none; padding:15px 0px; color:#B42F00;" align="center">&nbsp;</div>
+					</div>
+                </div>
+			</div>
+		</div>
+		<div class="bot_margin">
+			<div class="get_started" style="float: right; margin-bottom: 20px;">
+                <div style="padding: 14px 0px; float: left;">
+                    <a id="edit1" href="#inline1" onclick="sendpreview();" style="color:#B42F00; cursor:pointer; text-decoration:none; position: relative; top: 30px">Preview</a>&nbsp;&nbsp;<b style="position: relative; top: 30px">OR</b>&nbsp;&nbsp;
+                </div>
+                <div style="float: left;">
+                <?php	if($mySession->TeeLoggedID=="") {  ?>
+<!--                    <input type="button" class="accbutton" value="Launch Your Campaign" id="submit" name="submit" style="width: 242px;height: 46px;" onclick="sendtologin();">-->
+                    <button type="button"  class="btn get_started" id="submit" style="width: 242px;height: 46px;" onclick="sendtologin();">LAUNCH YOUR CAMPAIGN</button>
+                <?php } else { ?>
+                    <input type="submit" class="accbutton" value="Launch Your Campaign" id="submit" name="submit" style="width: 242px;height: 46px;">
+                <?php } ?>
+                    <input type="hidden" id="validform" name="validform"  />
+                </div>
+			</div>
+		</div>
+	</div>
+</section>
+</form>
+
+
+<script type="text/javascript">
+
+function checknummsp(e)
+{
+    evt=e || window.event;
+    var keypressed=evt.which || evt.keyCode;
+    if(keypressed!="48"  &&  keypressed!="49" && keypressed!="50"
+        && keypressed!="51" && keypressed!="52" && keypressed!="53"
+        && keypressed!="54" && keypressed!="55" && keypressed!="56"
+        && keypressed!="57" && keypressed!="8"){
+        return false;
+    }
+}
+
+function checkcharonly(e)
+{
+    evt=e || window.event;
+    var keypressed = e.charCode || e.keyCode || 0;
+    // allow backspace, tab, delete, arrows, letters, numbers and keypad numbers ONLY
+    return (
+            keypressed == 8 || keypressed == 32
+            || (keypressed >= 65 && keypressed <= 90)
+            || (keypressed >= 97 && keypressed <= 122)
+        ) ;
+}
+
+function checkspecchar(e)
+{
+    evt=e || window.event;
+     var keypressed = e.charCode || e.keyCode || 0;
+    // allow backspace, tab, delete, arrows, letters, numbers and keypad numbers ONLY
+    return (
+        keypressed == 8 ||  keypressed == 95
+            || (keypressed >= 65 && keypressed <= 90)
+            || (keypressed >= 48 && keypressed <= 57)
+            || (keypressed >= 97 && keypressed <= 122)
+        );
+}
+
+function sendtologin()
+{
+    jQuery.blockUI({ message: '<h1 style="padding:50px 0px;text-align:center;"><img src="<?=APPLICATION_URL?>images/ajax-loader.gif" alt="loading" />  Please Wait...</h1>' });
+    var x=document.getElementById('url').value;
+    var title=document.getElementById('camptitle').value;
+    var sp=x.split(" ");
+    if(title=="") {
+		document.getElementById('Urlerrorblock').innerHTML='Please Enter Campaign title';
+		document.getElementById('Urlerrorblock').style.display='block';
+        jQuery.unblockUI();
+	} else {
+        if(sp.length>1)
+        {
+            document.getElementById('msg').innerHTML='Please Do Not Enter Spaces In Your Url';
+            document.getElementById('msg').style.display='block';
+            document.getElementById('Urlerrorblock').innerHTML='Please Do Not Enter Spaces In Your Url';
+            document.getElementById('Urlerrorblock').style.display='block';
+            jQuery.unblockUI();
+        } else {
+            if(x == ""){
+                document.getElementById('Urlerrorblock').style.display='block';
+                document.getElementById('Urlerrorblock').innerHTML='Please enter a URL!';
+                jQuery.unblockUI();
+                return  "failed";
+            }
+            $.ajax({ url: "<?=APPLICATION_URL."launchcampaign/uniqurl"?>",
+                type: "POST",
+                data: ({campurl:x}),
+                dataSync:false,
+                success: function(data) {
+                    if(data>0) {
+                        document.getElementById('Urlerrorblock').style.display='block';
+                        document.getElementById('Urlerrorblock').innerHTML='This url already in use. Choose another please.';
+                        jQuery.unblockUI();
+                        return  "failed";
+                    } else {
+                        var val=tinyMCE.activeEditor.getContent();
+                        document.getElementById('description').value=val;
+                        document.getElementById('myform').action="<?=APPLICATION_URL?>login/savedata";
+                        HTMLFormElement.prototype.submit.call($('#myform')[0]);
+                        //window.location="<?=APPLICATION_URL?>login/savedata";
+                        //document.getElementById('myform').submit();
+                    }
+                }
+            });
+        }
+	}
+}
+
+function sendpreview()
+{
+    var val=tinyMCE.activeEditor.getContent();
+    var checkValK=document.getElementById('titlecamp').innerHTML;
+    if(document.getElementById('frontDataValK').value=='front') {
+        $('#onlyFrontDataKPreview').css("display","block");
+    } else {
+        $('#bothdatakmanikaPreview').css("display","block");
+    }
+    document.getElementById('titlecamp1').innerHTML=document.getElementById('camptitle').value;
+    document.getElementById('titnleK').innerHTML=document.getElementById('url').value;
+    document.getElementById('descrip').innerHTML=val;
+}
+
+function opennewdiv()
+{
+    if(document.getElementById('signupdiv').style.display=="block") {
+        document.getElementById('logindiv').style.display="block";
+	    document.getElementById('signupdiv').style.display="none";
+	} else {
+        document.getElementById('signupdiv').style.display="block";
+        document.getElementById('logindiv').style.display="none";
+	}
+}
+
+function showteepreview()
+{
+	$('#Teespreview1').css("display","none");
+	$('#Teespreview0').css("display","block");
+}
+
+function showteepreview1()
+{
+	$('#Teespreview0').css("display","none");
+	$('#Teespreview1').css("display","block");
+}
+
+
+function validformdata()
+{
+    var title=document.getElementById('camptitle').value;
+    var x=document.getElementById('url').value;
+    if(title=="") {
+        document.getElementById('Urlerrorblock').innerHTML='Please Enter Campaign Title';
+        document.getElementById('Urlerrorblock').style.display='block';
+        jQuery.unblockUI();
+    }
+    if(x=="") {
+        document.getElementById('Urlerrorblock').innerHTML='Please Enter a URL';
+        document.getElementById('Urlerrorblock').style.display='block';
+        jQuery.unblockUI();
+    }
+    if(document.getElementById('validform').value=="failed") {
+        jQuery.unblockUI();
+        return false;
+    } else if(document.getElementById('validform').value=="success" || document.getElementById('validform').value=="") {
+        document.getElementById('Urlerrorblock').style.display='none';
+        return true;
+    }
+    return false;
+}
+
+
+
+function dataURLtoBlob(dataURL) {
+    // Decode the dataURL
+    var binary = atob(dataURL.split(',')[1]);
+    // Create 8-bit unsigned array
+    var array = [];
+    for(var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+    // Return our Blob object
+    var data=new Uint8Array(array);
+    var datatype='image/png';
+    var out='';
+    return new Blob([new Uint8Array(array)], {type: 'image/png'});
+}
+
+function createDatalogin()
+{
+<?php if(($mySession->TeeLoggedID != "")){?>
+	return true;
+<?php } ?>
+}
+
+
+/*
+function saveFrontImageK() {
+    var result=false;
+    html2canvas( $('#Tees0'), {
+        onrendered: function(canvas) {
+            var dataURL= canvas.toDataURL();
+            var nameofFile='frontnK'+document.getElementById('url').value;
+            var dataURLDb= canvas.toDataURL("image/png");
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "<?=APPLICATION_URL?>launchcampaign/savefrontimage",
+                data: {image: dataURL,nameofFile:nameofFile,dataURLDb:dataURLDb}
+            }).done(function( respond ) {
+                    document.getElementById('kfrontendDataImage').value=respond;
+                    var countdiv=$("#recreation-container > div").size();
+                    if(countdiv==2)
+                    {
+                        showtee1();
+                        //saveBackImage();
+                        html2canvas( $('#Tees1'), {
+                            onrendered: function(canvas) {
+                                var dataURLBack= canvas.toDataURL();
+                                var nameofFileBack='back'+document.getElementById('url').value;
+                                var dataURLDbBack= canvas.toDataURL("image/png");
+                                $.ajax({
+                                    type: "POST",
+                                    async: false,
+                                    url: "<?=APPLICATION_URL?>launchcampaign/savebackimage",
+                                    data: {image: dataURLBack,nameofFile:nameofFileBack,dataURLDb:dataURLDbBack}
+                                }).done(function( respond ) {
+                                    $('#Tees1').css("display","none");
+                                    $('#Tees0').css("display","block");
+                                    mycheck++;
+                                    validformdata();
+                                });
+                            }
+                        });
+                    } else {
+                        mycheck++;
+                        validformdata();
+                    }
+                    return false;
+                });
+        }
+    });
+}*/
+
+</script>
+<div>
+    <div class="col-md-12 imagesss col-sm-12">
+        <!--    <img src="images/Group-1-copy.jpg">-->
+        <div class="maketee">MAKE YOUR TEE ROCK! </div>
+        <div class="maketeebutton">
+            <!--        <button  type="button" class="btn btn-danger" type="button">GET STARTED</button>-->
+        </div>
+    </div>
+</div>

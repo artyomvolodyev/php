@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?=SITE_NAME?> <?php if($this->pageTitle!="" ) { echo " - ".$this->pageTitle; } ?></title>
+<link rel="stylesheet" href="<?=CSS_URL?>mycss.css" type="text/css">
+<link rel="stylesheet" href="<?=CSS_URL?>jquery.countdown.css" type="text/css">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="<?=JS_URL?>jquery-1.4.1.min.js"></script>
+<script type="text/javascript" src="<?=APPLICATION_URL_ADMIN;?>js/jquery-ui.js"></script>
+<script src="<?=JS_URL?>jquery 1.9.js"></script>
+<script src="<?=JS_URL?>general.js"></script> 
+<script src="<?=JS_URL?>jquery.countdown.js"></script>
+     <script>
+    $("#myInformationDiv").ready(function () { 
+      $("#myInformationDiv2").show(1000);
+    });
+setTimeout(function() {
+      $("#myInformationDiv2").hide("fast", function () {
+        // use callee so don't have to name the function
+        $(this).prev().hide("fast", arguments.callee); 
+      });
+	  }, 7000);
+</script>
+</head>
+<?php
+global $mySession;
+$db=new Db();
+?>
+<div align="center" style="width:100%; background-image:url(<?=IMAGES_URL?>mainbackg.png); background-repeat:repeat;">
+<div align="center" style="width:100%; height:auto;">
+        <div style="width:1000px; height:93px;">
+        	<div style="width:1000px; height:10px;">
+            </div>
+            <div class="dicvrsupprt" align="center" style="width:340px; height:83px; background-image:url(<?=IMAGES_URL?>discvrsupprt.png); background-repeat:no-repeat;">
+                <b><a href="<?=APPLICATION_URL?>" id="selected"> Discover </a><span style="color:#174f5d; margin:0px 8px 0 0px;">|</span><a href="<?=APPLICATION_URL?>index/support">Support</a> </b>
+            </div>
+        </div>
+       <div style="margin:0 0 0 18px;  display:inline-block;"> 
+        <div class="main_outer_div1">
+      <?php
+	  	//echo "SELECT * , date_add( launch_date, INTERVAL campaign_length DAY ) AS endData FROM ".LAUNCHCAMPAIGN." WHERE campaign_status = '1' AND campaign_category = '1' ORDER BY endData DESC" ; die;
+		$slid=$db->runquery("SELECT * , date_add( launch_date, INTERVAL campaign_length DAY ) AS endData FROM ".LAUNCHCAMPAIGN." WHERE campaign_status = '1' AND campaign_category = '1' ORDER BY endData");
+		//prd($slid);
+		//prd($slid);
+		foreach($slid as $key=>$value)
+				{
+					$s=$value['sold']; $g=$value['goal']; $w=($s/$g)*100; 
+		?>
+  	 <?php
+		  $k=0; //echo "------------"; die;
+		  $row1=$db->runQuery("select DATE_ADD('".$value['launch_date']."', INTERVAL '".$value['campaign_length']."' DAY) AS nextDate,DATE_ADD('".$value['launch_date']."', INTERVAL -1 DAY) AS prevDate");
+														//prd($row1);
+														//echo "...launch...".$value['launch_date'];
+														//echo $value['campaign_length'];
+														//echo "..End..".$enddate=$row1[0]['nextDate'];
+														$enddate=$row1[0]['nextDate'];
+														$startdate=$value['launch_date'];
+														//echo $startdate.'<br/>'; 
+														//echo $enddate;
+														//prd($enddate);
+														$date=date("Y-m-d");
+														$newdat2=explode(" ",$enddate);// function breaks string into ARRAY
+														$newdat3=explode("-",$newdat2[0]);                            // comes in Y-M-D format
+														$newdat4=$newdat3[2]."/".$newdat3[1]."/".$newdat3[0];                // D/m/Y format
+														//$this->view->newdat4=$newdat4;
+														//prd($enddate);
+														$diff = strtotime($enddate) - strtotime(date('Y-m-d H:i:s'));	
+														$day_difference = floor($diff / (60*60*24));
+														if($day_difference>0)
+														{
+		  ?>
+        <div style="width:305px; height:400px; margin-right:15px; float:left; margin-bottom:30px; background-color:#FFF;">
+            <div style="width:287px; padding:8px; height:330px; margin-right:20px;">
+                <div style="display:inline-block; width:282px; height:285px;">
+                	<a href="<?=APPLICATION_URL.$value['url']?>"><img  src="<?=IMAGES_URL?>var.png"/></a>
+                   <!--  <img src="<?=IMAGES_URL?><?=$value['tee_image']?>" width="270" height="318"/>-->
+                </div>
+                <div  align="left" style="padding:10px 0 0 0; ">
+                	<label class="picname">
+                    	<a href="<?=APPLICATION_URL.$value['url']?>" style="color:#000000;"><b>
+                         <?php echo $value['title']  ?> </b></a>
+                    </label>
+                    <br />
+                    <label class="by"> by  </label>
+               <?php
+			   $username=$db->runquery("select * from ".USERS." where user_id='".$value['user_id']."'");
+			   //prd($username);
+			   ?>
+                    <label class="authorname">
+                       <?php
+					    echo $username[0]['public_name'];?>
+                    </label>
+                </div>
+              </div>  
+            <div style="width:305px; height:70px; margin-right:20px; margin-bottom:30px;">
+                  <div   align="left" style="  background-color:#e4e3e3; border:#cfcfcf solid 5px;">
+                                 	<div style="width:200px; height:20px; margin-bottom:3px; margin-left:8px;">
+                                    	<label style="font-family:'Arial'; font-size:17px; color:#0facfd">
+                                           <b>$<?php echo $value['selling_price'] ?></b>
+                                        </label>
+                                        <label style="font-family:'Arial'; font-size:14px; color:#606060; font-weight:normal;">
+                                           <?php echo $value['sold'] ?> of <?php echo $value['goal'] ?> reserved <?php ?>
+                                        </label>
+                                    </div>
+                                <?php  ?>    
+                               <div style="width:<?=$w?>px;height:8px;border:1px solid #319ebc ;border-radius:8px; margin-left:9px;">
+                           		<div align="center" style="height:7px; width:<?=$w?>px;border:1px solid #319ebc ; border-radius:8px;background-color:#319ebc; ">
+                                </div>
+                              </div>
+                                    <div style="margin-top:5px; margin-left:8px;">
+                                    	<div style="width:13px; height:14px; float:left; margin-right:8px;">
+                                    	   <img src="<?=IMAGES_URL?>timerclock.png" />
+                                        </div>
+                   <?php
+				   
+				  /* $expireData=$db->runQuery("select * , date_add( launch_date, INTERVAL campaign_length DAY ) AS endData  from ".LAUNCHCAMPAIGN." WHERE campaign_status = '1' AND campaign_category = '1' and campaign_id='".$value['campaign_id']."' ORDER BY endData DESC");*/
+				   $today= date('Y-m-d H:i:s');
+				   $days=$value['campaign_length'];
+				   $totaldate= strtotime((date('Y-m-d', strtotime($value['launch_date']. ' + '.$days.' day')))) - (strtotime($today));
+				   
+				   ?>
+					   <script type="text/javascript">
+                            var start<?=$value['campaign_id']?>=<?=$totaldate?>;
+                            start<?=$value['campaign_id']?> = parseFloat(start<?=$value['campaign_id']?>);
+                            
+                            var end<?=$value['campaign_id']?> = 0 
+                            var refresh=1000;
+                            if(start<?=$value['campaign_id']?> >= end<?=$value['campaign_id']?> ){
+                                
+                            mytime<?=$value['campaign_id']?>=setTimeout('display_ct_<?=$value['campaign_id']?>(start<?=$value['campaign_id']?>)',refresh)
+                            }
+                            else { window.location.href="<?=APPLICATION_URL?>product/index";}
+                            
+                            function display_c<?=$value['campaign_id']?>(start1<?=$value['campaign_id']?>){
+                            start<?=$value['campaign_id']?> = parseFloat(start1<?=$value['campaign_id']?>);
+                            var end<?=$value['campaign_id']?> = 0 
+                            var refresh=1000;
+                            if(start<?=$value['campaign_id']?> >= end<?=$value['campaign_id']?> ){
+                            mytime<?=$value['campaign_id']?>=setTimeout('display_ct_<?=$value['campaign_id']?>(start<?=$value['campaign_id']?>)',refresh)
+                            }
+                            else { window.location.href="<?=APPLICATION_URL?>product/index";}
+                            }
+                            
+                            function display_ct_<?=$value['campaign_id']?>(start<?=$value['campaign_id']?>) {
+                                
+                            var days<?=$value['campaign_id']?>=Math.floor(start<?=$value['campaign_id']?> / 86400);
+                            var hours<?=$value['campaign_id']?> = Math.floor((start<?=$value['campaign_id']?> - (days<?=$value['campaign_id']?> * 86400 ))/3600)
+                            
+                            var minutes<?=$value['campaign_id']?> = Math.floor((start<?=$value['campaign_id']?> - (days<?=$value['campaign_id']?> * 86400 ) - (hours<?=$value['campaign_id']?> *3600 ))/60)
+                            
+                            var secs<?=$value['campaign_id']?> = Math.floor((start<?=$value['campaign_id']?> - (days<?=$value['campaign_id']?> * 86400 ) - (hours<?=$value['campaign_id']?> *3600 ) - (minutes<?=$value['campaign_id']?>*60)))
+                            var x<?=$value['campaign_id']?> =days<?=$value['campaign_id']?> + " Days and " + hours<?=$value['campaign_id']?> + ":" + minutes<?=$value['campaign_id']?> + ":" + secs<?=$value['campaign_id']?>+" left" ;
+                            
+                            document.getElementById('ct_<?=$value['campaign_id']?>').innerHTML = x<?=$value['campaign_id']?>;
+                            start<?=$value['campaign_id']?>=start<?=$value['campaign_id']?>- 1;
+                            tt<?=$value['campaign_id']?>=display_c<?=$value['campaign_id']?>(start<?=$value['campaign_id']?>);
+                            }
+                        </script>
+                   <div>
+                   		<span style="color:#43747F;" id="ct_<?=$value['campaign_id']?>">&nbsp;</span>
+                   </div>
+                                    </div>
+           </div>
+            </div>
+       </div>
+         <?php }?>
+        <?php
+           $k++;
+           if($k%3==0)
+           {
+               ?>
+                  <br/>
+               <?php
+           }
+		}
+		?>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="funded_design"><a href="<?=APPLICATION_URL?>index/funded"><p>See Funded Design</p></a></div>
+<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>-->

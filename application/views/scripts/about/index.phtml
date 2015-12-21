@@ -1,0 +1,44 @@
+<div><button style="position: absolute; top: 80px" class="button_btn3">HOW IT WORKS</button></div>
+<?php
+global $mySession;
+$db=new Db();
+
+
+if($this->sql[0]['page_id']==3) {  ?>
+    <div class="work_section_two maincontactus">
+        <?php
+        $qry="select * from ".CATEGORY." ";
+        $categry=$db->runquery($qry);
+        for($i=0;$i<count($categry);$i++)
+        {
+            $query="select * from ".QUESTIONS." where cat_id='".$categry[$i]['cat_id']."' ";
+            $questn=$db->runquery($query);
+            ?>
+            <div style="margin-top:10px;">
+                <label style=" color: #000000;font-family: 'GothamBoldRegular';font-size: 16px;">
+                    <?=$categry[$i]['cat_name']?>
+                </label> <br/>
+            </div>
+            <?php for($j=0;$j<count($questn);$j++)
+        { ?>
+            <div style="padding-top:10px; padding-bottom:10px;  height:auto;">
+                <div style="cursor:pointer;" class="faqdiv" onclick="showhide_commentbox(1,'<?=$i?>',<?=$j?>)">
+                    <?=$questn[$j]['question'] ?>
+                </div>
+                <div id="answer<?=$i?><?=$j?>" style="display:none;" class="faqdivanswer">
+                    <?=$questn[$j]['answer'] ?>
+                </div>
+            </div>
+        <?php } ?>
+        <?php } ?>
+
+</div>
+
+<?php }
+if($this->sql[0]['page_id']!=3)
+{
+    echo $this->sql[0]['page_content'];
+
+}
+?>
+

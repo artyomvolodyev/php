@@ -1,0 +1,144 @@
+<?php
+global $mySession;
+	$db=new Db();
+?>
+<div class="mws-panel grid_right">
+    <div class="mws-panel-header">
+        <span class="mws-i-24 i-table-1"><?=$this->pageHeading?></span>
+    </div>
+
+    <div class="mws-panel-body">
+        <div class="mws-panel-toolbar top clearfix">
+            <ul>
+
+                 <li><a class="mws-ic-16 ic-accept" href="<?php echo $this->url(array('controller'=>'post', 'action'=>'upload'), 'default', true)?>" title="Add">Add</a></li>
+           			 <li><a class="mws-ic-16 ic-cross" href="javascript:void(0)" title="Delete" onclick="deleteitem()">Delete</a></li>
+               
+            </ul>
+        </div>
+        <!--<table class="mws-table">-->
+         <table class="mws-datatable-fn mws-table">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th><input type="checkbox" name="deletebcchk" id="deletebcchk" onclick="return checkall(this)" /></th>
+                    <th>Image</th>
+                    <th>Status</th>
+                    
+                  
+                 </tr>
+            </thead>
+            <tbody>
+             <?php
+					for($i=0;$i<count($this->sql);$i++)
+					{
+					?>
+                    
+                <?php
+                    $start++;
+                   if($this->sql[$i]['image_status']==0){ $image ='tick.png';  }
+                    if($this->sql[$i]['image_status']==1){ $image ='cross.png';  } 
+
+
+                    if($cClass=="gradeX odd")
+                        {$cClass="gradeX even";}
+                    else
+                        {$cClass="gradeX odd";}	
+
+                    ?>
+                        <tr>
+                            <td><?=$i+1;?></td>
+                            <td>
+                        <?php /*?>  echo "<?=$this->sql[$i]['post_id'];?>"; die; <?php */?>
+                                <input name='check<?=$i;?>' id='check<?=$i+1;?>' value='<?=$this->sql[$i]['id'];?>' 
+                                     onchange='return check_check("bcdel","deletebcchk")'  type='checkbox'>
+                            </td>
+                            <td> <?=$this->sql[$i]['image'];?></td>
+                          
+                            <td>
+                           
+                            
+                       <a href="<?=APPLICATION_URL_ADMIN?>post/changeimagestatus/id/<?=$this->sql[$i]['id']?>/Status/<?=$this->sql[$i]['image_status']?>"> 
+                                   <?php 
+		
+		   if($this->sql[$i]['image_status']==1)
+		   {
+			   $status=$this->sql[$i]['image_status'];
+			 ?>
+			
+               <img src=<?=IMAGES_URL_ADMIN?>tick.gif onClick="f1('<?=$this->sql[$i]['id']?>','<?= $status?>')" />
+              
+			    <?php
+			}
+			if($this->sql[$i]['image_status']==0)
+			{
+				$status=$this->sql[$i]['image_status'];
+				 ?>
+                  <img src="<?=IMAGES_URL_ADMIN?>cross.png" onClick="f1('<?=$this->sql[$i]['id']?>','<?= $status?>')"/>
+                  <?php  
+		    } 
+			?>
+           </a>                 
+                            </td>
+                            
+                        </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>    	
+</div>
+<script>
+function deleteitem()
+{
+	var r= "";
+	var s="";
+	var selected=false;
+	for(var i=1;document.getElementById('check'+i);i++){
+		if(document.getElementById('check'+i).checked==true){	
+			r += document.getElementById('check'+i).value+"|";
+			selected = true;
+		}
+	}	
+	
+	r += '0';
+	if(selected){ //alert("confirm");
+		var confirmation = confirm("Are you sure want to delete ?");
+		if(confirmation!=true){
+			return false;
+		}	
+	
+		$.ajax({ url: "<?=APPLICATION_URL_ADMIN."post/deleteimage"?>",
+		type: "POST",
+		data: ({Id:r}),
+		success: function(data){	//alert(data);		
+			 window.location.href=window.location.href;
+		}});
+	} else {
+		alert('Please choose a record to delete.');
+	}
+
+}
+function changestatus(Id,Status)
+{
+    $.ajax({ 
+				type: "POST", 
+				url: "<?=APPLICATION_URL_ADMIN?>users/changeuserstatus", 
+				data: ({Id:Id,Status:Status}),
+				cache: false, 
+				success: function(data){				 
+				  window.location.href=window.location.href;
+			    }
+		  });
+}
+ 
+function checkall(thisid)
+{
+  for(var i=1;document.getElementById('check'+i);i++)
+  	{
+  		if(document.getElementById(thisid.id).checked==true){document.getElementById('check'+i).checked = true;}
+  		if(document.getElementById(thisid.id).checked==false){document.getElementById('check'+i).checked = false;}
+	}	
+}
+</script>

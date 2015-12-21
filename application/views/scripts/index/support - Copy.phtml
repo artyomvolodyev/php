@@ -1,0 +1,97 @@
+<?php
+global $mySession;
+$db=new Db();
+?>
+<div align="center" style="width:100%; height:auto; ">
+        <div style="width:1000px; height:93px;">
+        	<div style="width:1000px; height:10px;">
+            </div>
+            <div class="dicvrsupprt" align="center" style="width:340px; height:83px; background-image:url(<?=IMAGES_URL?>discvrsupprt.png); background-repeat:no-repeat;">
+        		<b><a href="<?=APPLICATION_URL?>index" style="text-decoration:none;"> Discover</a><span style="color:#174f5d; margin:0px 7px 0 8px;">|</span><a href="<?=APPLICATION_URL?>index/support" style="text-decoration:none;" id="selected">Support</a> </b>
+            </div>
+        </div>
+<?php
+//$slid=$db->runquery("select * from ".LAUNCHCAMPAIGN." where campaign_status='1' and campaign_category='2'");
+$slid=$db->runquery("SELECT * , date_add( launch_date, INTERVAL campaign_length DAY ) AS endData FROM ".LAUNCHCAMPAIGN." WHERE campaign_status = '1' AND campaign_category = '2' ORDER BY endData");
+ foreach($slid as $key=>$values)
+ 				{
+					$s=$values['sold']; $g=$values['goal']; @$w=($s/$g)*100;
+		  $k=0;
+	     //for($i=0; $i<6; $i++)
+		 //{
+?>
+
+   <div align="center" class="main_outer_div" style="width:1000px; height:auto; display:inline-block;">
+			<div class="tshirt_boxes"><!---Boxes---->
+                <div class="tshirt_image"><!--- Division for tshirt images----->
+                <a href="<?=APPLICATION_URL.$values['url']?>"><img  src="<?=IMAGES_URL?>var.png" style="padding-top:14px;"/></a>
+                </div><!--- End Division for tshirt images----->
+                <div class="text_div"><!---Division for text in box---->
+                <h6 class="heading_div"><a href="<?=APPLICATION_URL.$values['url']?>" style="color:#2b86a0;"><?php echo $values['title'] ?></a></h6>
+						<p><?=$values['description']?></p>
+                </div><!---End Division for text in box---->
+           <div style="width:305px; height:70px; margin-left:81px;">
+                  <div style="background-color:#e4e3e3; border:#cfcfcf solid 5px; height:63px;">
+                                  <div style="width:295px; height:20px; margin-bottom:5px;">
+                                  <div class="div_info1"> 
+                                     <label style="font-family:'Arial'; font-size:17px; color:#0facfd">
+                                         <b style="text-align:left; margin-left:8px;">$<?php echo $values['selling_price'] ?></b>
+                                        </label>
+                                        </div>
+                                        <div class="info_div2">
+                                        <label style="font-family:'Arial'; font-size:14px; color:#606060; font-weight:normal; margin-left:10px;">
+                                         <?php echo $values['sold']?> of <?php echo $values['goal']; ?> reserved
+                                        </label>
+                                        </div>
+                                    </div>
+                              <div style="width:90%;height:8px;border:1px solid #319ebc ;border-radius:8px; float:left; margin-left:10px;">
+                           		<div style="height:7px; width:<?=$w?>%; float:left; border-radius:8px;border:1px solid #319ebc ; background-color:#319ebc; ">
+                                </div>
+                              </div>
+                                    <div style="margin-top:22px;">
+                                     <div style="width:13px; height:14px; float:left; margin-left:8px; margin-right:4px;">
+                                        <img src="<?=IMAGES_URL?>timerclock.png" />
+                                        </div>
+                                        <div class="day_hours_div" align="left"><?php
+										$row1=$db->runQuery("select DATE_ADD('".$values['launch_date']."', INTERVAL '".$values['campaign_length']."' DAY) AS nextDate,DATE_ADD('".$values['launch_date']."', INTERVAL -1 DAY) AS prevDate");
+										//echo $row1; 
+										//echo "...launch...".$values['launch_date']; die;
+										//echo $value['campaign_length'];
+										//echo "..End..".$enddate=$row1[0]['nextDate'];
+										$enddate=$row1[0]['nextDate'];
+										$newdat2=explode(" ",$enddate);// function breaks string into ARRAY
+										$newdat3=explode("-",$newdat2[0]);                            // comes in Y-M-D format
+										$newdat4=$newdat3[2]."/".$newdat3[1]."/".$newdat3[0];                // D/m/Y format
+										//$this->view->newdat4=$newdat4;
+										$diff = strtotime($enddate) - strtotime(date('Y-m-d H:i:s'));	
+										$day_difference = floor($diff / (60*60*24));
+										$hours=	$day_difference*24;													
+										//echo "............day diffrenc is:".$day_difference; 
+										//echo "...........end date is:".$enddate;
+										//echo "..........end date is:".$newdat4;
+										//echo "...........hours is : ".$hours;die;
+						if($day_difference>0)
+					 {
+				   ?>   
+					   <label style="font-family:'Arial';font-size:12px; color:#606060; font-weight:normal;">&nbsp;
+						<?=$day_difference?> days and <?=$hours?> hours left.
+						 <?php
+					 }?>
+						</label>
+						</div>
+					</div>
+           </div>
+            </div>  
+         <div class="side_box" style="width:250px; height:38px; background:url(<?=IMAGES_URL?>side_box_gradient.png) repeat-x; float:right; margin-top:-55px; margin-right:21px;">
+                <img src="<?=IMAGES_URL?>image1.png" align="right" style="margin-top:4px; margin-right:8px;" />
+                 <!-- <a href="<?=APPLICATION_URL?><?=$value['url']?>"> 
+            <img src="<?=IMAGES_URL?>image1.png" align="right" style="margin-top:3px; margin-right:3px;" />
+                  </a>--> 
+                <p style="font-family:'Cambria'; font-size:20px; color:#FFFFFF; text-align:left; margin:7px 0 13px 20px; text-shadow: -1px -1px #267183;"><a href="<?=APPLICATION_URL.$values['url']?>" style="color:#FFF">View this campaign</a></p>
+         </div>
+      </div>
+      <?php } ?>
+            </div><!---End Boxes---->
+        </div>
+    </div>
+</div>

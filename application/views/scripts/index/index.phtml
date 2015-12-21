@@ -1,0 +1,273 @@
+<?php
+global $mySession;
+$db=new Db();
+?>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="<?=APPLICATION_URL?>js/bootstrap.min.js" type="text/javascript"></script>
+</head>
+
+
+
+<!--------------Home Banner--------------->
+<div class="banner">
+	<div class="banner_wrap">
+<!--		<div class="row block">-->
+<!--			<div class="first_line">Buy <span>or</span> <span class="hfirstlinegap">create</span></div>-->
+<!--			<div class="second_line">YOUR NEXT FAVORITE <span>TEE</span> !</div>-->
+<!--			<div class="third_line">Sell tees with zero upfront costs and zero risk. We print, we ship, you keep the profit.</div>-->
+
+
+
+<!---Slider2------>
+
+<div style="font-size: 36px; padding-top: 500px; font-weight: bold; font-family: "Times New Roman", Times, serif;">
+    <h1>TOP SELLING</h1>
+</div>
+
+	<!--------------Content--------------->
+<section id="content" style="padding-bottom: 200px">
+<div class="container">
+    <div class="row block">
+        <div class="main-content">
+            <ul>
+                <?php
+
+                $slid=$db->runquery("SELECT * , date_add( launch_date, INTERVAL campaign_length DAY ) AS endData FROM ".LAUNCHCAMPAIGN." WHERE (campaign_status = '1' AND campaign_category = '1') ORDER BY endData");
+
+
+                $counter=0;
+
+                foreach($slid as $key=>$value){
+
+                    $s=$value['sold'];
+                    $g=$value['goal'];
+                    @$w=($s/$g)*100;
+                    $urlPath=urlencode($value['url']);
+
+                    $username=$db->runquery("select * from ".USERS." where user_id='".$value['user_id']."'");
+
+                    $row1=$db->runQuery("select DATE_ADD('".$value['launch_date']."', INTERVAL '".$value['campaign_length']."' DAY) AS nextDate,DATE_ADD('".$value['launch_date']."', INTERVAL -1 DAY) AS prevDate");
+
+                    $enddate=$row1[0]['nextDate'];
+                    $startdate=$value['launch_date'];
+                    $date=date("Y-m-d");
+                    $newdat2=explode(" ",$enddate);
+                    $newdat3=explode("-",$newdat2[0]);// comes in Y-M-D format
+                    $newdat4=$newdat3[2]."/".$newdat3[1]."/".$newdat3[0];
+                    $diff = strtotime($enddate) - strtotime(date('Y-m-d H:i:s'));
+                    $day_difference = floor($diff / (60*60*24));
+
+                    if($day_difference>0)
+                    {
+                        $counter++;
+                        ?>
+
+                        <li class="col-md-4  col-sm-4 nkar" <?php if($counter%2==0) echo 'id="wrap_mid_home" ';?>>
+                            <div class="wrap">
+                                <div class="heading1" >
+                                    <a href="<?php echo APPLICATION_URL.$urlPath;?>">
+                                        <?php
+                                        //echo SITE_ROOT.'images/usersdesign/'.$value['tee_image'];
+                                        if($value['tee_image']!="" )
+                                        {
+                                            if($value['tee_image']!="" and  file_exists(SITE_ROOT.'images/usersdesign/'.$value['tee_image']))
+                                            {
+                                                ?>
+                                                <img data-caman="brightness(10) contrast(30) sepia(60) saturation(-30)"  data-caman-hidpi="<?php echo APPLICATION_URL;?>images/usersdesign/<?php echo $value['tee_image'];?>"  src="<?php echo APPLICATION_URL;?>images/usersdesign/<?php echo $value['tee_image'];?>" width="405" height="475" />
+                                            <?php
+                                            }
+                                            else
+                                            {
+                                                ?>
+                                                <img  src="<?php echo IMAGES_URL;?>Layer-21.jpg" width="355" height="475"/>
+                                            <?php
+                                            }
+                                        }
+                                        else
+                                        {
+                                            ?>
+                                            <img  src="<?php echo IMAGES_URL;?>Layer-21.jpg"width="355" height="475"/>
+
+                                        <?php } ?>
+                                    </a>
+                                    <h2 class="col-md-12 smoll_divs"><a href="<?php echo APPLICATION_URL.$urlPath;?>"><?php echo "<div style='color: white; position: relative; right: 130px' > " . ucwords($value['title']) . "</div>"  ?></a></h2>
+                                    <span style="color: white; position: absolute; right: 305px; bottom: 110px; font-size: 11px; text-align: justify">by <a href="<?php echo APPLICATION_URL;?>user/view/user_id/<?php echo $username[0]['user_id'];?>"><?php echo  "<div style='color: white'>" . ucwords(substr($username[0]['public_name'],0,50)) . "</div>";?></a></span>
+                                </div>
+
+                                <div class="content">
+                                    <?php
+                                    $today= date('Y-m-d H:i:s');
+                                    $days=$value['campaign_length'];
+                                    $totaldate= strtotime((date('Y-m-d H:i:s', strtotime($value['launch_date']. ' + '.$days.' day')))) - (strtotime($today));
+
+                                    if($w<100)  {  ?>
+                                        <!--<p class="prc_text"><span><?php echo $value['sold'];?></span> shirts were reserved<br>towards a goal of <span><?php echo $value['goal']; ?></span></p>!-->
+
+
+                                        <div class="proc_time col-md-12 smoll_divs2" style="color: white">Time left: <span id="ct_<?=$value['campaign_id']?>">&nbsp;</span></div>
+                                        <div class="process">
+<!--                                            <div class="pro_image" style="background-image:url(--><?php //echo IMAGES_URL;?><!--process.png);height:77px; width:275px;">-->
+<!--                                                <div class="pro_count" style="background-color:#006853;width:--><?//=($w*2.75)?><!--px; height:27px;">&nbsp;</div>-->
+<!--                                            </div>-->
+
+                                            <div class="col-md-12 smoll_divs3">
+                                                <div style="color: white"><span><?=@(int)$w?>%</span>Funded</div>
+                                                <div style="position: absolute; bottom: 0px" class="load"></div>
+                                            </div>
+
+
+                                            <div style="padding:18px 0 20px; text-align:center; position: relative; bottom: 120px">
+                                                <a href="<?php echo APPLICATION_URL.$urlPath;?>" class="reserve_tee">
+                                                    <div class="reserved">
+                                                        <p style="color: white">RESERVED</p><a href=""><i class="fa fa-plus"></i></a>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <script type="text/javascript">
+
+                                                var start<?=$value['campaign_id']?>=<?=$totaldate?>;
+
+                                                start<?=$value['campaign_id']?> = parseFloat(start<?=$value['campaign_id']?>);
+
+
+
+                                                var end<?=$value['campaign_id']?> = 0
+
+                                                var refresh=1000;
+
+                                                if(start<?=$value['campaign_id']?> >= end<?=$value['campaign_id']?> ){
+
+
+
+                                                    mytime<?=$value['campaign_id']?>=setTimeout('display_ct_<?=$value['campaign_id']?>(start<?=$value['campaign_id']?>)',refresh)
+
+                                                }
+
+                                                else { window.location.href="<?=APPLICATION_URL?>product/index";}
+
+
+
+                                                function display_c<?=$value['campaign_id']?>(start1<?=$value['campaign_id']?>){
+
+                                                    start<?=$value['campaign_id']?> = parseFloat(start1<?=$value['campaign_id']?>);
+
+                                                    var end<?=$value['campaign_id']?> = 0
+
+                                                    var refresh=1000;
+
+                                                    if(start<?=$value['campaign_id']?> >= end<?=$value['campaign_id']?> ){
+
+                                                        mytime<?=$value['campaign_id']?>=setTimeout('display_ct_<?=$value['campaign_id']?>(start<?=$value['campaign_id']?>)',refresh)
+
+                                                    }
+
+                                                    else { window.location.href="<?=APPLICATION_URL?>product/index";}
+
+                                                }
+
+
+
+                                                function display_ct_<?=$value['campaign_id']?>(start<?=$value['campaign_id']?>) {
+
+
+
+                                                    var days<?=$value['campaign_id']?>=Math.floor(start<?=$value['campaign_id']?> / 86400);
+
+                                                    var hours<?=$value['campaign_id']?> = Math.floor((start<?=$value['campaign_id']?> - (days<?=$value['campaign_id']?> * 86400 ))/3600)
+
+
+
+                                                    var minutes<?=$value['campaign_id']?> = Math.floor((start<?=$value['campaign_id']?> - (days<?=$value['campaign_id']?> * 86400 ) - (hours<?=$value['campaign_id']?> *3600 ))/60)
+
+
+
+                                                    var secs<?=$value['campaign_id']?> = Math.floor((start<?=$value['campaign_id']?> - (days<?=$value['campaign_id']?> * 86400 ) - (hours<?=$value['campaign_id']?> *3600 ) - (minutes<?=$value['campaign_id']?>*60)))
+
+
+
+                                                    minutes<?=$value['campaign_id']?> = ((minutes<?=$value['campaign_id']?>>0) ? ((minutes<?=$value['campaign_id']?>>9) ? minutes<?=$value['campaign_id']?> : '0'+minutes<?=$value['campaign_id']?>) + "" : "0");
+
+
+
+                                                    secs<?=$value['campaign_id']?> = ((secs<?=$value['campaign_id']?>>0) ? ((secs<?=$value['campaign_id']?>>9) ? secs<?=$value['campaign_id']?> : '0'+secs<?=$value['campaign_id']?>) + "" : "0");
+
+                                                    var x<?=$value['campaign_id']?> =days<?=$value['campaign_id']?> + "D, " + hours<?=$value['campaign_id']?> + "H, " + minutes<?=$value['campaign_id']?> + "M, " +secs<?=$value['campaign_id']?> + "S" ;
+
+
+
+                                                    document.getElementById('ct_<?=$value['campaign_id']?>').innerHTML = x<?=$value['campaign_id']?>;
+
+                                                    start<?=$value['campaign_id']?>=start<?=$value['campaign_id']?>- 1;
+
+                                                    tt<?=$value['campaign_id']?>=display_c<?=$value['campaign_id']?>(start<?=$value['campaign_id']?>);
+                                                }
+
+                                            </script>
+                                        </div>
+                                    <?php  } ?>
+                                </div>
+
+                            </div>
+                        </li>
+                        <?php
+                        if($counter==3) { $counter=0; }
+                    } }?>
+            </ul>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+<script>
+    /*
+     $(document).ready(function()
+     {
+     $("img[id^='zoom_']").each(function()
+     {
+     var bg = new Image(), imgid = $(this).attr("id");
+     bg.src = $(this).attr("src");
+     var scale = bg.width / $(this).width();
+
+     $("#" + imgid).wrap("<div id=\"parent_" + imgid + "\"/>");
+     $("#parent_" + imgid).append("<div id=\"loupe_" + imgid + "\"></div>");
+
+     $("#loupe_" + imgid).css({
+     "position" : "absolute",
+     "width": "200px",
+     "height": "200px",
+     "border-radius": "50%",
+     "background": "url('" + $("#" + imgid).attr("src") + "')",
+     "background-repeat": "no-repeat",
+     "display": "none",
+     "border": "1px solid #ddd"
+     });
+
+     $("#parent_" + imgid).mouseenter(function()
+     {
+     $("#loupe_" + imgid).show();
+     $("#parent_" + imgid).bind("mousemove", function(e)
+     {
+
+     var x = (e.pageX - $("#" + imgid).offset().left) * scale - 200 / scale;
+     var y = (e.pageY - $("#" + imgid).offset().top) * scale - 200 / scale;
+     $("#loupe_" + imgid).offset({left: e.pageX - 200 / scale, top: e.pageY - 200 / scale}).css({"background-position": -x + "px " + -y + "px"});
+     if (e.pageY > $("#parent_" + imgid).offset().top + $("#parent_" + imgid).height()) {
+     $("#loupe_" + imgid).hide();
+     }
+     });
+     });
+     $("#parent_" + imgid).mouseleave(function()
+     {
+     $("#parent_" + imgid).unbind("mousemove");
+     $("#loupe_" + imgid).hide();
+     });
+     });
+     });
+     */
+</script>
+
+
+<button class="button_btn col-md-4 no-padd col-sm-4" style="position: absolute; left: -5px; top: 90px"><a style="" href="<?php echo APPLICATION_URL;?>launchcampaign/index">CREATE YOUR TEE</a></button>
+<button class="button_btn2 col-md-4 no-padd col-sm-4" style="position: absolute; left: -5px; top: 90px" ><a id="fancybox-media" class="fancybox-media" href="http://vimeo.com/80255970">WATCH VIDEO</a></button>

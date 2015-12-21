@@ -1,0 +1,875 @@
+<?php
+global $mySession;
+$db=new Db();
+?>
+
+
+<link rel="stylesheet" href="<?=APPLICATION_URL?>fancybox/source/jquery.fancybox.css?v=2.1.0" media="screen"  />
+
+<script type="text/javascript" src="<?=APPLICATION_URL?>fancybox/lib/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="<?=APPLICATION_URL?>fancybox/source/jquery.fancybox.js?v=2.1.0"></script>
+  
+  <script type="text/javascript">
+	$(document).ready(function() {
+										
+	$('#edit1').fancybox();
+												
+	});
+  </script>
+  
+  
+
+<!--
+<script type="text/javascript" src="<?=JS_URL?>jquery.min.js"></script>
+
+
+<script type="text/javascript" src="<?=APPLICATION_URL?>fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>fancybox/fancybox.css" media="screen"/>-->
+
+<!--<script type="text/javascript" src="<?=APPLICATION_URL?>fancyBox-master/lib/jquery-1.9.0.min.js"></script>-->
+<script type="text/javascript" src="<?=APPLICATION_URL?>tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+
+
+<script type="text/javascript">
+	// O2k7 skin (silver)
+	tinyMCE.init({
+		// General options
+		mode : "exact",
+		elements : "description",
+		theme : "advanced",
+		relative_urls : false,
+		skin : "o2k7",
+		skin_variant : "black",
+		plugins : "layer,table,save,advhr,advimage,advlink,emotions,noneditable,template",
+
+		// Theme options
+		theme_advanced_buttons1 : "bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
+		
+		theme_advanced_buttons2 : "forecolor,backcolor",
+		
+		theme_advanced_toolbar_location : "top",
+		theme_advanced_toolbar_align : "left",
+		theme_advanced_statusbar_location : "bottom",
+		theme_advanced_resizing : true	
+	});
+</script>
+
+
+<script type="text/javascript">
+
+window.onload= function() {opendiv(); }
+
+window.onload= function() {newdivaddr(); }
+
+
+function newdivaddr(obj)
+{
+//if(<?=$_REQUEST['newcheckbx']=='1'?>)
+//{
+//	document.getElementById('newaddrsdiv').style.display="block";
+//}
+ if( document.getElementById(obj).checked==true)
+ {
+  document.getElementById('newaddrsdiv').style.display="block";
+ }
+ else
+ {
+  document.getElementById('newaddrsdiv').style.display="none"; 
+ }
+//}
+}
+
+
+function uniqueurl(x)
+{
+	
+/*	document.getElementById('newtextfield').value=x;
+	document.seerequest.submit();*/
+	
+	$.ajax({ url: "<?=APPLICATION_URL."launchcampaign/uniqurl"?>",
+			type: "POST",
+			data: ({campurl:x}),
+			success: function(data)
+			{	
+				if(data>0)
+				{
+				document.getElementById('msg').style.display='block';	
+				msg.innerHTML='This url already in use. Choose another';
+				
+				}
+				else
+				{
+					document.getElementById('msg').style.display='none';	
+				}
+				
+			}
+	})
+	
+	
+	
+}
+
+
+</script>
+
+
+
+<div>
+
+<?php
+if($this->cid!="")
+{
+?>
+  <form method="post" action="<?=$this->url(array('controller'=>'launchcampaign', 'action'=>'launch','cid'=>$this->cid), 'default', true)?>" onsubmit="return validformdata();" name="myform" id="myform">
+<?php
+}
+if($this->cidresume!="")
+{
+?>
+<form method="post" action="<?=$this->url(array('controller'=>'launchcampaign', 'action'=>'resume','cidresume'=>$this->cidresume), 'default', true)?>" onsubmit="return validformdata();" name="myform" id="myform">
+<?php
+}
+
+else
+{
+?>
+ <form method="post" action="<?=$this->url(array('controller'=>'launchcampaign', 'action'=>'launch','lid'=>$this->lid), 'default', true)?>" onsubmit="return validformdata();" name="myform" id="myform">
+<?php
+}
+?>
+
+<div class="launchBG" style="width:100%;">
+	
+    <div style="width:1000px; height:35px;">
+    	
+        <div style="float:left; width:700px; height:35px;">
+            
+            <div class="content" style="float:left; width:160px; height:35px;">
+               <a href="<?=APPLICATION_URL?>launchcampaign/index" class="content" > 1. Create Your Tee </a>
+               <!--<a href="javascript:ajaxpage('launchcampaign/index');"> 1. Create Your Tee</a>-->
+            </div>
+            
+            <div class="point" style="width:13px; height:35px; float:left;">
+            </div>
+            
+            <div class="content" style="float:left; height:35px; width:150px;">
+               <a href="<?=APPLICATION_URL?>launchcampaign/setgoal" class="content"> 2. Set a Goal </a>
+              <!--   <a href="javascript:ajaxpage('launchcampaign/setgoal');"> 2. Set a Goal </a>-->
+            </div>
+            
+            <div class="point" style="width:13px; height:35px; float:left;">
+            </div>
+            
+            <div class="content" style="float:left; height:35px; width:180px;">
+               <a href="<?=APPLICATION_URL?>launchcampaign/adddescription" class="content"> 3. Add a Description </a>
+            </div>
+            
+             <div class="point" style="width:13px; height:35px; float:left;">
+             </div>
+      	
+        </div>
+    
+        
+     <!--   <div align="right" style="width:270px; height:35px; float:left;">
+        	
+            <div class="content" style="float:left; width:90px; height:35px;">
+                 <a  class="content" href="<?=APPLICATION_URL?>">
+                 <div style="float:left">
+                    <img src="<?=IMAGES_URL?>savefolder.png" height="25" width="20"/>
+                  </div>
+                  <div>
+                   Save
+                  </div> </a>
+            </div>
+
+          
+            
+            <div class="content" style="float:left; width:90px; height:35px;">
+                   <a class="content" href="<?=APPLICATION_URL?>">
+                 <div style="float:left; margin-top:5px;">
+                    <img src="<?=IMAGES_URL?>Mail.png" height="15" width="20"/>
+                 </div>
+                 <div>
+                   Share
+                 </div> </a>
+            </div>
+            
+          
+         
+            <div class="content" style="float:left; width:90px; height:35px;">
+                   <a class="content" href="<?=APPLICATION_URL?>"> 
+                 <div style="float:left">
+                    <img src="<?=IMAGES_URL?>prevwicon.png" height="20" width="20"/>
+                 </div>
+                 <div>
+                 Preview
+                 </div> </a>
+            </div>	
+            
+        </div>-->
+     	
+    </div>
+  
+</div>
+
+<div style="width:1000px; height:auto; clear:both;">
+	
+   
+     <div style="width:1000px; height:10px;">
+     </div>
+        
+    <div style="width:580px; height:auto; float:left;">
+    	
+     
+        
+        <div style="width:560px; height:150px; background-color:#f5f5f5;"> 
+      	
+                <div style="width:560px; height:9px;">
+                </div>
+                
+                <div align="left" style="width:540px; height:130px; background-color:#f5f5f5; border:#333 solid 1px;">
+               
+                <!-- ----------------div to leave space. vertical space----------------------- -->       	
+                    <div style="width:8px; height:120px; float:left">
+                    </div>
+                    
+                    
+                    <div style="font-family:Tahoma; color:#045725; font-size:16px; margin-top:10px;">
+                        <b> Campaign Title </b>
+                    </div>
+          
+          <div style="width:540px; height:10px;">
+            
+          </div>
+                    
+                    <div style="width:540px;">
+                         <?=$this->myform->camptitle?>
+                    </div>
+           
+            <div style="width:540px; height:10px;">
+                
+            </div>
+                   
+                    <div style="font-family:Tahoma; color:#20a762; font-size:14px; width:540px; height:10px;">
+                        Summarize your campaign in 40 characters or less
+                    </div>
+           
+
+         </div>
+      </div>
+        
+                 <div style="width:560px; height:10px;">
+                 </div>
+        
+    
+        <div style="width:560px; height:350px; background-color:#f5f5f5;"> 
+      	
+              <div style="width:560px; height:9px;">
+              </div>
+        
+    
+    
+              <div align="left" style="width:540px; height:330px; background-color:#f5f5f5; border:#333 solid 1px;">
+       
+        <!-- ----------------div to leave space. vertical space----------------------- -->       	
+            <div style="width:8px; height:330px; float:left;">
+            </div>
+            
+            
+            <div style="font-family:Tahoma; color:#045725; font-size:16px; margin-top:10px;">
+            	<b> Description </b>
+            </div>
+  
+                  <div style="width:540px; height:10px;"> 	
+                  </div>
+            
+         <!--   <div style="width:500px; height:30px;">
+            	 
+                 <div style="float:left">
+                 	<img src="<?=IMAGES_URL?>boldicon.png" width="30" height="30" onclick="changeFont('b');" />
+                 </div>
+                 
+                 <div style="float:left; margin-left:5px;">
+                 	<img src="<?=IMAGES_URL?>italicicon.png" width="30" height="30" onclick="changeFont('i');" />
+                 </div>
+                 
+                 <div style="float:left; margin-left:5px;">
+                 	<img src="<?=IMAGES_URL?>nderlineicon.png" width="30" height="30" onclick="changeFont('u');" />
+                 </div>
+                 
+                 <div style="float:left">
+                 </div>
+                 
+                 <div style="float:left">
+                 </div>
+                 
+            </div>-->
+   
+                    <div style="width:540px; height:10px;">
+                    </div>
+           
+           <div style="width:540px;">
+            	 <?=$this->myform->description?>
+           </div>
+   
+ 
+        
+                    <div style="width:540px; height:10px;">
+                    </div>
+         
+        	<div style="font-family:Tahoma; font-size:16px; color:#20a762; width:540px; height:20px;">
+            		Let your buyers know why they should buy your tee in 300 characters or less. You can also include info on the design or designer! 
+            </div>
+    
+        
+    </div>
+    
+        </div>
+    
+    				
+                <div style="width:560px; height:10px;">
+                </div>
+                
+                
+        <div style="width:560px; height:150px; background-color:#f5f5f5;"> 
+      	
+                <div style="width:560px; height:9px;">
+                </div>
+                
+                
+                 <div align="left" style="width:540px; height:130px; background-color:#f5f5f5; border:#333 solid 1px;">
+               
+                <!-- ----------------div to leave space. vertical space----------------------- -->       	
+                    <div style="width:8px; height:120px; float:left">
+                    </div>
+                    
+                    
+                    <div style="font-family:Tahoma; color:#045725; font-size:16px; margin-top:10px;">
+                        <b> Campaign Length </b>
+                    </div>
+          
+          <div style="width:540px; height:10px;">
+            
+          </div>
+                    
+                    <div style="width:540px;">
+                         <?=$this->myform->no_ofdays?>
+                    </div>
+           
+            <div style="width:540px; height:10px;">
+                
+            </div>
+                   
+                    <div style="font-family:Tahoma; color:#20a762; font-size:14px; width:540px; height:10px;">
+                        US orders will arrive 10-14 days after the end of the campaign. 
+                        <a style="text-decoration:none; color:#000099;" href="<?=APPLICATION_URL?>about/index/page/shipping_rates"> Learn More </a>
+                    </div>
+           
+
+        </div>
+       
+        </div>
+        
+                <div style="width:560px; height:10px;">
+                </div>
+        
+        <div style="width:560px; height:150px; background-color:#f5f5f5;"> 
+      	
+                <div style="width:560px; height:9px;">
+                </div>
+                
+                
+                 <div align="left" style="width:540px; height:130px; background-color:#f5f5f5; border:#333 solid 1px;">
+               
+                <!-- ----------------div to leave space. vertical space----------------------- -->       	
+                    <div style="width:8px; height:120px; float:left">
+                    </div>
+                    
+                    
+                    <div style="font-family:Tahoma; color:#045725; font-size:16px; margin-top:10px;">
+                        <b> Choose a url </b>
+                    </div>
+          
+          <div style="width:540px; height:10px;">
+            
+          </div>
+                    
+                    <div style="width:540px; font-family:Tahoma; color:#333; font-size:14px;">
+                         <b> www.dulaney.com </b>/<?=$this->myform->url?>
+                    </div>
+                    
+                    <div id="msg" style="display:none; width:520px; height:10px; font-family:Corbel; font-size:14px;">
+                    </div>
+           
+            <div style="width:540px; height:10px;">
+                
+            </div>
+                   
+                    <div style="font-family:Tahoma; color:#20a762; font-size:14px; width:540px; height:10px;">
+                        This is where you will send buyers to view your campaign
+                    </div>
+           
+
+        </div>
+       
+        </div>
+        
+        	
+                <div style="width:560px; height:10px;">
+                </div>
+    	
+        
+     <!---------------------------------- here was shipping address --------------------------------------------------------------->
+        
+        		
+        
+        <div style="width:560px; height:90px; background-color:#f5f5f5; margin-bottom:10px;"> 
+      	
+                <div style="width:560px; height:9px;">
+                </div>
+                
+               <div align="left" style="width:540px; height:70px; background-color:#f5f5f5; border:#333 solid 1px;">
+               
+                <!-- ----------------div to leave space. vertical space----------------------- -->       	
+                  
+                    <div style="width:8px; height:70px; float:left">
+                    </div>
+                    
+                    <div style="width:540px; height:10px;">   
+                    </div>
+                       
+                       <div>        
+                           		
+                               <?php
+                               if($mySession->TeeLoggedID=="")
+							   {
+							   ?>
+                                
+                                <input type="button" name="btn" value="Launch Your Campaign >>" class="launchcampbtn" onclick="sendtologin();"/>
+                            		&nbsp; OR  &nbsp; 
+                            
+                            	<?php
+							   }
+							   else
+							   {
+								?>
+                                
+                                 <input type="submit" name="submit" value="Launch Your Campaign >>" class="launchcampbtn" />
+                            		&nbsp; OR  &nbsp; 
+                                
+                                <?php
+							   }
+								?>
+                                
+                                 <a id="edit1" href="#inline1" onclick="sendpreview();" style="font-size:18px; color:#039; cursor:pointer; text-decoration:none;">
+                                	 Preview 
+                                 </a>
+                                
+                                
+                         <!--   <a onclick="sendpreview();" style="font-family:Tahoma; font-size:18px; color:#039; cursor:pointer;"> Preview </a>-->
+                       </div>
+          
+                          <div style="width:540px; height:10px;">   
+                          </div>
+                  
+               </div>
+        </div>
+        
+     
+ </div>
+ 
+ 
+                     <!--------------------------------------------- preview div --------------------------------->
+                         
+                         
+                         <div id="inline1" style="display:none;">
+    
+ <?php
+ if($this->lid!="")
+ {
+ $sql=$db->runquery("select * from ".LAUNCHCAMPAIGN." where campaign_id='".$this->lid."'");
+// echo "select * from ".LAUNCHCAMPAIGN." where campaign_id='".$this->lid."'";
+ }
+if($this->cid!="")
+ {
+  $sql=$db->runquery("select * from ".LAUNCHCAMPAIGN." where campaign_id='".$this->cid."'");
+ }
+ if($this->cidresume!="")
+ {
+  $sql=$db->runquery("select * from ".LAUNCHCAMPAIGN." where campaign_id='".$this->cidresume."'");
+ }
+ ?>                      			
+    
+    
+                                    <div style="width:1000px; height:auto; clear:both;">
+	
+         <div style="width:1000px; height:10px;">
+         </div>
+     
+  <div style="width:550px; height:650px; float:left">  
+                   
+      <div style="font-family:Tahoma; font-size:34px; color:#00F; width:500px; height:70px;">
+               
+               <div id="titlecamp" align="left" style=" width:500px; height:35px; font-family:Corbel; font-size:30px; color:#333333;">    		
+               	  
+               </div>
+               
+               <hr style="width:960px; color:#999;" align="left"/>
+      </div>
+      		   
+               <div style="width:1000px; height:10px;">
+               </div>
+                   
+     <div style="float:left;">
+     	
+        	<img src="<?=IMAGES_URL?>designtee.png"  />   
+     </div>
+ 
+ </div>
+     
+         <div style="height:700px; width:10px; float:left;">
+         </div>
+     
+     <div style="width:400px; height:auto; float:left;">
+     						
+                           <div style="width:400px; height:100px;">
+        				   </div> 
+                            
+            <div align="left" style="width:400px; height:auto; margin-top:10px;">
+            		
+                            <div style="height:150px; width:10px; float:left">
+                            </div>
+                    
+                    
+                   <div style="font-family:Tahoma; font-size:20px; color:#666; width:380px; height:40px;">
+                   		About This
+                      
+                       <div style="width:380px; height:2px;">
+                         <hr style="width:350px; color:#999;" align="left"/>
+                       </div>
+                   </div>
+                   
+                   <div style="font-family:Tahoma; width:400px; height:auto; color:#000; font-size:12px;">
+                   <table width="100%" cellpadding="0" cellspacing="0">
+                   <tr>
+                   <td id="descrip" align="left" valign="top"></td>
+                   </tr>
+                   </table>
+                   </div>
+                   
+                           <div style="width:300px; height:20px;">
+                           </div>
+            </div>
+            
+                <div align="left" style="width:340px; height:80px; background-image:url(<?=IMAGES_URL?>buynow.png); background-repeat:no-repeat;">
+                  
+                 		<div style="width:60px; height:80px; float:left;">
+                        </div>
+                  
+                  <div style="width:40px; height:20px; padding-top:20px; font-family:Calibri; font-size:28px; color:#000;float:left;">
+                       $<?=$mySession->setgoalvalues['sellingprice']?>
+                  </div>
+                  
+                  <div style="width:150px; margin-left:20px; padding-top:10px; height:50px; float:left;">
+                  		 
+                      	 	<input type="button" name="button" value="Buy Now" class="buybtn" /> 
+                      
+                  </div>
+                  
+            </div>
+                   
+           <!-- <div align="left" style="width:380px; height:120px;">
+                   <div style="float:left;">
+                   		<img src="<?=IMAGES_URL?>coins.png" />
+                    </div>
+                        <div style="width:10px; height:120px; float:left;">
+                        </div>
+                    <div style="float:left; width:200px; height:80px; margin-top:20px;">
+                      	
+                        <div style="width:200px; height:20px;">
+                        </div>
+                          
+                 <div style="width:40px; height:20px; padding-top:10px; padding-right:10px; font-family:Calibri; font-size:22px; color:#000; float:left;">
+                       $ <?=$sql[0]['selling_price']?>
+                  </div>
+                        
+                      
+                      	 	<input type="button" name="button" value="Buy Now" class="buybtn" /> 
+                       
+                   </div>
+            </div>-->
+            
+        
+     
+                        
+                        
+                        
+                        
+                                    <div style="width:400px; height:20px;">
+                                    </div>
+ 
+ 
+  <div align="left" style="width:380px; height:130px; float:left; background-color:#CCC; margin-left:10px;">
+            
+                                    <div style="width:10px; height:150px; float:left;">
+                                    </div>
+                            	
+                            
+                            <div style="width:350px; height:40px; margin-top:8px;">
+                                    	
+                                  
+                                        <div align="center" style="font-family:'Arial'; font-size:17px; color:#606060; height:20px; width:370px;">
+                                        	<b>The design will only print if reached its goal!</b>
+                                        </div>
+                                        <div align="center" style="font-family:'Arial'; font-size:14px; color:#606060; font-weight:normal; width:350px; height:20px;">
+                                        	<?=$sql[0]['sold']?> shirts were reserved towards a goal of <?=$sql[0]['goal']?>
+                                        </div>
+                                        
+                             </div>
+       
+       
+                              
+                                 	
+                                    <div style="width:350px; height:10px;">
+                                    </div>
+                                    
+                            <div style="width:100%;height:8px;border:1px solid #393 ;border-radius:8px; ">
+                            <!--	<div align="center" style="height:8px; width:<?=@$w?>%; border-radius:8px;border:0px solid #393 ; background-color:#339933">-->
+                                <!--</div>-->
+                            </div>
+                                    
+                                    
+                                    <div style="width:350px; height:20px;">
+                                    </div>
+                             
+                                    
+                              <div align="center" style="width:350px; height:20px;">
+                                    	<div style="width:15px; height:15px; float:left;">
+                                    	   <img src="<?=IMAGES_URL?>timerclock.png" height="20" width="20" />
+                                        </div>
+                                        
+                                       	<div style="font-family:'Arial'; font-size:18px; color:#606060; font-weight:normal;">
+                                        	 days from today : <span id="date"></span>
+                                        </div>
+                                        
+                                     
+                              </div>
+                                    <!--<img src="images/teebar.png" />-->
+        </div>
+            
+     </div>
+
+</div>
+                                    
+                          </div>
+                      
+  
+  
+  
+  <!-- ----------t shirt image ------------- -->  
+    
+    <div style="width:400px; height:600px; float:left;">
+    	<!--<img src="<?=IMAGES_URL?>designtee.png"  />   -->
+          <div id="front_i" style="width:400px; height:550px;position:absolute;display:block;">
+     	
+        	<img src="<?=IMAGES_URL?>designtee.png"  />   
+         </div>
+         
+          <div id="back_i" style="width:400px; height:550px;position:absolute;display:none;">
+            
+                <img src="<?=IMAGES_URL?>backtee.png"  />   
+         </div>
+         
+         <div align="center" style="width:400px;height:20px; font-family:Calibri; font-size:18px; color:#0099CC;position:absolute;margin-top:550px;">
+                <span onclick="showtee();" style="cursor:pointer;">front</span>/<span  onclick="showtee1();" style="cursor:pointer;">back</span>
+         </div>
+    </div>
+   
+            <div style="width:1000px; height:10px;">
+            </div>
+       
+</div>
+
+ <?php
+if($this->cid!="")
+{
+?>
+   </form>
+<?php
+}
+if($this->cidresume!="")
+{
+?>
+</form>
+<?php
+}
+else
+{
+?>
+</form>
+<?php
+}
+?>
+
+</div>
+
+
+<script type="text/javascript">
+ 
+
+//function opendiv(obj1)
+//{ 
+////if(<?=$_REQUEST['add_checkbox']=='1'?>)
+////	{
+////		document.getElementById('addressdiv').style.display="block";
+////	}
+//
+// if( document.getElementById(obj1).checked==true)
+// {
+//  document.getElementById('addressdiv').style.display="block";
+// }
+// else
+// {
+//  document.getElementById('addressdiv').style.display="none"; 
+// //}
+// }
+//}
+
+
+function checknummsp(e)
+{
+ evt=e || window.event;
+ var keypressed=evt.which || evt.keyCode;
+ //alert(keypressed);
+ if(keypressed!="48" &&  keypressed!="49" && keypressed!="50" && keypressed!="51" && keypressed!="52" && keypressed!="53" && keypressed!="54" && keypressed!="55" && keypressed!="56" && keypressed!="57" && keypressed!="8")
+ {
+   return false;
+ } 
+}
+
+
+function checkcharonly(e)
+{
+ evt=e || window.event;
+ //var keypressed=evt.which || evt.keyCode;
+ //alert(keypressed);
+  var keypressed = e.charCode || e.keyCode || 0;
+            // allow backspace, tab, delete, arrows, letters, numbers and keypad numbers ONLY
+            return (
+                keypressed == 8 || 
+				 keypressed == 32 ||
+            
+                (keypressed >= 65 && keypressed <= 90) ||
+                (keypressed >= 97 && keypressed <= 122)) ;
+
+}
+
+function checkspecchar(e)
+{
+ evt=e || window.event;
+ //var keypressed=evt.which || evt.keyCode;
+ //alert(keypressed);
+  var keypressed = e.charCode || e.keyCode || 0;
+            // allow backspace, tab, delete, arrows, letters, numbers and keypad numbers ONLY
+            return (
+                keypressed == 8 ||  keypressed == 95 ||
+            
+                (keypressed >= 65 && keypressed <= 90) ||
+				(keypressed >= 48 && keypressed <= 57) ||
+                (keypressed >= 97 && keypressed <= 122)) ;
+
+}
+
+
+function sendtologin()
+{
+	document.getElementById('myform').action="<?=APPLICATION_URL?>login/savedata";
+	//window.location="<?=APPLICATION_URL?>login/savedata";
+	document.myform.submit();
+}
+
+function sendpreview()
+{	
+var val=tinyMCE.activeEditor.getContent();
+//var val = $(val).text();
+
+document.getElementById('date').innerHTML="";
+
+//document.getElementById('no_ofdays').value="";
+	
+	document.getElementById('descrip').innerHTML=val;
+	document.getElementById('titlecamp').innerHTML=document.getElementById('camptitle').value;
+	document.getElementById('date').innerHTML+=document.getElementById('no_ofdays').value;
+  // var val= document.getElementById('url').value;
+   //alert(val);
+   //window.location="<?=APPLICATION_URL?>launchcampaign/showcampaign/preview/"+val;
+  
+}
+
+
+
+
+function showtee()
+{
+	document.getElementById('front_i').style.display='block'
+	document.getElementById('back_i').style.display='none';
+}
+
+			
+function showtee1()
+{
+	document.getElementById('front_i').style.display='none'
+	document.getElementById('back_i').style.display='block';
+}	
+
+
+
+function opennewdiv()
+{
+	
+	//alert("fdgvdgb");
+	if(document.getElementById('signupdiv').style.display=="block")
+	{
+		
+	document.getElementById('logindiv').style.display="block";
+	document.getElementById('signupdiv').style.display="none";
+	}
+	else
+	{
+	
+	document.getElementById('signupdiv').style.display="block";
+	document.getElementById('logindiv').style.display="none";
+	}
+}
+
+function validformdata()
+	{ var flag=0;
+		if(document.getElementById('msg').style.display=='block')
+		{  
+			flag=1;
+			
+			return false;
+		}
+		if(flag==0)
+		{
+			return true;
+		}
+	}
+</script>
+
+
+<!--<script type="text/javascript">
+//alert('outside');
+if(<?=@$_REQUEST['newcheckbx']?>=='1')
+{
+	document.getElementById('newaddrsdiv').style.display="block";
+}
+if(<?=$_REQUEST['add_checkbox']?>=='1')
+{
+	document.getElementById('addressdiv').style.display="block";
+}
+
+</script>
+-->

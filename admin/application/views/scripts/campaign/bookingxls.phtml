@@ -1,0 +1,34 @@
+<?php global $mySession;
+$db=new Db(); 
+
+
+header('Content-Type: text/csv');
+header('Content-Disposition: attachment;filename=OrderReport.csv');
+//prd($query);
+		$separator = ',';
+		echo "Name".$separator."Email ID".$separator."TShirt URL".$separator."Quantity".$separator."Total Amount".$separator."Order Date".$separator."Shipping Address";
+		echo "\n";
+    foreach ($this->sql as $field)
+	 {  
+		
+		//$sizes = explode(",",$field['size']);
+		$s2=explode(",",$separator.$field['size']);
+		$size='';
+		for($i=1;$i<count($s2);$i++)
+		{
+		$size.=$s2[$i]." ";
+		}
+		
+		$s3=explode(",",$separator.$field['shipping_address']);
+		$addr='';
+		for($i=1;$i<count($s3);$i++)
+		{
+		$addr.=$s3[$i]." ";
+		}
+		
+ echo $field['name'].$separator.$field['emailid'].$separator.$field['teeurl'].$separator.$size.$separator.$field['totalamt'].$separator.$field['order_date'].$separator.$addr;
+        $separator = ',';echo "\n";
+	 }
+	 exit();
+?>
+

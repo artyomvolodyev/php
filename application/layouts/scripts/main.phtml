@@ -1,0 +1,373 @@
+<?php
+global $mySession;
+$db=new Db();
+$myControllerName=Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
+$myActionName=Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+
+
+?>
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+	<!--<![endif]-->
+	<head>
+		<!-- Basic Page Needs
+		================================================== -->
+		<meta charset="utf-8">
+		<title><?php echo SITE_NAME; ?> <?php if($this->pageTitle!="" ) { echo " - ".$this->pageTitle; } ?></title>
+		<meta name="description" content="<?php echo SITE_NAME; ?> <?php if($this->pageTitle!="" ) { echo " - ".$this->pageTitle; } ?>">
+		<meta name="author" content="<?php echo SITE_NAME; ?>">
+
+		<!-- Mobile Specific Metas
+		================================================== -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<!-- CSS
+		================================================== -->
+		<link rel="stylesheet" href="<?php echo CSS_URL;?>zerogrid.css">
+		<link rel="stylesheet" href="<?php echo CSS_URL;?>style.css">
+		<link rel="stylesheet" href="<?php echo CSS_URL;?>responsive.css">
+		<link rel="stylesheet" href="<?php echo CSS_URL;?>240.css">
+		<link rel="stylesheet" href="<?php echo CSS_URL;?>320.css">
+		<link rel="stylesheet" href="<?php echo CSS_URL;?>480.css">
+		<link rel="stylesheet" href="<?php echo CSS_URL;?>768.css">
+		<link rel="stylesheet" href="<?php echo CSS_URL;?>jquery.countdown.css" type="text/css">
+		<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/jquery.fancyProductDesigner-fonts.css" />
+
+		<!--[if lt IE 8]>
+		<div style=' clear: both; text-align:center; position: relative;'>
+			<a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+				<img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
+			</a>
+		</div>
+		<![endif]-->
+		<!--[if lt IE 9]>
+			<script src="<?php echo JS_URL;?>html5.js"></script>
+			<script src="<?php echo JS_URL;?>css3-mediaqueries.js"></script>
+		<![endif]-->
+
+		<script src="<?php echo JS_URL;?>jquery.min.js" type="text/javascript"></script>
+		<!--<script type="text/javascript" src="<?php echo JS_URL_ADMIN;?>jquery-ui.js"></script>-->
+		<script src="<?php echo JS_URL;?>general.js" type="text/javascript" ></script>
+
+		<script src="<?php echo JS_URL;?>jquery.countdown.js" type="text/javascript" ></script>
+		<script src="<?php echo JS_URL;?>jquery.loupe.js" type="text/javascript" ></script>
+		<script type="text/javascript" src="<?php echo APPLICATION_URL;?>creator/html2canvas.js"></script>
+		<script type="text/javascript" src="<?=APPLICATION_URL?>fancybox/source/jquery.fancybox.js?v=2.1.0"></script>
+		<script type="text/javascript" src="<?=APPLICATION_URL?>fancybox/source/helpers/jquery.fancybox-media.js?v=1.0.3"></script>
+
+		<link rel="stylesheet" href="<?=APPLICATION_URL?>fancybox/source/jquery.fancybox.css?v=2.1.0" media="screen"  />
+
+		<link href='<?php echo IMAGES_URL;?>favicon.ico' rel='icon' type='image/x-icon'/>
+
+		<script type="text/javascript">
+			$("#myInformationDiv").ready(function () {
+
+				$("#myInformationDiv2").show(1000);
+
+		});
+
+		setTimeout(function() {
+
+		$("#myInformationDiv2").hide("fast", function () {
+
+			// use callee so don't have to name the function
+
+			$(this).prev().hide("fast", arguments.callee);
+
+		});
+		}, 7000);
+
+
+		function notify(n_id,n_user_id,uid)
+
+		{
+
+			var login_user='<?=$mySession->TeeLoggedID?>';
+
+			var newVal=n_user_id;
+
+			var dataval=login_user;
+
+			var newVal1=newVal.split(",");
+
+			var index14=newVal1.indexOf(dataval);
+
+			if(index14>=0)
+
+			{
+
+			newVal1.splice(newVal1.indexOf(dataval),1)
+
+			newVal=newVal1.join(",");
+
+			}
+
+			$.ajax({
+
+				type: "POST",
+
+				url: "<?=APPLICATION_URL?>launchcampaign/notificationremove",
+
+				data: ({users:newVal,n_id:n_id}),
+
+				cache: false,
+
+				success: function(data){
+
+				data=$.trim(data);
+
+				{
+
+					window.location='<?=APPLICATION_URL?>user/view/user_id/'+uid;
+
+				}
+
+
+				}
+
+				});
+
+		}
+
+		var newYear = new Date();
+
+		newYear = new Date(newYear.getFullYear() + 1, 1 - 1, 1);
+
+		$('#load_tweets').countdown({until: newYear});
+
+		$('#removeCountdown').toggle(function() {
+				$(this).text('Re-attach');
+				$('#defaultCountdown').countdown('destroy');
+			},
+
+			function() {
+				$(this).text('Remove');
+				$('#defaultCountdown').countdown({until: newYear});
+			}
+		);
+
+
+		</script>
+
+		<style>
+
+		.notify
+
+		{
+
+			display:none;
+
+			position:absolute;
+
+			width:300px;
+
+			height:auto;
+
+			border:1px solid #3CB7D4;
+
+			clear:both;
+
+			text-align:left;
+
+			float:left;
+
+			border-radius:5px;
+
+			background-color:#3CB7D4;
+
+			color:#FFF;
+
+			z-index:99999;
+
+			overflow-y: scroll;
+
+			max-height:700px;
+
+
+
+		}
+
+		.notify p a,.notify p a:hover
+
+		{
+
+			color:#FFFFFF;
+
+		}
+
+		.notifyhead
+
+		{
+
+		float:left; margin-top:10px; position:relative;
+
+		}
+
+		.notifyhead:hover > div.notify
+
+		{
+
+			display:block;
+
+		}
+
+		</style>
+		<style>
+		.fpd-recreation {
+			background: none repeat scroll 0 0 white;
+			margin-left: 91px;
+			position: relative;
+			width: 451px;
+		}
+
+		.fpd-recreation div {
+			position: relative;
+			/*height: 570px;
+			margin-left: -42px;*/
+		}
+
+		.fpd-recreation img, .fpd-recreation canvas, .fpd-recreation span {
+			position: absolute;
+		}
+
+		#Tees0
+		{
+			display:block;
+		}
+
+		#Tees1
+		{
+			display:none;
+		}
+
+		.frontBack {
+			color: #0099CC;
+			font-family: Calibri;
+			font-size: 18px;
+			height: 20px;
+			margin-top: 31px;
+			padding-left: 50px;
+			position: absolute;
+			width: 579px;
+		}
+
+		#onlyFrontDataK ,#bothdatakmanika
+		{
+			display:none;
+		}
+		</style>
+		<script type="text/javascript">
+
+		$(document).ready(function() {
+			/*
+
+			 *  Media helper. Group items, disable animations, hide arrows, enable media and button helpers.
+
+			*/
+			if(document.getElementById('fancybox-media')) {
+			$('.fancybox-media')
+
+				.attr('rel', 'media-gallery')
+
+				.fancybox({
+
+					openEffect : 'none',
+
+					closeEffect : 'none',
+
+					prevEffect : 'none',
+
+					nextEffect : 'none',
+
+
+
+					arrows : false,
+
+					helpers : {
+
+						media : {},
+
+						buttons : {}
+
+					}
+
+				});
+
+			}
+
+
+		});
+		</script>
+</head>
+
+<body>
+<?php
+if (TEESHIRTSCRIPT_ON_DEMO) {
+  ?>
+	<style type="text/css">
+		/* Hello Bar Clone For Blogger by AllBloggerTricks.com */
+		#abt-hotsmain{height:40px;left:0;top:0;width:100%}
+		#abt-hots{background-color:#8cd14c;border-bottom:2px solid #FFF;height:40px;left:0;position:fixed;top:0;width:100%;box-shadow:3px 3px 3px 3px;z-index:10000}
+		#abt-hotsdata{color:#FFF;font-size:18px;padding:5px}
+		#abt-hotshide{cursor:pointer;height:20px;position:absolute;right:12px;top:4px;width:20px}
+		#abt-hotsshow{background-color:#8cd14c;border-bottom:3px solid #000;border-bottom-left-radius:5px;border-bottom-right-radius:5px;border-left:3px solid #000;border-right:3px solid #000;cursor:pointer;height:25px;padding-top:5px;position:absolute;right:5px;top:0;width:30px}
+		.abt-hotsdownarrow{border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid #8ce14c;height:0;width:0}
+		.abt-hotsblock{background-color:#8ce14c;height:10px;width:8px}
+		.abt-hotsuparrow{border-bottom:10px solid #8ce14c;border-left:10px solid transparent;border-right:10px solid transparent;height:0;width:0}
+		#abt-hotsdata a {
+			background-color: #3c90be;
+			color: #ffffff;
+			-moz-border-bottom-colors: none;
+			-moz-border-left-colors: none;
+			-moz-border-right-colors: none;
+			-moz-border-top-colors: none;
+			border-radius: 4px;
+			border-style: solid;
+			border-width: 1px;
+			box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+			cursor: pointer;
+			display: inline-block;
+			font-size: 16px;
+			line-height: 24px;
+			margin-bottom: 0;
+			margin-left:5px;
+			padding: 4px 12px;
+			text-align: center;
+			text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+			vertical-align: middle;
+		}
+	</style>
+	<div id="abt-hotsmain" >
+		<center id="abt-hotsshow" onmouseup="document.getElementById('abt-hots').style.display='block'"><div class="abt-hotsblock"></div><div class="abt-hotsdownarrow"></div></center>
+		<div id="abt-hots" >
+			<center id="abt-hotshide" onmouseup="document.getElementById('abt-hots').style.display='none'"><div class="abt-hotsuparrow"></div><div class="abt-hotsblock"></div></center>
+			<center id="abt-hotsdata" >This is the demo of TeeshirtSCRIPT. For more information go to <a href="http://www.teeshirtscript.com" class="btn" target="_blank">www.TeeshirtSCRIPT.com</a></center>
+		</div>
+	</div>
+
+
+<?php
+}
+?>
+	<input type="hidden" id="frontDataValK" value="" />
+	<?php if( $mySession->errorMsg!=""){ ?>
+
+	<div id="myInformationDiv" style="position:absolute; width:100%; top:60px; ">
+
+		<div id="myInformationDiv2" align="center" style="position:absolute; width:100%; display:block; color:#000;background-color:#319ebc; height:36px; font-family:Verdana, Geneva, sans-serif;">
+		<?=$mySession->errorMsg?>
+		</div>
+	</div>
+	<?php unset($mySession->errorMsg); } ?>
+
+	<?php include ("header_1.phtml"); ?>
+
+	<?php echo $this->layout()->content;?>
+
+	<?php include ("footer_1.phtml"); ?>
+</body>
+</html>

@@ -1,0 +1,96 @@
+﻿/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+
+
+
+/*--------------------------------------*/
+
+/*--------------------------------------*/
+
+#content { overflow:hidden;}
+
+nav{width:100%; background:none;}
+.menu{display:none !important;}
+.minimenu{display:block !important;}
+	
+.block {padding: 10px 0px;background:none;}
+.zerogrid{width:auto !important; margin:0px auto;}
+.zerogrid .col-1-3{width:300px; margin: 10px;}
+.zerogrid #wrap_mid_home { margin-left:10px; margin-right:0px;}
+header
+{
+	display:block;
+}
+
+.logo_main
+{
+	display:none;
+}
+#nav_bg	{ background:none;}
+nav ul { display:none;}
+.first_line{ font-size:50px; padding-top:47px;}
+.second_line{ font-size:25px;}
+.footer_left { width:60%; margin-left:2%;}
+.footer_right { width:34%;}
+.bot_signup a#bottm_sign{ display:inline-block; text-align:center; padding-right:0px !important; padding-bottom:15px !important;} 
+
+
+
+.info_left{ width:30%;}
+.info_right{ width:70%}
+.info_right img.right_share_image{ display:none;}
+.sec_one_camp{ padding:15px 0 0 21px;}
+.sec_two_camp{ padding: 8px 5px 13px 18px;}
+.sec_two_cap_span{ padding:0 0 9px 20px;}
+.pri_cap { padding: 16px 15px 3px; font-size:40px;}
+.cart_cap .sec_three_camp { width:150px; padding:10px 0px; margin-left:20px; background:url("../images/cart_ic.png") no-repeat scroll 12px 6px #B42F00; font-size:13px;}
+.cart_cap .sec_three_camp:hover{background:url("../images/cart_ic.png") no-repeat scroll 12px 6px #B42F00;}
+.txt_cap{ padding:15px 10px 20px 20px; font-size:12px;}
+.proc_time_cam { background:url("../images/timer.png") no-repeat scroll 31px 16px transparent; padding:14px 0 16px 57px; text-align:left;}
+
+/* (launch campaign - 1)*/
+.grafix {  float:none; text-align:center;}
+.launch_section_two {border-left:1px solid #B0B0B0; border-right:1px solid #B0B0B0;}
+.launch_section_one { border:none;}
+.tee_step_button_one  { display:inline-block;}
+.sep_button_stp{ display:inline-block; width:100%; text-align:center; margin-left:0px; margin-bottom:15px;}
+
+
+
+.goal_section_left { float:none; width:100%;}
+.goal_section_two { float:none; width:100%;}
+.pro_image { margin-left:35px !important;}
+.profit_amount_goal { border-bottom:1px solid #B0B0B0;}
+
+.goal_scroller { display:inline;}
+.scroll_pointer { top:195px;}
+
+
+.work_left_responsive { border-bottom: 1px solid #7C7C7C;display: inline-block;margin-bottom: 30px; padding-bottom: 30px;text-align: center;width: 100%;}
+.work_left { display:none;}
+.work_section_one { width:100%; margin-left:0px;}
+.work_right { border-left: none; float:none; }
+.work_section_two { width:100%; margin-left:0px;} 
+.work_section_two { width:100%; margin-left:0px;} 
+.design_ur_tee_image { float:none; width:100%;}
+.start_cam { width:100%; float:none;}
+
+
+/*breadcrumb*/
+.breadcrumb { font-size:13px;}
+.breadcrumb li { height:58px; display:inline; overflow:hidden;}
+.breadcrumb li a, .breadcrumb li span { padding:15px 0 18px 75px;}
+
+.breadcrumb_code li#create_bread.create_bread a { background:url("../images/tee_small_white_ic.png") no-repeat scroll 23px 13px transparent; padding-left:75px; }
+.breadcrumb_code li.create_bread.set_bread a { background:url("../images/cup_black_ic.png") no-repeat scroll 45px 13px transparent; padding-left:75px;}
+.breadcrumb_code li.create_bread.add_bread span { background:url("../images/line_ic.png") no-repeat scroll 37px 14px transparent; padding-left:75px;}
+
+.breadcrumb_code li#set_your_goal.create_bread a { background:url("../images/tee_small_white_ic.png") no-repeat scroll 23px 13px transparent; padding-left:75px; }
+.breadcrumb_code li#set_your_goal.set_bread a { background:url("../images/cup_ic.png") no-repeat scroll 45px 13px transparent; padding-left:75px;}
+.breadcrumb_code li#set_your_goal.add_bread a { background:url("../images/line_ic.png") no-repeat scroll 37px 14px transparent; padding-left:75px;}
+
+.breadcrumb_code li#add_a_description.create_bread a { background:url("../images/tee_small_white_ic.png") no-repeat scroll 23px 13px transparent; padding-left:75px; }
+.breadcrumb_code li#add_a_description.set_bread a { background:url("../images/cup_ic.png") no-repeat scroll 45px 13px transparent; padding-left:75px;}
+.breadcrumb_code li#add_a_description.add_bread a { background:url("../images/line_white_ic.png") no-repeat scroll 37px 14px transparent; padding-left:75px;}
+
+}

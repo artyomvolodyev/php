@@ -1,0 +1,139 @@
+<?php
+global $mySession;
+$db=new Db();
+?>
+
+<div class="mws-panel grid_8">
+    <div class="mws-panel-header">
+        <span class="mws-i-24 i-check"><?=$this->pageHeading?></span>
+    </div>
+    <div class="mws-panel-body">
+        <form name="myform" id="mws-validate" action="<?php echo $this->url(array('controller'=>'campaign', 'action'=>'emailit'), 'default', true)?>" method="post" novalidate class="mws-form">
+            <div style="display:none;" class="mws-form-message error" id="mws-validate-error"></div>
+            <div class="mws-form-inline">
+                
+                <div class="mws-form-row">
+                    <label>From (Your Email ID)</label>
+                    <div class="mws-form-item large">
+                         <?=$this->myform->emailid?>
+                    </div>
+                </div>
+                
+                
+                  <div style="margin-top:5px;">
+                     	<?=$this->myform->friendsemailid?>
+                   </div>
+                
+             <div class="mws-form-row">
+                <label>Subject</label>
+               <div class="mws-form-item large">
+                   <?=$this->myform->subject?>
+                </div>
+             </div>
+                
+                 <div class="mws-form-row">
+                <label>Content</label>
+                <div class="mws-form-item">
+                  	<?=$this->myform->content?>
+                </div>
+                </div>
+                
+            </div>
+            
+             <div style="margin-top:20px;" class="mws-button-row">
+                 	<input type="submit" name="submit" id="submit" value="Send Email" class="mws-button red">
+      <a href="<?=APPLICATION_URL_ADMIN?>campaign/live" style="text-decoration:none;">
+       <input type="button" name="cancel" id="cancel" value="Cancel" class="mws-button red">
+        </a>
+                 </div>
+                 
+           <!-- <div class="mws-button-row">
+                <input type="submit" value="Submit" class="mws-button red" />
+            </div>-->
+        </form>
+    </div>    	
+</div> 
+
+
+
+<?php /*?><div style="margin-left:10px; margin-top:10px; margin-bottom:30px; float:left; width:500px">
+        	<label class="myaccheading">Email Buyers<br /></label>
+            
+            <hr style="width:500px; color:#999;" align="left"/>
+           
+            <?php
+			$quremailid=$db->runquery("SELECT * FROM  ".ORDER_RECORD." WHERE teeurl='".$this->name."'");
+					if($quremailid!="" and count($quremailid)>0)
+					{
+						?>
+                        
+                         <div>
+               <form method="post" action="<?=$this->url(array('controller'=>'myaccount', 'action'=>'emailit'), 'default', true)?>">
+                  
+                   <div style="margin-top:10px">
+                   	  <label class="myaccsubtitles">From (Your Email ID)</label>
+                   </div>
+                   
+                   <div style="margin-top:5px;">
+                   	  <?=$this->myform->emailid?>
+                   </div>
+                 
+                
+                   
+                   <!-- <div style="margin-top:10px">
+                   		 <label class="myaccsubtitles">To (Friends Email ID)</label>
+                   </div>-->
+                   
+                    <div style="margin-top:5px;">
+                     	<?=$this->myform->friendsemailid?>
+                   </div>
+             
+                
+                   <div style="margin-top:10px">
+                   		 <label class="myaccsubtitles">Subject</label>
+                   </div>
+                   
+                    <div style="margin-top:5px;">
+                     	<?=$this->myform->subject?>
+                   </div>
+                
+                    
+                <div style="margin-top:10px">
+                   		 <label class="myaccsubtitles">Content</label>
+                   </div>
+                   
+                    <div style="margin-top:5px;">
+                     	<?=$this->myform->content?>
+                   </div>
+                
+                
+                 
+                 <div style="margin-top:20px;">
+                 	<input type="submit" name="submit" id="submit" value="Send Email" class="accbutton">
+      <a href="<?=APPLICATION_URL?>myaccount/profile" style="text-decoration:none;"> <input type="button" name="cancel" id="cancel" value="Cancel" class="accbutton"> </a>
+                 </div>
+                   
+                    
+          
+               </form>
+                
+           </div>
+                        
+                        <?php
+					}
+				else
+				{
+					 ?>
+                   
+                   <div style="margin-top:5px;">
+                   		<label class="myaccsubtitles">You Don't Have any buyers</label>
+                   </div>
+                <?php
+				}
+				?>
+                
+         
+           
+        </div><?php */?>
+
+

@@ -1,0 +1,95 @@
+<div class="mws-panel grid_10">
+    <div class="mws-panel-header">
+        <span class="mws-i-24 i-list4"><?=$this->pageHeading?></span>
+    </div>
+    <div class="mws-panel-body">
+        <div class="mws-panel-toolbar top clearfix ">
+            <ul>
+                <li><a class="mws-ic-16 ic-cross" href="javascript:void(0)" title="Delete" onclick="deleteitem()">Delete</a></li>
+            </ul>
+        </div>
+        <!--<table class="mws-table">-->
+         <table class="mws-datatable-fn mws-table">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th><input type="checkbox" name="deletebcchk" id="deletebcchk" onclick="return checkall(this)" /></th>
+                    <th>Artist Name</th>
+                    <th>Artist Title</th>
+                    <th>User Name</th>
+                    <th>Genre</th>
+                    <th>Posted On</th>
+                    <th>View Detail</th>
+                    <!--<th width="10%">Edit</th>-->
+                </tr>
+            </thead>
+            <tbody>
+             <?php
+					for($i=0;$i<count($this->sql);$i++)
+					{
+					?>
+                    
+               <tr class="gradeX">
+                            <td><?=$i+1;?></td>
+                            <td>
+                                <input name='check<?=$i;?>' id='check<?=$i+1;?>' value='<?=$this->sql[$i]['album_id'];?>' 
+                                 onchange='return check_check("bcdel","deletebcchk")' type='checkbox'>
+                                <script> 
+                                    $('#bcdel').html(''); document.getElementById('deletebcchk').checked = false;
+                                </script>
+                            </td>
+                            <td> <?=$this->sql[$i]['artist_name']?></td>
+                            <td> <?=$this->sql[$i]['album_title']?></td>
+                            <td> <?=$this->sql[$i]['name']?></td>
+                            <td> <?=$this->sql[$i]['genre_name']?></td>
+                            <td> <?=$this->sql[$i]['posted_date']?></td>
+							<td><a style="text-decoration:none; color:#990000;" href="<?=APPLICATION_URL_ADMIN?>album/viewdetail/AlbumId/<?=$this->sql[$i]['album_id']?>">view</a>
+                            </td>
+                        </tr>
+                 <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>    	
+</div>
+<script>
+function deleteitem()
+{
+	var r= "";
+	var s="";
+	var selected=false;
+	for(var i=1;document.getElementById('check'+i);i++){
+		if(document.getElementById('check'+i).checked==true){	
+			r += document.getElementById('check'+i).value+"|";
+			selected = true;
+		}
+	}	
+	
+	r += '0';
+	if(selected){
+		var confirmation = confirm("Are you sure want to delete ?");
+		if(confirmation!=true){
+			return false;
+		}	
+	
+		$.ajax({ url: "<?=APPLICATION_URL_ADMIN."album/deletealbum"?>",
+		type: "POST",
+		data: ({Id:r}),
+		success: function(data){			
+			 window.location.href=window.location.href;
+		}});
+	} else {
+		alert('Please choose a record to delete.');
+	}
+}
+
+ function checkall(thisid)
+{
+  for(var i=1;document.getElementById('check'+i);i++)
+  	{
+  		if(document.getElementById(thisid.id).checked==true){document.getElementById('check'+i).checked = true;}
+  		if(document.getElementById(thisid.id).checked==false){document.getElementById('check'+i).checked = false;}
+	}	
+}
+</script>

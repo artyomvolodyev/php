@@ -1,0 +1,158 @@
+<div style="width:700px;" style="float:left">
+
+	<div style="width:700px; float:left">
+
+        <div style="margin-left:10px; margin-top:10px; margin-bottom:30px; float:left; width:500px">
+        	<label class="myaccheading">Change Address<br /></label>
+
+            <hr style="width:500px; color:#999;" align="left"/>
+
+           <div>
+               <form method="post" action="<?=$this->url(array('controller'=>'myaccount', 'action'=>'addaddress'), 'default', true)?>">
+
+                   <div style="margin-top:10px">
+                   	  <label class="myaccsubtitles">Public Name</label>
+                   </div>
+
+                   <div style="margin-top:5px;">
+                   	  <?=$this->myform->publicname?>
+                   </div>
+
+                    <div style="margin-top:10px">
+                   		 <label class="myaccsubtitles">Address</label>
+                   </div>
+
+                    <div style="margin-top:5px;">
+                     	<?=$this->myform->address?>
+                   </div>
+
+                    <div style="margin-top:5px;">
+                    	 <?=$this->myform->address1?>
+                    </div>
+
+                   <div style="margin-top:5px;">
+                    	<div style="float:left; width:120px">
+                   		 	<label class="myaccsubtitles">City</label>
+                         </div>
+                         <div style="float:left; margin-top:2px; width:120px">
+                   		 	<label class="myaccsubtitles">State</label>
+                         </div>
+                        <div>
+                   		 	<label class="myaccsubtitles">Zipcode</label>
+                         </div>
+                   </div>
+
+                   <div style="margin-top:5px;">
+                        <div style="float:left; width:120px">
+                        	 <?=$this->myform->city?>
+                        </div>
+
+                        <div style="float:left; width:120px;">
+                        	 <?=$this->myform->state?>
+                        </div>
+
+                        <div>
+                        	 <?=$this->myform->zipcode?>
+                        </div>
+                   </div>
+
+
+                <!--   <div style="margin-top:5px; border:#006 solid 2px;">
+                    	<div style="float:left; border:#00CC66 solid 2px;">
+                   		 	<label class="myaccsubtitles">City</label>
+                         </div>
+                         <div style="float:left; border:#90F solid 2px;">
+                   		 	<label class="myaccsubtitles">State</label>
+                         </div>
+                        <div style="float:left; border:#F6C solid 2px;">
+                   		 	<label class="myaccsubtitles">Zipcode</label>
+                         </div>
+                   </div>
+
+                   <div style="margin-top:5px;">
+                        <div>
+                        	 <?=$this->myform->city?>
+                        </div>
+
+                        <div>
+                        	 <?=$this->myform->state?>
+                        </div>
+
+                        <div>
+                        	 <?=$this->myform->zipcode?>
+                        </div>
+                   </div>-->
+
+                 <div style="margin-top:20px;">
+                 	<input type="submit" name="submit" id="submit" value="Save Changes" class="accbutton">
+      <a href="<?=APPLICATION_URL?>myaccount/profile" style="text-decoration:none;"> <input type="button" name="cancel" id="cancel" value="Cancel" class="accbutton"> </a>
+                 </div>
+
+
+
+               </form>
+
+           </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script type="text/javascript">
+
+function validfname()
+{
+  var flag=0;
+
+if(document.getElementById("zipcode").value!="")
+ {
+  var name=document.getElementById("zipcode").value;
+  var alpha=/^[0-9]+$/;
+
+  if(!name.match(alpha))
+  {
+   document.getElementById('zip_code').style.display="block";
+   flag=1;
+  }
+  else
+  {
+   document.getElementById('zip_code').style.display="none";
+
+  }
+ }
+
+	if(flag==0)
+	return true;
+	else
+	return false;
+
+}
+
+
+
+
+   function validformdata()
+	{ var flag=0;
+		if(document.getElementById('fir_name').style.display=='block')
+		{
+			flag=1;
+
+			return false;
+		}
+		if(document.getElementById('las_name').style.display=='block')
+		{
+			flag=1;
+			return false;
+		}
+		if(flag==0)
+		{
+			return true;
+		}
+	}
+
+</script>
+

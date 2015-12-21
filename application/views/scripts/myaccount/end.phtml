@@ -1,0 +1,96 @@
+<?php
+
+global $mySession;
+
+$db=new Db();
+
+?>
+
+
+
+<div style="width:100%; float:left;">
+
+
+
+     <form method="post" action="<?=$this->url(array('controller'=>'myaccount', 'action'=>'endprocess','cid'=>$this->cid), 'default', true)?>">
+
+            <div style="margin-top:10px; width:790px;">
+
+
+
+                <label class="myaccheading">End Campaign<br /></label>
+
+
+
+                 <hr style="width:780px; color:#999;" align="left"/>
+
+                 <?php
+
+				 	$sql=$db->runquery("select * from ".LAUNCHCAMPAIGN." where campaign_id='".$this->cid."'");
+
+				 ?>
+
+
+
+
+
+                    <div style="width:490px; height:22px; font-family:'Arial Black', Gadget, sans-serif; color:#000; font-size:18px;">
+
+                        <b> You are about to end the campaign "<?php echo $sql[0]['title'] ?>". </b>
+
+                    </div>
+
+
+
+                    <div style="width:780px; height:10px;">
+
+                    </div>
+
+
+
+                   <div style="font-family:'Arial Black', Gadget, sans-serif; color:#666; font-size:14px;">
+
+                        This campaign hasn't reached its sales goal. If you end it now, no one will be charged and the shirts will not be printed.
+
+                   </div>
+
+
+
+                    <div style="width:780px; height:10px;">
+
+                    </div>
+
+
+
+                   <div style="font-family:'Arial Black', Gadget, sans-serif; color:#939; font-size:14px;">
+
+                        If you want to end this campaign early, then this cannot be undone.
+
+                   </div>
+
+
+
+                    <div style="width:780px; height:15px;">
+
+                    </div>
+
+
+
+                   <div>
+
+                        <input type="submit" name="submit" value="End Campaign" class="accbutton" >
+
+                           <a href="<?=APPLICATION_URL?>myaccount/activecampaign" style="text-decoration:none;">
+
+                             <input type="button" name="button" value="Cancel"  class="accbutton" >
+
+                             </a>
+
+                   </div>
+
+            </div>
+
+        </form>
+
+</div>
+

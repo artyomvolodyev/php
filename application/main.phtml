@@ -1,0 +1,256 @@
+<?php
+
+global $mySession;
+
+$db=new Db();
+
+$myControllerName=Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
+
+//echo $myControllerName; die;
+
+$myActionName=Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+
+
+
+
+
+<title><?=SITE_NAME?> <?php if($this->pageTitle!="" ) { echo " - ".$this->pageTitle; } ?></title>
+
+
+
+
+
+<link rel="stylesheet" href="<?=CSS_URL?>mycss.css" type="text/css">
+
+
+
+
+
+
+
+    <!--<script src="<?=JS_URL?>jquery-1.4.1.min.js"></script>
+
+
+
+<script type="text/javascript" src="<?=APPLICATION_URL_ADMIN;?>js/jquery-ui.js"></script>-->
+
+
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+
+
+
+
+
+
+<script src="<?=JS_URL?>general.js"></script>
+
+
+
+
+
+
+
+
+
+<link href='http://fonts.googleapis.com/css?family=Terminal+Dosis' rel='stylesheet' type='text/css'>
+
+
+
+
+
+     <script>
+
+    $("#myInformationDiv").ready(function () {
+
+      $("#myInformationDiv2").show(1000);
+
+    });
+
+setTimeout(function() {
+
+      $("#myInformationDiv2").hide("fast", function () {
+
+        // use callee so don't have to name the function
+
+        $(this).prev().hide("fast", arguments.callee);
+
+      });
+
+
+
+	  }, 7000);
+
+
+
+</script>
+
+
+
+</head>
+
+
+
+
+
+<body id="page1"  style="margin:0px; padding:0px">
+
+
+
+ <?php
+
+if( $mySession->errorMsg!="")
+
+{ //echo "dsf"; die;
+
+?>
+
+<div id="myInformationDiv" style="position:absolute; width:500px; top:55px; padding-left:200px;left:188px;">
+
+
+
+<div id="myInformationDiv2" align="center" style="position:absolute; width:500px; display:block; color:#000;  background-color:#20a762; height:20px; font-family:Verdana, Geneva, sans-serif;"> <?=$mySession->errorMsg?>
+
+</div>
+
+</div>
+
+<?php
+
+unset($mySession->errorMsg);
+
+}
+
+?>
+
+
+
+<div style="width:100%; background-image:url(<?=IMAGES_URL?>mainbgrrndcolor.png); background-repeat:repeat-x">
+
+
+
+<div align="center" style="width:100%;" class="mainBodyBg">
+
+
+
+<div style="width:100%; float:left;">
+
+   <!-- <header style="float:left; width:100%;">-->
+
+  <?php include ("header.phtml"); ?>
+
+ <!-- </header>-->
+
+  </div>
+
+
+
+  <?php /*?> <?php
+
+    if($mySession->TeeLoggedID!="" && (($myControllerName!="index" && $myActionName!="index")))
+
+	{
+
+		?>
+
+        	<div style="width:200px; padding-top:10px; padding-left:180px">
+
+            	 <?php include ("left.phtml"); ?>
+
+            </div>
+
+        <?php
+
+	}
+
+   ?>
+
+   <?php */?>
+
+  <?php /*?> <?php
+
+    if($myControllerName=="about")
+
+	{
+
+		?>
+
+        	<div style="width:1000px; padding-top:10px; padding-left:220px">
+
+            	 <?php include ("aboutmenu.phtml"); ?>
+
+            </div>
+
+        <?php
+
+	}
+
+   ?>
+
+   <?php */?>
+
+
+
+       <!--<div style="text-align: justify ;margin:0px; padding:0px;">-->
+
+       	<div style="width:100%;">
+
+
+
+            <?php echo $this->layout()->content; ?>
+
+
+
+       </div>
+
+
+
+
+
+
+
+  <div style="width:100%;">
+
+	<?php include ("footer.phtml"); ?>
+
+  </div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</body>
+
+
+
+<!--<script src="http://platform.tumblr.com/v1/share.js"></script>-->
+
+
+
+
+
+</html>
+

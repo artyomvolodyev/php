@@ -1,0 +1,158 @@
+<script type="text/javascript" src="<?=APPLICATION_URL?>tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+
+<!--<table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td align="left" valign="top" class="main_heading"><?=$this->pageHeading?></td>
+</tr>
+<tr>
+<td align="left" valign="top">&nbsp;</td>
+</tr>
+<tr>
+<td align="center" valign="middle"><form name="myform" id="myform" action="<?php echo $this->url(array('controller'=>'system', 'action'=>'updatetemplate','templateId'=>$this->templateId), 'default', true)?>" method="post"><table width="100%" cellpadding="2" cellspacing="2">
+<tr>
+<td width="12%" align="left" valign="top">Subject :</td>
+<td width="88%" align="left" valign="middle"><?=$this->myform->email_subject?></td>
+</tr>
+<tr>
+<td align="left" valign="top">Message Body :</td>
+<td align="left" valign="middle"><?=$this->myform->email_body?></td>
+</tr>
+<tr>
+<td align="left" valign="top">&nbsp;</td>
+<td align="left" valign="top">
+<?php
+if($this->templateId=='1')
+{
+?>
+<input type="hidden" name="save_or_send" id="save_or_send" value="1" /><input type="button" name="Save Newsletter" id="Save Newsletter" value="Save Newsletter" class="myButton" onclick="setTmpStat(1);" />&nbsp;&nbsp;<input type="button" name="Save and Send Newsletter" id="Save and Send Newsletter" value="Save and Send Newsletter" class="myButton" onclick="setTmpStat(2);" />
+<?php
+}
+else
+{
+?>
+<input type="submit" name="Update Template" id="Update Template" value="Update Template" class="myButton" style="cursor:pointer" />
+<?php
+}
+?>
+</td>
+</tr>
+</table></form></td>
+</tr>
+</table>-->
+
+<div class="mws-panel grid_8">
+    <div class="mws-panel-header">
+        <span class="mws-i-24 i-check"><?=$this->pageHeading?></span>
+    </div>
+    <div class="mws-panel-body">
+        <form name="myform" id="mws-validate" action="<?php echo $this->url(array('controller'=>'system', 'action'=>'updatetemplate','templateId'=>$this->templateId), 'default', true)?>"  method="post" novalidate="novalidate" class="mws-form">
+          <input type="hidden" name="save_or_send" id="save_or_send" value="1" />
+            <div style="display:none;" class="mws-form-message error" id="mws-validate-error"></div>
+            <div class="mws-form-inline">
+                <div class="mws-form-row">
+                    <label>Subject :</label>
+                    <div class="mws-form-item large">
+                        <?=$this->myform->email_subject?><!--<input type="text" class="mws-textinput required" name="reqField">-->
+                    </div>
+                </div>
+                <div class="mws-form-row">
+                <label>Message Body</label>
+                <div class="mws-form-item">
+                    <!--<textarea id="elrte" cols="auto" rows="auto"></textarea>-->
+                    <?=$this->myform->email_body?>
+                </div>
+            </div>
+                            
+               
+                               
+<?php
+if($this->templateId=='1')
+	{
+		?>
+				<div class="mws-button-row">
+                    <input type="submit" name="Save Newsletter" id="Save Newsletter" value="Save Newsletter" class="mws-button red" onclick="setTmpStat(1);" />
+                 
+                   
+                </div>
+                            
+                
+		<?php
+	}
+else
+	{
+		?>
+			 <div class="mws-button-row">
+                            	<input type="submit" value="Update Template" class="mws-button red" />
+                            </div>
+		<?php
+	}
+?>
+                            	 
+                            	 
+                            	 
+                            	 
+                             
+                           
+                        </form>
+                    </div>    	
+                </div>
+<script language="javascript">
+function setTmpStat(myStat)
+{
+	document.getElementById('save_or_send').value=myStat;
+	document.myform.submit();
+}
+</script>
+
+
+
+<script type="text/javascript">
+
+
+
+function deleteRecord()
+{ 
+
+var eIds='';
+var userrows=new Array();
+var cboxes=document.getElementsByName("checkbox[]");
+
+for(i=0;i<cboxes.length;i++){ 
+if(cboxes[i].checked==true)
+{
+	eIds+=cboxes[i].value+','; 
+	userrows[i]=cboxes[i].value;
+	
+		
+	}
+}
+if(eIds==""){alert("Please select atleast one record.");return;}
+
+
+if(confirm("Are you sure to delete these records?"))
+{
+
+
+
+$.ajax({ 
+    type: "POST", 
+    url: "<?=APPLICATION_URL_ADMIN."system/deletetemplate/eID/"?>"+eIds,
+    data: ({eID:eIds}),
+    cache: false, 
+
+    success: function(data){
+   window.location ="<?=APPLICATION_URL_ADMIN?>system/emailtemplate";		
+	   }
+   }); 
+
+
+
+
+}
+
+}
+
+
+
+</script>
+

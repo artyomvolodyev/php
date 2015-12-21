@@ -1,0 +1,181 @@
+<?php 
+global $mySession;
+$db=new Db();
+?>
+<!--------------top info end--------------->
+
+<section  >
+	<div >
+		<div  style="position: relative; bottom: 550px;">
+			<div>
+				<?php	if($this->oid=="")	{ ?>
+					<form method="post" action="<?=$this->url(array('controller'=>'launchcampaign', 'action'=>'track'), 'default', true)?>">
+                        <div class="col-md-6 track">
+                            <div style="font-size: 14px; color: white; font-family: 'Arial'; margin-top: 20px; line-height: 22px; margin-left: 20px">Enter your order number (included in the confirmation email) to check the status of your order: </div>
+					<div class="title_input_launch">
+						<?=$this->myform->orderno?>
+					</div>
+<!--					<input type="submit" name="submit" id="submit" value="Track my Order" class="accbutton" style=" margin: 31px 35px;width: 189px;">-->
+                            <button style="margin-left: 110px;">TRACK MY ORDER</button>
+                        </div>
+				</form>
+
+			<?php } else { ?>
+<div align="left" style="background-color:#CCC; width:800px; height:300px; border:#666 solid 1px; border-radius:5px; margin-bottom:30px;">
+<?php
+
+
+//echo "select * from ".ORDER_RECORD." where order_no = '".$this->oid."'"; die;
+$sql=$db->runQuery("select * from ".ORDER_RECORD." where order_no ='".$this->oid."'");
+
+$data1=$db->runQuery("select * from ".LAUNCHCAMPAIGN." where url ='".$sql[0]['teeurl']."'");
+
+
+if(count($sql)>0 && $sql!="")
+{
+$size=explode(",",$sql[0]['size']);
+
+
+for($i=0;$i<count($size); $i++)
+{
+
+$individual=explode("*",$size[$i]);
+
+//pr($individual);
+
+?>
+
+
+<div style=" width:650px" align="left">
+&nbsp;
+</div>
+
+<div style="width:800px; float:left; height:100px;">
+
+<div align="left" style="margin-left:10px; float:left; width:150px; height:50px;font-family:Calibri; font-size:28px; color:#006600;">
+<div style="width:150px; height:20px; font-family:Calibri; font-size:18px; color:#060;">
+Product
+</div>
+
+<div style="width:150px; height:10px;">
+</div>
+
+<div style="width:80px; height:20px; font-size:16px; color:#000000">
+<img src="<?=IMAGES_URL?>designtee.png" width="70" height="70"  />
+</div>
+</div>
+
+<div align="left" style="margin-left:10px; float:left; width:150px; height:50px;font-family:Calibri; font-size:28px; color:#006600;">
+<div style="width:150px; height:20px; font-family:Calibri; font-size:18px; color:#060;">
+Quantity
+</div>
+
+<div style="width:150px; height:10px;">
+</div>
+
+<div style="width:80px; height:20px; font-size:16px; color:#000000">
+<?php /*?><?php echo $size[$i] ?><?php */?>
+<?php echo $individual[0].$individual[1]; ?>
+</div>
+</div>
+
+<div align="left" style="margin-left:10px; float:left; width:150px; height:50px; font-family:Calibri; font-size:28px; color:#006600;">
+<div style="width:150px; height:20px; font-family:Calibri; font-size:18px; color:#060;">
+Amount
+</div>
+
+<div style="width:150px; height:10px;">
+</div>
+<?php
+$total=($individual[0]*$sql[0]['amount']);
+
+?>
+<div style="width:80px; height:20px; font-size:16px; color:#000000">
+$ <?=$total?>
+</div>
+</div>
+
+
+
+<div align="left" style="margin-left:10px; float:left; width:150px; height:50px; padding-bottom:5px; font-family:Calibri; font-size:28px; color:#006600;">
+<div style="width:150px; height:20px; font-family:Calibri; font-size:18px; color:#060;">
+Order Date
+</div>
+
+<div style="width:150px; height:10px;">
+</div>
+
+<div style="width:150px; height:20px; font-size:16px; color:#000000">
+<?=$sql[0]['order_date']?>
+</div>
+</div>
+
+
+<div align="left" style="margin-left:10px; float:left; width:150px; height:50px; padding-bottom:5px; font-family:Calibri; font-size:28px; color:#006600;">
+<div style="width:150px; height:20px; font-family:Calibri; font-size:18px; color:#060;">
+Status
+</div>
+
+<div style="width:150px; height:10px;">
+</div>
+
+<div style="width:150px; height:20px; font-size:16px; color:#000000">
+<?php
+if(($data1[0]['sold']==$data1[0]['goal']) || ($data1[0]['sold']>$data1[0]['goal']))
+{
+?>
+Completed
+<?php
+}
+
+else if(($data1[0]['sold']!=$data1[0]['goal']) && $data1[0]['campaign_status']==1)
+{
+?>
+Waiting
+<?php
+}
+
+
+else if(($data1[0]['sold']!=$data1[0]['goal']) && $data1[0]['campaign_status']==0)
+{
+?>
+Refunded
+<?php
+}
+?>
+
+</div>
+</div>
+
+</div>
+
+<?php
+}
+}
+?>
+<div style="float:right; width:150px; height:50px; font-family:Calibri; font-size:28px; color:#006600;">
+<div style="width:150px; height:20px; font-family:Calibri; font-size:18px; color:#060;">
+Total Amount
+</div>
+
+<div style="width:150px; height:10px;">
+</div>
+
+<div style="width:80px; height:20px; font-size:16px; color:#000000">
+$ <?=$sql[0]['totalamt']?>
+</div>
+</div>
+
+</div>
+
+<?php
+}
+?>
+				</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+

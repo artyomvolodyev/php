@@ -1,0 +1,17 @@
+<?php
+
+$fancyProductDesignerTemplatesBasePath = dirname(__FILE__).'/templates/';
+switch($this->fancyProductDesignerTemplate){
+    case 'productdesigner.html':
+        require_once($fancyProductDesignerTemplatesBasePath.$this->fancyProductDesignerTemplate);
+        break;
+    case 'canvaserror.php':
+        require_once($fancyProductDesignerTemplatesBasePath.$this->fancyProductDesignerTemplate);
+        break;
+    case 'editorbox.php':
+        require_once($fancyProductDesignerTemplatesBasePath.$this->fancyProductDesignerTemplate);
+        break;
+    default:
+        require_once($fancyProductDesignerTemplatesBasePath.$this->fancyProductDesignerTemplate);
+        break;
+}

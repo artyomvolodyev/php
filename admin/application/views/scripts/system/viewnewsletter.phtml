@@ -1,0 +1,114 @@
+<div class="mws-panel grid_8">
+    <div class="mws-panel-header">
+        <span class="mws-i-24 i-table-1"><?=$this->pageHeading?></span>
+    </div>
+
+    <div class="mws-panel-body">
+        
+        <!--<table class="mws-table">-->
+         <table class="mws-datatable-fn mws-table">
+            <thead>
+                <tr>
+                    <th width="5%">S.No</th>
+                    <th width="5%"><input type="checkbox" name="deletebcchk" id="deletebcchk" onclick="return checkall(this)" /></th>
+                    
+                    <th width="35%">Email Address</th>
+                    
+                    
+                   
+                </tr>
+            </thead>
+            <tbody>
+             <?php
+					for($i=0;$i<count($this->sql);$i++)
+					{
+					?>
+                    
+                <?php
+               /* $i=0;
+                foreach($this->ResData as $row)
+                {*/
+                    $start++;
+                   
+                    ?>
+                        <tr class="gradeX">
+                            <td><?=$i+1;?></td>
+                            <td>
+                                <input name='check<?=$i;?>' id='check<?=$i+1;?>' value='<?=$this->sql[$i]['nl_user_id'];?>' 
+                                    onchange='return check_check("bcdel","deletebcchk")' type='checkbox'>
+                                    
+                                <script> 
+                                    $('#bcdel').html(''); document.getElementById('deletebcchk').checked = false;
+                                </script>
+                            </td>
+                            
+                            <td> <?=$this->sql[$i]['user_email']?></td>
+                            
+                         
+                           
+                           
+                        </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div> 
+    <div align="center"> 
+    <a href="javascript:void(0)" title="Sendnewletter" onclick="senditem()" style="text-decoration:none;">
+    <input type="button" name="Save and Send Newsletter" id="Save and Send Newsletter" value="Send Newsletter" class="mws-button red" onclick="setTmpStat(2);" /></a></div>   	
+</div>
+<script>
+function senditem()
+{//alert('daswd');
+	var r= "";
+	var s="";
+	var selected=false;
+	for(var i=1;document.getElementById('check'+i);i++){
+		if(document.getElementById('check'+i).checked==true){	
+			r += document.getElementById('check'+i).value+"|";
+			selected = true;
+		}
+	}	
+	
+	r += '0';
+	
+//alert(r);
+	if(selected){window.location ='<?=APPLICATION_URL_ADMIN?>system/sendnewsletter/r/'+r;
+		/*var confirmation = confirm("Are you sure want to delete ?");
+		if(confirmation!=true){
+			return false;
+		}	
+	
+		$.ajax({ url: "<?=APPLICATION_URL_ADMIN."users/index"?>",
+		type: "POST",
+		data: ({Id:r}),
+		success: function(data){			
+			 window.location.href=window.location.href;
+		}});*/
+	} else {
+		alert('Please choose a record to for sending newsletter.');
+	}
+}
+function changestatus(Id,Status)
+{
+    $.ajax({ 
+				type: "POST", 
+				url: "<?=APPLICATION_URL_ADMIN?>users/changeuserstatus", 
+				data: ({Id:Id,Status:Status}),
+				cache: false, 
+				success: function(data){				 
+				  window.location.href=window.location.href;
+			    }
+		  });
+}
+ 
+function checkall(thisid)
+{
+  for(var i=1;document.getElementById('check'+i);i++)
+  	{
+  		if(document.getElementById(thisid.id).checked==true){document.getElementById('check'+i).checked = true;}
+  		if(document.getElementById(thisid.id).checked==false){document.getElementById('check'+i).checked = false;}
+	}	
+}
+</script>

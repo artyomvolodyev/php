@@ -1,0 +1,163 @@
+<?php global $mySession;
+   $db=new Db();
+?>
+
+<div class="mws-panel grid_10">
+    <div class="mws-panel-header">
+        <span class="mws-i-24 i-table-1"><?=$this->pageHeading?></span>
+    </div>
+    
+    <div class="mws-panel-body">
+        <div class="mws-panel-toolbar top clearfix">
+            <ul>
+            	
+                <li>
+       
+        <a href="<?php echo $this->url(array('controller'=>'pages', 'action'=>'addcategory'), 'default', true)?>" class="mws-ic-16 ic-accept" q title="Add">Add</a></li>
+            
+                <li><a class="mws-ic-16 ic-cross" href="javascript:void(0)" title="Delete" onclick="deleteitem()">Delete</a></li>
+            
+            </ul>
+        </div>
+        
+        
+        <!--<table class="mws-table">-->
+         <table class="mws-datatable-fn mws-table">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                         
+                    <th>Category Nmae</th>
+                  
+                    <th>Description</th>
+                    
+                     <th>No. Of Questions</th>
+                     
+                      <th>Edit</th>
+                     
+                 
+                       <th><input type="checkbox" name="deletebcchk" id="deletebcchk" onclick="return checkall(this)" /></th>
+                   
+                   
+                </tr>
+            </thead>
+            <tbody>
+             <?php
+					for($i=0;$i<count($this->sql);$i++)
+					{
+					?>
+             <?php /*?>           
+                <?php
+                    $start++;
+                    if($this->sql[$i]['cat_status']==1){ $image ='tick.png';  }
+                    if($this->sql[$i]['cat_status']==0){ $image ='cross.png';  } 
+                    if($cClass=="gradeX odd")
+                        {$cClass="gradeX even";}
+                    else
+                        {$cClass="gradeX odd";}	
+                    ?><?php */?>
+                    
+                    <?php
+						$catid=$this->sql[$i]['cat_id']	;
+					 
+					   $ques=$db->runQuery("select count(*) from ".QUESTIONS." where cat_id='".$catid."' ");
+					   
+					   //echo "select count(*) from ".QUESTIONS." where cat_id='".$catid."' "; die;
+					   //prd($ques);
+					   
+					?>
+                        <tr class="gradeX">
+                            <td><?=$i+1;?></td>
+                           
+                            
+          
+                            <td> <?=$this->sql[$i]['cat_name']?></td>
+                            <td> <?=$this->sql[$i]['cat_description']?></td>
+                            
+       <td>  <a href="<?php echo $this->url(array('controller'=>'pages', 'action'=>'seequestions','catId'=>$catid), 'default', true)?>" class="mws-ic-16">  
+             <?=$ques[0]['count(*)']?>
+         </a></td> 
+                              
+                            <td class="center">
+                             
+                           <a href="<?=APPLICATION_URL_ADMIN?>pages/editcategory/catId/<?=$this->sql[$i]['cat_id']?>">
+                                 <img src="<?=APPLICATION_URL_ADMIN;?>css/icons/16/edit.png" border='0' />
+                            </a>
+           
+                                           
+                              </td> 
+                              
+                             <!--  <td> 
+							   		<?=$this->sql[$i]['cat_status']?>
+                               </td>-->
+                          
+                         
+                            <td>
+                                <input name='check<?=$i;?>' id='check<?=$i+1;?>' value='<?=$this->sql[$i]['cat_id'];?>' 
+                                    onchange='return check_check("bcdel","deletebcchk")' type='checkbox'>
+                                <script> 
+                                    $('#bcdel').html(''); document.getElementById('deletebcchk').checked = false;
+                                </script>
+                            </td>
+                            
+                           
+                        </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>    	
+</div>
+<script>
+function deleteitem()
+{
+	var r= "";
+	var s="";
+	var selected=false;
+	for(var i=1;document.getElementById('check'+i);i++){
+		if(document.getElementById('check'+i).checked==true){	
+			r += document.getElementById('check'+i).value+"|";
+			selected = true;
+		}
+	}	
+	
+	r += '0';
+	if(selected){
+		var confirmation = confirm("Are you sure want to delete ?");
+		if(confirmation!=true){
+			return false;
+		}	
+	
+		$.ajax({ url: "<?=APPLICATION_URL_ADMIN."pages/deletecategory"?>",
+		type: "POST",
+		data: ({Id:r}),
+		success: function(data){			
+			 window.location.href=window.location.href;
+		}});
+	} else {
+		alert('Please choose a record to delete.');
+	}
+}
+function changestatus(Id,Status)
+{
+    $.ajax({ 
+				type: "POST", 
+				url: "<?=APPLICATION_URL_ADMIN?>users/changeuserstatus", 
+				data: ({Id:Id,Status:Status}),
+				cache: false, 
+				success: function(data){				 
+				  window.location.href=window.location.href;
+			    }
+		  });
+}
+ 
+function checkall(thisid)
+{
+  for(var i=1;document.getElementById('check'+i);i++)
+  	{
+  		if(document.getElementById(thisid.id).checked==true){document.getElementById('check'+i).checked = true;}
+  		if(document.getElementById(thisid.id).checked==false){document.getElementById('check'+i).checked = false;}
+	}	
+}
+</script>

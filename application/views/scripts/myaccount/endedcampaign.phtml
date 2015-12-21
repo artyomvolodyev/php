@@ -1,0 +1,68 @@
+<?php
+global $mySession;
+$db=new Db();
+$userid=$mySession->TeeLoggedID;
+$campstatus=$this->Data[0]['campaign_status'];
+?>
+<div class="work_section_two mainendedcampaign">
+	<?php  if($this->nocamp!="") { 	?>
+		<label class="endcampaignlabel">You Don't Have any Ended campaigns.</label>
+	<?php  }
+	if(count($this->Data)>0 && $this->Data!="")
+	{
+		$i=0;
+		foreach($this->Data as $key=>$value)
+		{
+			$row1=$db->runQuery("select DATE_ADD('".$value['launch_date']."', INTERVAL '".$value['campaign_length']."' DAY) AS nextDate,DATE_ADD('".$value['launch_date']."', INTERVAL -1 DAY) AS prevDate");
+			$enddate=$row1[0]['nextDate'];
+			$newdat2=explode(" ",$enddate);
+			$newdat3=explode("-",$newdat2[0]);                            // comes in Y-M-D format
+			$newdat4=$newdat3[2]."/".$newdat3[1]."/".$newdat3[0];                // D/m/Y format
+			$s=$value['sold']; $g=$value['goal']; @$w=($s/$g)*100; //echo $w ;
+			$campid = $value['campaign_id'];
+	?>
+	<div class="rowendcampaign" >
+		<div class="col1" >
+			<a href="<?=APPLICATION_URL?><?=$value['url']?>">
+				<div class="teediv" >
+				<?php if($value['tee_image']!="" and  file_exists(SITE_ROOT.'images/usersdesign/'.$value['tee_image'])) { ?>
+				<div id="Tees0">
+					<img src="<?=APPLICATION_URL?>images/usersdesign/<?=$value['tee_image']?>"  width="70" height="70" border="0" />
+				</div>
+				<?php } else { ?>
+					<img src="<?=IMAGES_URL?>designtee.png" width="70" height="70" border="0" />
+				<?php } ?>
+				</div>
+			</a>
+			<div class="detailsdiv">
+				<a href="<?=APPLICATION_URL?><?=$value['url']?>">
+					<div class="col1" >
+						<b> <?php echo $value['title']; ?></b>
+					</div>
+				</a>
+				<?php if($w<100) { ?>
+				<div class="col2">
+					<div align="center" style="height:8px; width:<?=@$w?>%; border-radius:8px;border:0px solid #393 ; background-color:#339933"></div>
+				</div>
+				<?php } else { ?>
+				<div class="col2">
+					<div align="center" style="height:8px; width:100%; border-radius:8px;border:0px solid #393 ; background-color:#339933">
+					</div>
+				</div>
+				<?php } ?>
+				<div class="col3">
+					<a href="<?=APPLICATION_URL?>launchcampaign/setgoal/cid/<?=$campid?>">
+						relaunch campaign
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="col2" >
+			<?php  echo $value['sold']; ?>&nbsp; Of &nbsp;<?php echo $value['goal']; ?>&nbsp; Sold
+		</div>
+		<div class="col3" >
+			Ended On &nbsp; <?php echo $newdat4 ?>
+		</div>
+	</div>
+<?php } $i++; } ?>
+</div>

@@ -1,0 +1,89 @@
+<div class="work_section_two  mainprofile">
+	<form method="post" action="<?=$this->url(array('controller'=>'myaccount', 'action'=>'email'), 'default', true)?>">
+
+		<div class="top10pxmargin " style="margin-top:0px;">
+			<label class="myaccsubtitles">From (Your Email ID)</label>
+		</div>
+
+		<div class="top5pxmargin ">
+			<?=$this->myform->emailid?>
+		</div>
+
+		<div class="top10pxmargin ">
+			<label class="myaccsubtitles">To (Friends Email ID)</label>
+		</div>
+
+		<div class="top5pxmargin ">
+		<?=$this->myform->friendsemailid?>
+		</div>
+
+		<div class="top10pxmargin ">
+			<label class="myaccsubtitles">Your TEE URL</label>
+		</div>
+
+		<div class="top5pxmargin ">
+			<?=$this->myform->url?>
+		</div>
+
+		<div class="top10pxmargin ">
+			<input type="submit" name="submit" id="submit" value="Send Email" class="accbutton">
+			<a href="<?=APPLICATION_URL?>myaccount/profile" style="text-decoration:none;"> <input type="button" name="cancel" id="cancel" value="Cancel" class="accbutton"> </a>
+		</div>
+	</form>
+
+</div>
+
+
+<script type="text/javascript">
+
+	function validfname()
+	{
+	var flag=0;
+
+	if(document.getElementById("zipcode").value!="")
+	{
+	var name=document.getElementById("zipcode").value;
+	var alpha=/^[0-9]+$/;
+
+	if(!name.match(alpha))
+	{
+	document.getElementById('zip_code').style.display="block";
+	flag=1;
+	}
+	else
+	{
+	document.getElementById('zip_code').style.display="none";
+
+	}
+	}
+
+	if(flag==0)
+	return true;
+	else
+	return false;
+
+	}
+
+
+
+
+	function validformdata()
+	{ var flag=0;
+	if(document.getElementById('fir_name').style.display=='block')
+	{
+	flag=1;
+
+	return false;
+	}
+	if(document.getElementById('las_name').style.display=='block')
+	{
+	flag=1;
+	return false;
+	}
+	if(flag==0)
+	{
+	return true;
+	}
+	}
+
+</script>

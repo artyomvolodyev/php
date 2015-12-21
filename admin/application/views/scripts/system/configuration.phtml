@@ -1,0 +1,102 @@
+<div class="mws-panel grid_8">
+                	<div class="mws-panel-header">
+                    	<span class="mws-i-24 i-check"><?=$this->pageHeading?></span>
+                    </div>
+                    <div class="mws-panel-body">
+                    	<form name="myform" id="mws-validate" action="<?php echo $this->url(array('controller'=>'system', 'action'=>'saveconfiguration'), 'default', true)?>" method="post" novalidate="novalidate" class="mws-form">
+                         
+                        	<div style="display:none;" class="mws-form-message error" id="mws-validate-error"></div>
+                        	<div class="mws-form-inline">
+                            	<div class="mws-form-row">
+                                	<label>Site Title :</label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->site_title?><!--<input type="text" class="mws-textinput required" name="reqField">-->
+                                    </div>
+                                </div>
+                                <div class="mws-form-row">
+                                	<label>Meta Description :</label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->site_description?><!--<input type="text" class="mws-textinput required" name="reqField">-->
+                                    </div>
+                                </div>
+                                <div class="mws-form-row">
+                                	<label>Meta Keyword :</label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->site_keyword?><!--<input type="text" class="mws-textinput required" name="reqField">-->
+                                    </div>
+                                </div>
+                                <div class="mws-form-row">
+                                	<label>Admin Email ID:</label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->admin_email?><!--<input type="text" class="mws-textinput required" name="reqField">-->
+                                        <?php if(TEESHIRTSCRIPT_ON_DEMO): ?>
+                                            <span class="demo-warning" style="color:red;">You cannot change the admin password on the demo, sorry!</span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <!--
+                                <div class="mws-form-row">
+                                	<label>Paypal Id</label>
+                                	<div class="mws-form-item large">
+                                    <?=$this->myform->paypal_email?>
+                                    </div>
+                                </div>
+                                
+                                  <div class="mws-form-row">
+                                	<label>Identity Token</label>
+                                	<div class="mws-form-item large">
+                                    <?=$this->myform->identity_token?>
+                                    </div>
+                                </div>
+                                -->
+                                <div class="mws-form-row">
+                                    <label>Stripe API Endpoint:</label>
+                                    <div class="mws-form-item large">
+                                        <label title="Can be changed through editing the file application/configs/crowdfunding.inc.php">
+                                        <?php
+                                        if(defined('STRIPE_API_ENDPOINT')){
+                                            echo STRIPE_API_ENDPOINT;
+                                        }else{
+                                            echo '[NOT DEFINED]';
+                                        }
+                                        ?>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mws-form-row">
+                                    <label>Stripe Public Key:</label>
+                                    <div class="mws-form-item large">
+                                        <label title="Can be changed through editing the file application/configs/crowdfunding.inc.php">
+                                        <?php
+                                        if(defined('STRIPE_PUBLIC_KEY')){
+                                            $len = strlen(STRIPE_PUBLIC_KEY);
+                                            echo substr(STRIPE_PUBLIC_KEY, 0,10). str_repeat('*',$len - 12) . substr(STRIPE_PUBLIC_KEY, $len - 2 ,2);
+                                        }else{
+                                            echo '[NOT DEFINED]';
+                                        }
+                                        ?>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mws-form-row">
+                                    <label>Stripe Secret Key:</label>
+                                    <div class="mws-form-item large">
+                                        <label title="Can be changed through editing the file application/configs/crowdfunding.inc.php">
+                                        <?php
+                                        if(defined('STRIPE_SECRET_KEY')){
+                                            $len = strlen(STRIPE_SECRET_KEY);
+                                            echo substr(STRIPE_SECRET_KEY, 0,10). str_repeat('*',$len - 12) . substr(STRIPE_SECRET_KEY, $len - 2 ,2);
+                                        }else{
+                                            echo '[NOT DEFINED]';
+                                        }
+                                        ?>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mws-button-row">
+                            	<input type="submit" class="mws-button red" value="Submit">
+                            </div>
+                        </form>
+                    </div>    	
+                </div>

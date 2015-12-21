@@ -1,0 +1,168 @@
+<?php
+global $mySession;
+$myControllerName = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();		
+$myActionName = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+$myPG = $myControllerName.'.'.$myActionName;
+$SystemDisplay="none";$DashboardDisplay="none";$PagesDisplay="none";$UsersDisplay="none";$LocationDisplay="none";$SubscriptionDisplay="none";$SubadminDisplay="none";
+$ManageDisplay="none";$AlbumDisplay="none";$CategoryDisplay="none";$TshirtDisplay="none";$TshirtSizeDisplay="none";$CampaignDisplay="none";$TestimonialDisplay="none";
+$SystemClass="class='closed'";
+$LocationClass="class='closed'";
+$UsersClass="class='closed'";
+$ManageClass="class='closed'";
+$AlbumClass="class='closed'";
+$CategoryClass="class='closed'";
+$TshirtClass="class='closed'";
+$TshirtSizeClass="class='closed'";
+$CampaignClass="class='closed'";
+$TestimonialClass="class='closed'";
+if($myControllerName=="system" ||  ($myControllerName=="pages" && $myActionName == "index"))
+{
+	$SystemDisplay="block";
+	$SystemClass=" ";
+}
+if($myControllerName=="pages" && $myActionName == "managecategory")
+{
+    $CategoryDisplay="block";
+    $CategoryClass=" ";
+}
+if($myControllerName=="tshirt" && $myActionName != "size")
+{
+    $TshirtDisplay="block";
+    $TshirtClass=" ";
+}
+if($myControllerName=="tshirt" && $myActionName == "size")
+{
+    $TshirtSizeDisplay="block";
+    $TshirtSizeClass=" ";
+}
+if($myControllerName=="package" ||  $myControllerName=="genre")
+{
+	$ManageDisplay="block";$ManageClass=" ";
+}
+if($myControllerName=="campaign")
+{
+    $CampaignDisplay="block";$CampaignClass=" ";
+}
+if($myControllerName=="testimonials")
+{
+    $TestimonialDisplay="block";$TestimonialClass=" ";
+}
+if($myControllerName=="users")
+{
+	$UsersDisplay="block";$UsersClass=" ";
+}
+if($myControllerName=="location")
+{
+	$LocationDisplay="block";$LocationClass=" ";
+}
+
+//if($myControllerName=="album")
+//{
+//	$AlbumDisplay="block";$AlbumClass=" ";
+//}
+ 
+?>
+
+<script type="text/javascript">
+/*
+function change(id)
+{
+	
+ document.getElementById(id).className="s1";
+  
+}
+
+function changeout(id)
+{
+	
+ document.getElementById(id).className="tab";
+  
+}*/
+</script>
+ <div id="mws-navigation">
+            	<ul>
+                    <li>
+                    	<a href="<?=APPLICATION_URL_ADMIN?>dashboard/index" class="mws-i-24 i-list">Dashboard</a>
+                       <?php /*?><ul <?=$SystemClass;?> style="display:<?=$SystemDisplay;?>">
+                           <li><a href="<?=APPLICATION_URL_ADMIN?>dashboard/update" > Updates</a></li>
+                        </ul><?php */?>
+                    </li>
+                	<li>
+                    	<a href="#" class="mws-i-24 i-list1">System</a>
+                        <ul <?=$SystemClass;?> style="display:<?=$SystemDisplay;?>">
+                        	<li class="<?php echo $myPG=='system.configuration'?'active':''; ?>"><a class="mws-i-24 i-cog" href="<?=APPLICATION_URL_ADMIN?>system/configuration"  >Configurations</a></li>
+                        	<li class="<?php echo $myPG=='system.emailtemplates'?'active':''; ?>"><a class="mws-i-24 i-email" href="<?=APPLICATION_URL_ADMIN?>system/emailtemplates" > Email Templates</a></li>
+                            <li class="<?php echo $myPG=='pages.index'?'active':''; ?>"><a class="mws-i-24 i-page" href="<?=APPLICATION_URL_ADMIN?>pages/index" > Static Pages</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                    	<a href="#" class="mws-i-24 i-tspringcatg">Category</a>
+                        <ul <?=$CategoryClass;?> style="display:<?=$CategoryDisplay;?>">
+                        	<li class="<?php echo $myPG=='pages.managecategory'?'active':''; ?>"><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>pages/managecategory" >Manage Category</a></li>
+                        	
+                        </ul>
+                    </li>
+                    
+                   <!-- <li>
+                    	<a href="#" class="mws-i-24 i-tspringcatg">Order Records</a>
+                        <ul <?=$LocationClass;?> style="display:<?=$LocationDisplay;?>">
+                             <li><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>campaign/orderrecords">View</a></li>
+                        </ul>
+                    </li>
+                    -->
+                    
+                    <li>
+                    	<a href="#" class="mws-i-24 i-list2">Users</a>
+                        <ul <?=$UsersClass;?> style="display:<?=$UsersDisplay;?>">
+                        	<li class="<?php echo $myPG=='users.index'?'active':''; ?>"><a class="mws-i-24 i-list2" href="<?=APPLICATION_URL_ADMIN?>users/index"  >Manage Users</a></li>
+				            <li class="<?php echo $myPG=='users.contact'?'active':''; ?>"><a class="mws-i-24 i-email" href="<?=APPLICATION_URL_ADMIN?>users/contact"  >Contact Sellers</a></li>
+				            <li class="<?php echo $myPG=='users.buyers'?'active':''; ?>"><a class="mws-i-24 i-email" href="<?=APPLICATION_URL_ADMIN?>users/buyers"  >Contact Buyers</a></li>
+                        </ul>
+                    </li>
+                    
+                   <!-- <li>
+                    	<a href="#" class="mws-i-24 i-globe-2">Manage Location</a>
+                        <ul <?=$LocationClass;?> style="display:<?=$LocationDisplay;?>">
+                            <li><a class="mws-i-24 i-list2" href="<?=APPLICATION_URL_ADMIN?>location/index"  >Manage Location</a></li> 
+                            <li><a class="mws-i-24 i-globe-2" href="<?=APPLICATION_URL_ADMIN?>location/index"  >Manage Country</a></li>
+                             <li><a class="mws-i-24 i-globe-2" href="<?=APPLICATION_URL_ADMIN?>location/showstate"  >Manage State</a></li>
+                              <li><a class="mws-i-24 i-globe-2" href="<?=APPLICATION_URL_ADMIN?>location/showcity"  >Manage City</a></li>
+                        </ul>
+                    </li>
+                    -->
+                    <li>
+                    	<a href="#" class="mws-i-24 i-tspringcatg">T-Shirt </a>
+                        <ul <?=$TshirtClass;?> style="display:<?=$TshirtDisplay;?>">
+<!--                             <li><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>tshirt/price">Manage Price</a></li>-->
+                              <li class="<?php echo $myPG=='tshirt.discount'?'active':''; ?>"><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>tshirt/discount">Manage Discount</a></li>
+                              <li class="<?php echo $myPG=='tshirt.icons'?'active':''; ?>"><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>tshirt/icons">Manage Icons</a></li>
+                              <li class="<?php echo $myPG=='tshirt.products'?'active':''; ?>"><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>tshirt/products">Tshirt Products</a></li>
+                        </ul>
+                    </li>
+                    
+                      <li>
+                    	<a href="#" class="mws-i-24 i-tspringcatg">T-Shirt Size</a>
+                        <ul <?=$TshirtSizeClass;?> style="display:<?=$TshirtSizeDisplay;?>">
+                             <li class="<?php echo $myPG=='tshirt.size'?'active':''; ?>"><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>tshirt/size">Manage Sizes</a></li>
+                        </ul>
+                    </li>
+                                          
+                    <li>
+                    	<a href="#" class="mws-i-24 i-tspringcatg">Campaigns</a>
+                        <ul <?=$CampaignClass;?> style="display:<?=$CampaignDisplay;?>">
+                     <!--    <li><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>campaign/index">Manage Campaign</a></li>-->
+                          <li class="<?php echo $myPG=='campaign.live'?'active':''; ?>"><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>campaign/live">Live Campaigns</a></li>
+                          <li class="<?php echo $myPG=='campaign.success'?'active':''; ?>"><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>campaign/success">Successful Campaigns</a></li>
+                          <li class="<?php echo $myPG=='campaign.unsuccess'?'active':''; ?>"><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>campaign/unsuccess">Unsuccessful Campaigns</a></li>
+                        </ul>
+                    </li>
+                  
+                   <li>
+                    	<a href="#" class="mws-i-24 i-tspringcatg">Testimonials</a>
+                        <ul <?=$TestimonialClass;?> style="display:<?=$TestimonialDisplay;?>">
+                             <li class="<?php echo $myPG=='testimonials.index'?'active':''; ?>"><a class="mws-i-24 i-tspringcatg" href="<?=APPLICATION_URL_ADMIN?>testimonials/index">Manage Testimonials</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>

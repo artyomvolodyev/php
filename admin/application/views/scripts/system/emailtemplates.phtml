@@ -1,0 +1,120 @@
+<div class="mws-panel grid_8">
+                	<div class="mws-panel-header">
+                    	<span class="mws-i-24 i-table-1"><?=$this->pageHeading?></span>
+                    </div>
+                    <div class="mws-panel-body">
+                    <div class="mws-panel-toolbar top clearfix ">
+                    <ul>
+                        <!--<li>
+
+	
+                        
+                        <a class="mws-ic-16 ic-accept" href="<?php echo $this->url(array('controller'=>'system', 'action'=>'add'), 'default', true)?>" title="Add">Add</a></li>-->
+                        <li>
+                        
+                       
+                        <a class="mws-ic-16 ic-cross" title="Delete" onclick="deleteRecord();">Delete</a></li>
+                    </ul>
+                    </div>
+                     <form method="post" name="myform" id="myform" action="" >
+                        <table class="mws-datatable-fn mws-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%">S.No.</th>
+                                    <th width="45%">Template Name</th>
+                                    <th  width="45%">Subject</th>
+                                    <th width="5%" class="">Edit</th>
+                                     <th width="5%" class=""></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<?php
+								
+								for($i=0;$i<count($this->sql);$i++)
+								{
+								/*foreach($this->ResData as $row)
+								{*/
+									
+									?>
+									<tr class="gradeX">
+                                        <td><?=$i+1;?></td>
+                                        <td> <?=$this->sql[$i]['template_title']?></td>
+                                        <td><?=$this->sql[$i]['email_subject']?></td>
+                                        <td class="center">
+                                         <a href=<?=APPLICATION_URL_ADMIN?>system/edittemplate/templateId/<?=$this->sql[$i]['template_id']?>>
+           <img src=<?=IMAGES_URL_ADMIN?>edit.png>
+        								 </a>
+                                            
+                                        </td>
+            <td>
+            <input type="checkbox" name="checkbox[]" id="checkbox[]" value="<?=$this->sql[$i]['template_id']?>"  onClick="return check1();"/>
+            </td>
+
+	                                </tr>
+									<?php
+								}
+								?>
+                                
+                                 
+                            </tbody>
+                        </table> </form> 
+                    </div>
+                </div>
+                
+                <!-- Panels End -->
+            </div>
+            
+            
+<script type="text/javascript">
+function deleteRecord()
+{ 
+
+var eIds='';
+var userrows=new Array();
+var cboxes=document.getElementsByName("checkbox[]");
+
+for(i=0;i<cboxes.length;i++){ 
+if(cboxes[i].checked==true)
+{
+	eIds+=cboxes[i].value+','; 
+	userrows[i]=cboxes[i].value;
+
+		
+	}
+}
+if(eIds==""){alert("Please select atleast one record.");return;}
+
+
+if(confirm("Are you sure to delete these records?"))
+{
+
+
+
+$.ajax({ 
+    type: "POST", 
+    url: "<?=APPLICATION_URL_ADMIN."system/deletetemplate/eID/"?>"+eIds,
+    data: ({eId:eIds}),
+    cache: false, 
+
+    success: function(data){
+   window.location ="<?=APPLICATION_URL_ADMIN?>system/emailtemplates";		
+	   }
+   }); 
+
+
+
+
+}
+
+}
+
+
+</script>
+
+            
+            
+            
+            
+            
+            
+            

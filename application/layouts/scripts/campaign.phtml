@@ -1,0 +1,1155 @@
+<?php
+global $mySession;
+$db=new Db();
+$myControllerName=Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
+$myActionName=Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+
+include_once (dirname(dirname(dirname(__FILE__))) . '/configs/crowdfunding.inc.php');
+
+$pageTitle = '';
+if(property_exists($this, 'pageTitle')){
+    $pageTitle = $this->pageTitle;
+}else{
+    $pageTitle = $ChkCampaign[0]['title'];
+}
+?>
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+	<!-- Basic Page Needs
+  ================================================== -->
+	<meta charset="utf-8">
+	<title><?php echo SITE_NAME; ?> <?php echo " - ".$pageTitle; ?></title>
+	<meta name="description" content="<?php echo SITE_NAME; ?> <?php echo " - ".$pageTitle; ?>">
+	<meta name="author" content="<?php echo SITE_NAME; ?>">
+
+
+    <!-- You can use open graph tags to customize link previews.
+    Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+    <meta property="og:url"           content="https://www.facebook.com/TMerchTees" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="Your Website Title" />
+    <meta property="og:description"   content="Your description" />
+    <meta property="og:image"         content="http://www.your-domain.com/path/image.jpg" />
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="<?php echo CSS_URL;?>zerogrid.css">
+	<link rel="stylesheet" href="<?php echo CSS_URL;?>style.css">
+    <link rel="stylesheet" href="<?php echo CSS_URL;?>responsive.css">
+	<link rel="stylesheet" href="<?php echo CSS_URL;?>240.css">
+	<link rel="stylesheet" href="<?php echo CSS_URL;?>320.css">
+	<link rel="stylesheet" href="<?php echo CSS_URL;?>480.css">
+	<link rel="stylesheet" href="<?php echo CSS_URL;?>768.css">
+
+
+    <link rel="stylesheet" type="text/css" href="<?php echo APPLICATION_URL;?>creator/css/jquery.fancyProductDesigner-fonts.css" />
+
+	<link rel="stylesheet" href="<?php echo CSS_URL;?>jquery.countdown.css" type="text/css">
+
+	<link rel="stylesheet" href="<?=APPLICATION_URL?>fancybox/source/jquery.fancybox.css?v=2.1.0" media="screen"  />
+
+	<!--[if lt IE 8]>
+       <div style=' clear: both; text-align:center; position: relative;'>
+         <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+           <img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
+        </a>
+      </div>
+    <![endif]-->
+    <!--[if lt IE 9]>
+		<script src="<?php echo JS_URL;?>html5.js"></script>
+		<script src="<?php echo JS_URL;?>css3-mediaqueries.js"></script>
+	<![endif]-->
+
+	<script src="<?php echo JS_URL;?>jquery.min.js" type="text/javascript"></script>
+	<!--<script type="text/javascript" src="<?php echo JS_URL_ADMIN;?>jquery-ui.js"></script>-->
+	<script src="<?php echo JS_URL;?>general.js" type="text/javascript" ></script>
+
+	<!-- Stripe !-->
+
+	<script src="<?php echo JS_URL;?>jquery.countdown.js" type="text/javascript" ></script>
+	<script type="text/javascript" src="<?php echo APPLICATION_URL;?>creator/html2canvas.js"></script>
+
+	<script type="text/javascript" src="<?=APPLICATION_URL?>fancybox/source/jquery.fancybox.js?v=2.1.0"></script>
+
+    <script type="text/javascript" >
+    $("#myInformationDiv").ready(function () {
+
+      $("#myInformationDiv2").show(1000);
+
+    });
+
+	setTimeout(function() {
+
+	$("#myInformationDiv2").hide("fast", function () {
+		// use callee so don't have to name the function
+		$(this).prev().hide("fast", arguments.callee);
+	});
+
+	}, 7000);
+
+	function showhide_commentbox(Stat,Id,Id1)
+	{
+		if(Stat!="")
+		{
+			$('#answer'+Id+Id1).slideToggle("slow");
+		}
+	}
+
+	$(document).ready(function() {
+		if(document.getElementById('frontDataValK').value=='front')
+		{
+			$('#onlyFrontDataK').css("display","block");
+		}
+		else
+		{
+			$('#bothdatakmanika').css("display","block");
+		}
+	});
+
+	function showtee()
+	{
+		$('#Tees1').css("display","none");
+		$('#Tees0').css("display","block");
+        $('.front-view-toggler').addClass('front-view-selected');
+        $('.back-view-toggler').removeClass('back-view-selected');
+	}
+
+	function showtee1()
+	{
+		$('#Tees0').css("display","none");
+		$('#Tees1').css("display","block");
+        $('.front-view-toggler').removeClass('front-view-selected');
+        $('.back-view-toggler').addClass('back-view-selected');
+	}
+	</script>
+
+	<link href='<?php echo IMAGES_URL;?>favicon.ico' rel='icon' type='image/x-icon'/>
+	<style>
+	.fancybox-skin {padding:0px !important; background:#eee;}
+	.fpd-recreation {
+		background: none repeat scroll 0 0 white;
+		margin-left: 91px;
+		position: relative;
+		width: 451px;
+	}
+
+	.fpd-recreation div {
+		position: relative;
+		height: 570px;
+        /*margin-left: -42px;*/
+	}
+
+	.fpd-recreation img, .fpd-recreation canvas, .fpd-recreation span {
+		position: absolute;
+	}
+
+	#Tees0
+	{
+		display:block;
+	}
+
+	#Tees1
+	{
+		display:none;
+	}
+
+	.frontBack {
+		color: #0099CC;
+		font-family: Calibri;
+		font-size: 18px;
+		height: 20px;
+		margin-top: 31px;
+		padding-left: 50px;
+		position: absolute;
+		width: 579px;
+	}
+
+	#onlyFrontDataK ,#bothdatakmanika
+	{
+		display:none;
+	}
+
+	.addanother
+
+	{
+
+		font-size:16px;
+
+		height:28px;
+
+		width:103px;
+
+		border:#000 solid 1px;
+
+		border-radius:2px;
+
+		cursor:pointer;
+
+		margin-top:5px;
+
+	}
+
+	#paypalchk-1
+
+	{
+
+		margin:10px;
+
+	}
+
+	#paypalchk-2
+
+	{
+
+		margin:10px;
+
+	}
+	.info_text { clear:both; padding:0 0 40px 40px;}
+	</style>
+	<script src="https://www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
+</head>
+<body id="page1">
+	<input type="hidden" id="frontDataValK" value="" />
+	<?php if( $mySession->errorMsg!=""){ ?>
+
+	<div id="myInformationDiv" style="position:absolute; width:100%; top:141px; ">
+
+		<div id="myInformationDiv2" align="center" style="position:absolute; width:100%; display:block; color:#000;background-color:#319ebc; height:32px; font-family:Verdana, Geneva, sans-serif;">
+		<?=$mySession->errorMsg?>
+		</div>
+	</div>
+	<?php unset($mySession->errorMsg); } ?>
+
+	<?php include ("header_1.phtml"); ?>
+
+
+	<?php
+	$campstatus= $ChkCampaign[0]['campaign_status'];
+	$row1=$db->runQuery("select DATE_ADD('".$ChkCampaign[0]['launch_date']."', INTERVAL '".$ChkCampaign[0]['campaign_length']."' DAY) AS nextDate,DATE_ADD('".$ChkCampaign[0]['launch_date']."', INTERVAL -1 DAY) AS prevDate");
+
+	$enddate=$row1[0]['nextDate'];
+	$newdat2=explode(" ",$enddate);
+	$newdat3=explode("-",$newdat2[0]);                            // comes in Y-M-D format
+	$newdat4=$newdat3[2]."/".$newdat3[1]."/".$newdat3[0];                // D/m/Y format
+	$diff = strtotime($enddate) - strtotime(date('Y-m-d H:i:s'));
+	$day_difference = floor($diff / (60*60*24));
+	if($day_difference>0)
+	{
+		 $years = floor($diff / (365*60*60*24));
+
+		 $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+
+		 $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+		$hours = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24- $days* 60*60*24)/(60*60));
+
+	}
+
+	?>
+
+	<?php	if($ChkCampaign!="" and count($ChkCampaign)>0)	{
+		$userid=$ChkCampaign[0]['user_id'];
+		$username=$db->runquery("select * from ".USERS." where user_id='".$userid."'");?>
+
+	<div class="banner">
+	  <div class="zerogrid">
+		<div class="row block" style="margin-bottom:0px;">
+		  <div id="align_both">
+			<div class="top_info">
+			  <div class="info_left" id="cap_in_lft"><?=$ChkCampaign[0]['title']?><br><span>by <a href="<?php echo APPLICATION_URL;?>user/view/user_id/<?php echo $username[0]['user_id'];?>"> <?php echo substr($username[0]['public_name'],0,50);?></a></span></div>
+			  <div class="info_right" id="cap_in_right" style="padding-top:25px;"><img class="right_share_image" src="images/share_tee.png"/>
+				<div class="share_button">
+				<span class='st_sharethis_large' displayText='ShareThis'></span>
+				<span class='st_facebook_large' displayText='Facebook'></span>
+				<span class='st_twitter_large' displayText='Tweet'></span>
+				<span class='st_googleplus_large' displayText='Google +'></span>
+				<span class='st_pinterest_large' displayText='Pinterest'></span>
+				<span class='st_email_large' displayText='Email'></span></div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<!--------------top info end--------------->
+
+	<section id="content">
+	  <div class="zerogrid">
+		<div class="row block">
+		  <div id="capmaingn_main_page_wrap">
+			<div class="bot_cam">
+				<div class="tee_view">
+					<?php if($ChkCampaign[0]['tee_image']!="" ){ ?>
+						<div id="recreation-container">
+							<?php if($ChkCampaign[0]['tee_image']!="" and  file_exists(SITE_ROOT.'images/usersdesign/'.$ChkCampaign[0]['tee_image'])) { ?>
+							<div id="Tees0">
+								<img src="<?=APPLICATION_URL?>images/usersdesign/<?=$ChkCampaign[0]['tee_image']?>"  />
+							</div>
+							<?php } if($ChkCampaign[0]['tee_back_image']!="" and  file_exists(SITE_ROOT.'images/usersdesign/'.$ChkCampaign[0]['tee_back_image'])){ ?>
+							<div id="Tees1">
+								<img src="<?=APPLICATION_URL?>images/usersdesign/<?=$ChkCampaign[0]['tee_back_image']?>"  />
+							</div>
+							<?php } ?>
+						</div>
+					<?php } else {?>
+						<style>
+							.fpd-recreation div {
+								height: 570px;
+								margin-left: -136px;
+								margin-top: -106px;
+								position: absolute;
+							}
+							.fpd-recreation img, .fpd-recreation canvas, .fpd-recreation span {
+								position: absolute;
+							}
+							</style>
+							<div id="recreation-container"> </div>
+						<?php } ?>
+						<?php  if($ChkCampaign[0]['tee_back_image'] == "") { ?>
+						<div align="center" style="font-size: 18px;color:#B42F00; ">
+							<span style="cursor:pointer;" class="front-view-selected" >front</span>
+						</div>
+						<?php } else { ?>
+						<div align="center" style="font-size: 18px; color:#B42F00;">
+							<span onclick="showtee();" class="front-view-toggler front-view-selected" style="cursor:pointer;">front</span> / <span class="back-view-toggler" onclick="showtee1();" style="cursor:pointer;">back</span>
+						</div>
+						<?php } ?>
+				</div>
+
+                <div id="fb-root"></div>
+                <script>(function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s); js.id = id;
+                        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=404342669766870";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));</script>
+
+                <div class="fb-like"
+                     data-href="https://www.facebook.com/TMerchTees"
+                     data-layout="standard"
+                     data-action="like"
+                     data-show-faces="true"
+                     data-share="true">
+                </div>
+
+
+
+                <div class="tee_all_dec">
+				<div class="sec_one_camp">About This</div>
+				<div class="sec_two_camp"><?php
+				    $data=str_replace("width:"," ",$ChkCampaign[0]['description']);
+
+                    $data=str_replace("height:"," ",$data);
+
+                    $data=str_replace("float:"," ",$data);
+
+                    echo $data=str_replace("nowrap"," ",$data);
+
+				   ?></div>
+				<div class="sec_two_cap_span"><a id="edit2"  href="#inline2">Size Info &#62;&#62;</a></div>
+
+				<div class="pri_cap">$<?=$ChkCampaign[0]['selling_price']?></div>
+				<?php  if($mySession->TeeLoggedID!=""  && ($campstatus==0 || $day_difference<=0)) {
+				?>
+<!--				<div class="cart_cap">-->
+<!--					<a href="#" id="purchase_error">-->
+<!--					<div class="sec_three_camp btn">-->
+<!--						<div style="margin-left:40px;">buy now</div>-->
+<!--					</div>-->
+<!--					</a>-->
+<!--				</div>-->
+				<div id="info_div" class="info_text"><p>This Campaign has Ended and you can no longer purchase this Design.</p></div>
+				<?php  }  else if(($campstatus==0 || $day_difference<=0) && ($ChkCampaign[0]['sold']!= $ChkCampaign[0]['goal'])){?>
+<!--				<div class="cart_cap">-->
+<!--					<a href="#" id="purchase_error">-->
+<!--					<div class="sec_three_camp btn">-->
+<!--						<div style="margin-left:40px;">buy now</div>-->
+<!--					</div>-->
+<!--					</a>-->
+<!--				</div>-->
+				<div id="info_div" class="info_text"><p>This Campaign has Ended and you can no longer purchase this Design.</p></div>
+				<?php }  else   {   ?>
+<!--					<div class="cart_cap"><a id="edit1"  href="#inline1">-->
+<!--					  <div class="sec_three_camp btn1">-->
+<!--						<div style="margin-left:40px;">buy now</div>-->
+<!--					  </div>-->
+<!--					  </a>-->
+<!--					</div>-->
+                <?php  }  ?>
+
+                <div style="position: relative; top: 30px">
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+
+                        <!-- Identify your business so that you can collect the payments. -->
+                        <input type="hidden" name="business" value="herschelgomez@xyzzyu.com">
+
+                        <!-- Specify a Buy Now button. -->
+                        <input type="hidden" name="cmd" value="_xclick">
+
+                        <!-- Specify details about the item that buyers will purchase. -->
+                        <input type="hidden" name="item_name" value="Hot Sauce-12oz Bottle">
+                        <input type="hidden" name="amount" value="5.95">
+                        <input type="hidden" name="currency_code" value="USD">
+
+                        <!-- Display the payment button. -->
+                        <input type="image" name="submit" border="0" style="width: 180px; padding-top: 30px; padding-left: 50px;"
+                               src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif"
+                               alt="PayPal - The safer, easier way to pay online">
+                        <img alt="" border="0" width="1" height="1"
+                             src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" >
+
+                    </form>
+                </div>
+
+
+				<div class="sec_four_camp">
+				<?php if($campstatus != 0  && ($ChkCampaign[0]['sold'] < $ChkCampaign[0]['goal'])) {   ?>
+				  <div class="txt_cap">THIS DESIGN WILL ONLY GO TO PRINT WHEN THE GOAL HAS BEEN REACHED<br><div style="font-family:GothamMediumRegular;padding-top:10px"><span><?=$ChkCampaign[0]['sold'] ?></span> shirts were reserved towards a goal of <span><?=$ChkCampaign[0]['goal'] ?></span></div></div>
+				  <?php } ?>
+				  <?php if($campstatus == 0  && ($ChkCampaign[0]['sold'] <  $ChkCampaign[0]['goal'])) { ?>
+				  <div class="txt_cap">This campaign din't reached its goal! <br><div style="font-family:GothamMediumRegular;padding-top:10px"><span><?=$ChkCampaign[0]['sold'] ?></span> shirts were reserved towards a goal of <span><?=$ChkCampaign[0]['goal'] ?></span></div></div>
+				  <?php } else if($campstatus == 1 && ($ChkCampaign[0]['sold'] >= $ChkCampaign[0]['goal'])) {?>
+				  <div class="txt_cap">This campaign reached its goal! <br><div style="font-family:GothamMediumRegular;padding-top:10px"><span><?=$ChkCampaign[0]['sold'] ?></span> have been sold (towards the original goal of  <span><?=$ChkCampaign[0]['goal'] ?></span>)</div><br /> You can keep buying until campaign ends!  </div>
+				  <?php } else if($campstatus == 0 && ($ChkCampaign[0]['sold'] >= $ChkCampaign[0]['goal'])) { ?>
+					<div class="txt_cap">This campaign reached its goal! <br><div style="font-family:GothamMediumRegular;padding-top:10px"><span><?=$ChkCampaign[0]['sold'] ?></span> shirts were reserved towards a goal of <span><?=$ChkCampaign[0]['goal'] ?></span></div><br>This campaign ends you can't buy now!</div>
+                    <?php } ?>
+				  <?php
+                      $s=$ChkCampaign[0]['sold'];
+                      $g=$ChkCampaign[0]['goal'];
+                      $w=($s/$g)*100;
+                      $w=($w > 100 ? 100 : $w);
+                  ?>
+				  <div class="cap_pr">
+					<div style="background-image:url(<?php echo IMAGES_URL;?>process_new.png);height:27px; width:375px;" class="pro_image">
+					 <?php if($w<=100 && $w > 0) { ?>
+
+					  <div style="background-color:#006853;width:<?=($w*3.75)?>px; height:27px;" class="pro_count">&nbsp;</div>
+					</div>
+					<div class="proc_txt"><span><?=@number_format((int)$w, 2)?>%</span> Funded</div>
+					<?php } else { ?>
+					<div style="background-color:#006853;width:1px; height:27px;" class="pro_count">&nbsp;</div>
+					</div>
+					<div class="proc_txt"><span>0%</span> Funded</div>
+					<?php } ?>
+					<?php if($day_difference>0 &&  $campstatus==1)  {
+						$today= date('Y-m-d H:i:s');
+						$days=$ChkCampaign[0]['campaign_length'];
+						$totaldate= strtotime((date('Y-m-d H:i:s', strtotime($ChkCampaign[0]['launch_date']. ' + '.$days.' day')))) - (strtotime($today));
+					?>
+                    <script type="text/javascript">
+                        var start<?=$ChkCampaign[0]['campaign_id']?>=<?=$totaldate?>;
+
+                        start<?=$ChkCampaign[0]['campaign_id']?> = parseFloat(start<?=$ChkCampaign[0]['campaign_id']?>);
+                        var end<?=$ChkCampaign[0]['campaign_id']?> = 0;
+                        var refresh=1000;
+                        if(start<?=$ChkCampaign[0]['campaign_id']?> >= end<?=$ChkCampaign[0]['campaign_id']?> ){
+                            mytime<?=$ChkCampaign[0]['campaign_id']?>=setTimeout('display_ct_<?=$ChkCampaign[0]['campaign_id']?>(start<?=$ChkCampaign[0]['campaign_id']?>)',refresh);
+						} else {
+                            window.location.href="<?=APPLICATION_URL?>product/index";
+                        }
+
+                        function display_c<?=$ChkCampaign[0]['campaign_id']?>(start1<?=$ChkCampaign[0]['campaign_id']?>){
+                            start<?=$ChkCampaign[0]['campaign_id']?> = parseFloat(start1<?=$ChkCampaign[0]['campaign_id']?>);
+                            var end<?=$ChkCampaign[0]['campaign_id']?> = 0;
+                            var refresh=1000;
+                            if(start<?=$ChkCampaign[0]['campaign_id']?> >= end<?=$ChkCampaign[0]['campaign_id']?> ){
+                                mytime<?=$ChkCampaign[0]['campaign_id']?>=setTimeout('display_ct_<?=$ChkCampaign[0]['campaign_id']?>(start<?=$ChkCampaign[0]['campaign_id']?>)',refresh)
+                            } else {
+                                window.location.href="<?=APPLICATION_URL?>product/index";
+                            }
+                        }
+
+                        function display_ct_<?=$ChkCampaign[0]['campaign_id']?>(start<?=$ChkCampaign[0]['campaign_id']?>) {
+                            var days<?=$ChkCampaign[0]['campaign_id']?>=Math.floor(start<?=$ChkCampaign[0]['campaign_id']?> / 86400);
+                            var hours<?=$ChkCampaign[0]['campaign_id']?> = Math.floor((start<?=$ChkCampaign[0]['campaign_id']?> - (days<?=$ChkCampaign[0]['campaign_id']?> * 86400 ))/3600)
+                            var minutes<?=$ChkCampaign[0]['campaign_id']?> = Math.floor((start<?=$ChkCampaign[0]['campaign_id']?> - (days<?=$ChkCampaign[0]['campaign_id']?> * 86400 ) - (hours<?=$ChkCampaign[0]['campaign_id']?> *3600 ))/60)
+                            var secs<?=$ChkCampaign[0]['campaign_id']?> = Math.floor((start<?=$ChkCampaign[0]['campaign_id']?> - (days<?=$ChkCampaign[0]['campaign_id']?> * 86400 ) - (hours<?=$ChkCampaign[0]['campaign_id']?> *3600 ) - (minutes<?=$ChkCampaign[0]['campaign_id']?>*60)))
+					        minutes<?=$ChkCampaign[0]['campaign_id']?> = ((minutes<?=$ChkCampaign[0]['campaign_id']?>>0) ? ((minutes<?=$ChkCampaign[0]['campaign_id']?>>9) ? minutes<?=$ChkCampaign[0]['campaign_id']?> : '0'+minutes<?=$ChkCampaign[0]['campaign_id']?>) + "" : "0");
+							secs<?=$ChkCampaign[0]['campaign_id']?> = ((secs<?=$ChkCampaign[0]['campaign_id']?>>0) ? ((secs<?=$ChkCampaign[0]['campaign_id']?>>9) ? secs<?=$ChkCampaign[0]['campaign_id']?> : '0'+secs<?=$ChkCampaign[0]['campaign_id']?>) + "" : "0");
+							var x<?=$ChkCampaign[0]['campaign_id']?> =days<?=$ChkCampaign[0]['campaign_id']?> + "D, " + hours<?=$ChkCampaign[0]['campaign_id']?> + "H, " + minutes<?=$ChkCampaign[0]['campaign_id']?> + "M, " + secs<?=$ChkCampaign[0]['campaign_id']?>+"S" ;
+
+                            document.getElementById('ct_<?=$ChkCampaign[0]['campaign_id']?>').innerHTML = x<?=$ChkCampaign[0]['campaign_id']?>;
+                            start<?=$ChkCampaign[0]['campaign_id']?>=start<?=$ChkCampaign[0]['campaign_id']?>- 1;
+                            tt<?=$ChkCampaign[0]['campaign_id']?>=display_c<?=$ChkCampaign[0]['campaign_id']?>(start<?=$ChkCampaign[0]['campaign_id']?>);
+                        }
+
+                        </script>
+
+
+
+					<div class="proc_time_cam">Time left: <span id="ct_<?=$ChkCampaign[0]['campaign_id']?>">6D, 13H, 23M</span></div>
+					<?php } else { ?>
+					<div class="info_text">This campaign ended on <b><?=$enddate?></b></div>
+
+
+					<?php } ?>
+				  </div>
+
+
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<div class="bot_margin">
+			<div class="fb_share_code">
+				<div id="fb-root"></div>
+
+
+<script>(function(d, s, id) {
+
+
+  var js, fjs = d.getElementsByTagName(s)[0];
+
+
+  if (d.getElementById(id)) return;
+
+
+  js = d.createElement(s); js.id = id;
+
+
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+
+
+  fjs.parentNode.insertBefore(js, fjs);
+
+
+}(document, 'script', 'facebook-jssdk'));</script>
+
+				<div class="fb-comments" data-href="<?='http'.(empty($_SERVER['HTTPS'])?'':'s').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];?>" data-width="470" data-num-posts="10" style="float:left"></div>
+			</div>
+		  <div class="sign_cap">
+              <div style="position: absolute; bottom: 80px; right: 40px"><a href="<?php echo APPLICATION_URL;?>launchcampaign/index"><span class="btn">Get started</span></a></div>
+		  </div>
+		</div>
+	  </div>
+	</section>
+	<div id="inline2" style="display:none;">
+		<div style="width:350px;">
+			<?php
+				$Data=$db->runQuery("select * from ".TSHIRT_SIZE."");
+				if(count($Data)>0 && $Data!="")
+				{
+					foreach($Data as $key=>$value)
+					{
+			?>
+			<div style="width:260px;">
+				<div style="float:left; width:125px; height:20px;border:#999999 solid 1px; font-size:14px; color:#999;">
+					 <?php echo $value['size']; ?>
+				</div>
+				<div style="width:130px; float:left; height:20px;border:#999999 solid 1px; font-size:14px; color:#999;">
+					 <?php echo $value['size_inch']; ?>
+				</div>
+			</div>
+			<?php	} 	} ?>
+		</div>
+	</div>
+	<!----payment section --->
+	<?php  $price=$ChkCampaign[0]['selling_price'];
+
+	$ship=$db->runquery("select * from ".TSHIRT_PRICE." where campagin_id='".$ChkCampaign[0]['SelectedProduct']."'");
+
+?>
+
+<div id="inline1" style="display:none; width:auto; height:570px; min-height:500px;" align="center">
+
+	<div id="nav_bg">
+	<nav class="menu">
+		<a href="<?=APPLICATION_URL?>"><div class="logo_main" style="padding-left:10px;"><img alt="TeeshirtSCRIPT" src="<?=APPLICATION_URL?>/images/logo.png"></div></a>
+	</nav>
+	</div>
+	<form method="post" action="<?=APPLICATION_URL."payment/savevalues/url/".$ChkCampaign[0]['url']?>" onsubmit="return calculateqty();">
+		<table style="border:0px solid; width:98%;margin:20px 10px;text-align:left;font-family:'GothamMediumRegular';" cellpadding="0" cellspacing="0">
+			<tr align="left">
+				<td>
+					<div style="font-size:24px; color: #006853;font-family: 'GothamBoldRegular';">Finalize your order</div>
+				</td>
+			</tr>
+			<tr >
+				<td style="padding-top:8px;">
+					<div style="width:100%; float:left; color:#006853; font-size:14px;">Enter Your Details</div><br><hr style="color:#eee">
+				</td>
+			</tr>
+			<tr >
+				<td style="padding-top:8px;">
+					<div style="width:15%; float:left; color:#CC3300; font-size:14px;">Email Address</div>
+					<div style="width:30%; float:left; color:#000;">
+						<?=$myform1->cemail?>
+					</div>
+				</td>
+			</tr>
+			<tr >
+				<td style="padding-top:8px;">
+					<div style="width:15%; float:left; color:#CC3300; font-size:14px;">First Name</div>
+					<div style="width:30%; float:left; color:#000;">
+						<?=$myform1->cfname?>
+					</div>
+				</td>
+			</tr>
+			<tr >
+				<td style="padding-top:8px;">
+					<div style="width:15%; float:left; color:#CC3300; font-size:14px;">Last Name</div>
+					<div style="width:30%; float:left; color:#000;">
+						<?=$myform1->clname?>
+					</div>
+				</td>
+			</tr>
+            <tr >
+                <td style="padding-top:8px;">
+                    <div style="width:15%; float:left; color:#CC3300; font-size:14px;">Street</div>
+                    <div style="width:30%; float:left; color:#000;">
+                        <?=$myform1->street1?>
+                        <?=$myform1->street2?>
+                    </div>
+                </td>
+            </tr>
+            <tr >
+                <td style="padding-top:8px;">
+                    <div style="width:15%; float:left; color:#CC3300; font-size:14px;">City</div>
+                    <div style="width:30%; float:left; color:#000;">
+                        <?=$myform1->city?>
+                    </div>
+                </td>
+            </tr>
+            <tr >
+                <td style="padding-top:8px;">
+                    <div style="width:15%; float:left; color:#CC3300; font-size:14px;">State</div>
+                    <div style="width:30%; float:left; color:#000;">
+                        <?=$myform1->state?>
+                    </div>
+                </td>
+            </tr>
+            <tr >
+                <td style="padding-top:8px;">
+                    <div style="width:15%; float:left; color:#CC3300; font-size:14px;">ZIP Code</div>
+                    <div style="width:30%; float:left; color:#000;">
+                        <?=$myform1->zipcode?>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+			<tr>
+				<td>
+					<table id="myTable"  style="width:100%;margin:20px 10px;;border:1px solid #efefef;" cellpadding="0" cellspacing="0" >
+						<tr>
+							<td style='width:25%; '>Qty</td>
+							<td style='width:25%; '>Size</td>
+							<td  style='width:25%; '>Price</td >
+							<td  style='width:25%;'>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style='width:25%; '>
+								<input name="qty" id="qty" value="1" onchange="recalc();" style="width:50px; height:20px;" type="text">
+							</td>
+							<td style='width:25%; '>
+								<?=$myform1->size ?>
+							</td>
+							<td style='width:25%; '>
+								<div id="firs_defaultVal">$ <?=number_format($price,2)?></div>
+							</td>
+							<td style="width:25%;">
+								<input type="hidden" id="countdiv" name="countdiv" value="0" />
+								<input type="hidden" id="totquanty" name="totquanty" value="0" />
+								<a href="javascript:addRow('myTable')" style="display:block;font-size:18px; text-decoration:underline;" id="AddAnotherSize">Add Another Size</a>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr height="5">&nbsp;</tr>
+			<tr>
+				<td align="left" style="padding-top:10px;">
+					<div style="width:51%; float:left; color:#CC3300; font-size:14px;">Shipping</div>
+					<div style="width:49%; float:left; color:#000;" id="shipping_price">
+						$ <?=number_format($ship[0]['shipping_price'],2)?>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td align="left" style="padding-top:10px;">
+					<div style="width:51%; float:left;color:#CC3300; font-size:14px;">Total</div>
+					<div style="width:49%; float:left;color:#000;">
+						<input type="hidden" id="total_Value_text" value="<?=$price+$ship[0]['shipping_price']?>"  name="total_Value_text" />
+						<div id="total_Value">$ <?=number_format($price+$ship[0]['shipping_price'],2)?></div>
+					</div>
+				</td>
+			</tr>
+			<tr style="display:none">
+				<td style="padding-top:8px;">
+					<?=$myform1->paypalchk?>
+				</td>
+			</tr>
+			<tr>
+                <td>&nbsp;</td>
+            </tr>
+		</table>
+
+		<script src="https://checkout.stripe.com/checkout.js"></script>
+		<div style="width:480px; height:30px; margin-top:10px;">
+			<input type="submit" value="Checkout" name="Checkout" class="accbutton" id="customButton">
+		</div>
+		<input type="hidden" id="stripeToken" name="stripeToken" />
+		 <script>
+			 var handler = StripeCheckout.configure({
+				 key: '<?php echo STRIPE_PUBLIC_KEY;?>',
+				 email: $("#cemail").val(),
+				 token: function(token) {
+					 $("#stripeToken").val(JSON.stringify(token));
+					 var totqty = 0;
+					 $("input[id^='qty']").each(function(){
+						totqty += isNaN(parseInt($(this).val())) ? 0 : parseInt($(this).val());
+					 });
+					 $("#totquanty").val(totqty);
+
+					 document.forms[0].submit();
+				 }
+			 });
+
+			 document.getElementById('customButton').addEventListener('click', function(e) {
+				 var amount_formated = $("#total_Value").text();
+				 var amount_clean = parseFloat(amount_formated.substr(2,10));
+
+				 handler.open({
+				    email: $("#cemail").val(),
+				    name: 'Preorder of tees <?php echo SITE_NAME; ?>',
+				    description: amount_formated,
+				    amount: Math.round(amount_clean * 100)
+				 });
+				 e.preventDefault();
+			 });
+		 </script>
+	</form>
+</div>
+<?php } else { ?>
+<section id="content">
+	  <div class="zerogrid">
+		<div class="row block">
+			<div id="capmaingn_main_page_wrap">
+				<div class="bot_cam">
+					<b style="font-size:18px;">The URL does not exists.</b>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<?php } ?>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#edit1').fancybox();
+	$('#edit2').fancybox();
+});
+</script>
+<script type="text/javascript">
+
+function addRow(id)
+{
+	var priceVal = <?= $price ?> ;
+	var shhp = <?= $ship[0]['shipping_price'] ?> ;
+	var inputCount = document.getElementById('countdiv').value;
+	inputCount = parseFloat(inputCount) + parseFloat(1);
+	document.getElementById('countdiv').value = inputCount;
+	var tbody = document.getElementById(id);
+	html = ""
+	var row = document.createElement("TR");
+	row.setAttribute("id", "row" + inputCount)
+	tbody.appendChild(row);
+	html += "<td  style=' width:50px' ><input type='text' value='1'  style=' width:50px' name='qty_" + inputCount + "' id='qty" + inputCount + "' onchange='recalc();'></td>"
+    html += "<td style='padding-left:0px'><select style='width:50px' name='size" + inputCount + "' id='size" + inputCount + "'><?php
+    foreach($this->view->sizes AS $sizeEntry){
+        echo '<option>'.$sizeEntry['size'].'</option>';
+    }
+    ?></select></td>"
+	html += "<td  style=' width:45px'><label Width='50px' name='items_" + inputCount + "' id='Val_" + inputCount + "'>$ <?=number_format($price,2)?></label></td>"
+	html += "<td><input type='Button' class='addanother' onclick=deleteLine('row" + inputCount + "') value='Remove'></td>"
+	row.innerHTML = html;
+
+	recalc();
+}
+
+function deleteLine(index)
+{
+	var newValueShipping = <?= $ship[0]['shipping_price'] ?> ;
+	var splitValues = index.split('row');
+	var priceValuesIndividual = document.getElementById('Val_' + splitValues[1]).innerHTML;
+	var priceSplitted = priceValuesIndividual.split(" ");
+	var shhp = <?= $ship[0]['shipping_price'] ?> ;
+	var priceVal = <?= $price ?> ;
+	table = document.getElementById("myTable")
+	row = document.getElementById(index)
+	table.removeChild(row);
+	var cnt = document.getElementById('countdiv').value;
+	document.getElementById('countdiv').value = parseFloat(cnt);
+
+	recalc();
+}
+
+function recalc()
+{
+	var numData = parseFloat($.trim($("#firs_defaultVal").text()).substring(2, 10)) * (parseInt($("#qty").val()) || 0);
+	$("label[id^='Val_']").each(function()
+	{
+		 var qty = $("#qty" + $(this).attr("id").substring(4)).val() || 0;
+		 var amount = parseFloat($.trim($(this).text()).substring(2, 10));
+
+		 if (qty == 0) {
+			alert("Quantity can not be zero or blank!");
+			$("#qty" + $(this).attr("id").substring(4)).val(1);
+			qty = 1;
+		 }
+		numData += qty * amount;
+	});
+	numData += parseFloat($.trim($("#shipping_price").text()).substring(2, 10));
+	$('#total_Value').text("$ " + numData.toFixed(2));
+	$('#total_Value_text').val(numData.toFixed(2));
+}
+
+/*
+var inputCount = 0;
+
+function addRow(id)
+{
+	var priceVal = <?= $price ?> ;
+	var shhp = <?= $ship[0]['shipping_price'] ?> ;
+	var inputCount = document.getElementById('countdiv').value;
+	inputCount = parseFloat(inputCount) + parseFloat(1);
+	document.getElementById('countdiv').value = inputCount;
+	var tbody = document.getElementById(id);
+	html = ""
+	var row = document.createElement("TR");
+	row.setAttribute("id", "row" + inputCount)
+	tbody.appendChild(row);
+	html += "<td  style=' width:50px' ><input type='text' value='1'  style=' width:50px' name='qty_" + inputCount + "' id='qty" + inputCount + "' onchange='return calRate2(this.value, this);' onkeypress='return checknummsp(event,this.value);' ></td>"
+	html += "<td style='padding-left:0px'><select   style='width:50px' name='size" + inputCount + "' id='size" + inputCount + "'><option>S</option><option>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL</option></select></td>"
+	html += "<td  style=' width:45px'><label Width='50px' name='items_" + inputCount + "' id='Val_" + inputCount + "'>$ <?=$price?></label></td>"
+	html += "<td><input type='Button' class='addanother' onclick=deleteLine('row" + inputCount + "') value='Remove'></td>"
+	row.innerHTML = html;
+	//var numData=parseFloat(document.getElementById('total_Value_text').value)+parseFloat(priceVal);
+
+	var numData = parseFloat($.trim($("#firs_defaultVal").text()).substring(2, 10));
+	$("label[id^='Val_']").each(function()
+	{
+		numData += parseFloat($.trim($(this).text()).substring(2, 10));
+	});
+	numData += parseFloat($.trim($("#shipping_price").text()).substring(2, 10));
+	document.getElementById('total_Value').innerHTML = "$ " + numData.toFixed(2);
+	document.getElementById('total_Value_text').value = numData.toFixed(2);
+
+}
+
+function checkzero(id, val)
+{
+	var priceVal = <?= $price ?> ;
+	var shhp = <?= $ship[0]['shipping_price'] ?> ;
+	var idName = id.name;
+	var SplittedVal = idName.split('_');
+	var myLength = val.length;
+	if (myLength == 1 || myLength == 0) //To check only when entering first character.
+	{
+		if (val == '0' || val == '')
+		{
+			if (val == '0')
+			{}
+			alert("hello");
+			return false;
+		}
+		else return true;
+	}
+	else return true;
+}
+
+function checkzerostatic(id, val)
+{
+	var priceVal = <?= $price ?> ;
+	var shhp = <?= $ship[0]['shipping_price'] ?> ;
+	var myLength = val.length;
+	// alert(myLength);
+	if (myLength == 1 || myLength == 0) //To check only when entering first character.
+	{
+		if (val == '0' || val == '')
+		{
+			document.getElementById('qty').value = 1;
+			document.getElementById('firs_defaultVal').innerHTML = "$ " + priceVal;
+			if (val == '0')
+			{}
+		}
+		return false;
+	}
+}
+
+function checknummsp(e, valueData)
+{
+	evt = e || window.event;
+	var keypressed = evt.which || evt.keyCode;
+	//alert(data);
+	if (keypressed != "48" && keypressed != "49" && keypressed != "50" && keypressed != "51" && keypressed != "52" && keypressed != "53" && keypressed != "54" && keypressed != "55" && keypressed != "56" && keypressed != "57" && keypressed != "8")
+	{
+		return false;
+	}
+}
+
+function calRate2(id1, id2)
+{
+	var idName = id2.name;
+	var SplittedVal = idName.split('_');
+	//alert(SplittedVal[1]);
+	var total_text_Price = document.getElementById('total_Value_text').value;
+	//alert(total_text_Price);
+	var priceVal = <?= $price ?> ;
+	var calVal = id1 * priceVal;
+	//alert(calVal);
+	var shhp = <?= $ship[0]['shipping_price'] ?> ;
+	//alert('<?=$ship[0]['shipping_price']?>');
+	var CalculatedFinalVal = "";
+	var prevVal = document.getElementById('Val_' + SplittedVal[1]).innerHTML;
+	var splittedprevVal = prevVal.split(" ");
+	var valData = document.getElementById('qty' + SplittedVal[1]).value;
+	var myLength = valData.length;
+	var flagNewData = 0;
+	// alert(myLength);
+	if (myLength == 1 || myLength == 0) //To check only when entering first character.
+	{
+		if (valData == '0' || valData == '')
+		{ //alert(valData+"valData");
+			flagNewData = 1;
+			//return false;
+		}
+		else
+		{
+			flagNewData = 0;
+			//return true;
+		}
+	}
+	if (flagNewData == 0)
+	{
+		document.getElementById('Val_' + SplittedVal[1]).innerHTML = "$ " + calVal;
+		if (calVal > splittedprevVal[1])
+		{ //alert("if");
+			var differenceVal = (parseFloat(calVal) - parseFloat(splittedprevVal[1]));
+			var numberData = parseFloat(differenceVal) + parseFloat(total_text_Price);
+			numberData = numberData.toFixed(2);
+			{
+				document.getElementById('total_Value').innerHTML = "$ " + numberData;
+				document.getElementById('total_Value_text').value = numberData;
+				CalculatedFinalVal = numberData;
+			}
+		}
+		else if (calVal < splittedprevVal[1])
+		{ //alert("else if");
+			var differenceVal = (parseFloat(splittedprevVal[1]) - parseFloat(calVal));
+			//alert("DifferenceVal="+differenceVal);
+			var numberData2 = parseFloat(total_text_Price) - parseFloat(differenceVal);
+			numberData2 = numberData2.toFixed(2);
+			if (numberData2 == shhp)
+			{
+				document.getElementById('total_Value').innerHTML = "$ " + 1;
+				// document.getElementById('total_Value_text').value=(parseFloat(total_text_Price)-parseFloat(differenceVal));
+				document.getElementById('total_Value_text').value = priceVal;
+				CalculatedFinalVal = priceVal;
+				//alert("else if"+0);
+			}
+			else
+			{ //alert("elsewa");
+				document.getElementById('total_Value').innerHTML = "$ " + numberData2;
+				// document.getElementById('total_Value_text').value=(parseFloat(total_text_Price)-parseFloat(differenceVal));
+				document.getElementById('total_Value_text').value = numberData2;
+				CalculatedFinalVal = numberData2;
+				// alert("else if"+numberData2);
+			}
+		}
+		else
+		{ //alert("else");
+			var numberData3 = parseFloat(calVal) + parseFloat(total_text_Price);
+			numberData3 = numberData3.toFixed(2);
+			//numberData3 = numberData3.toString(); //If it's not already a String
+			//numberData3 = numberData3.slice(0, (numberData3.indexOf("."))+3); //With 3 exposing the hundredths place
+			document.getElementById('total_Value').innerHTML = "$ " + numberData3;
+			document.getElementById('total_Value_text').value = numberData3;
+			CalculatedFinalVal = numberData3;
+		}
+		var final = document.getElementById('total_Value').innerHTML;
+		var splitfinal = final.split(" ");
+		document.getElementById('total_Value_text').value = parseFloat(splitfinal[1]);
+
+
+		 var numData = parseFloat($.trim($("#firs_defaultVal").text()).substring(2, 10));
+		 $("label[id^='Val_']").each(function()
+		 {
+			 numData += parseFloat($.trim($(this).text()).substring(2, 10));
+		 });
+		 numData += parseFloat($.trim($("#shipping_price").text()).substring(2, 10));
+		 document.getElementById('total_Value').innerHTML = "$ " + numData.toFixed(2);
+		 document.getElementById('total_Value_text').value = numData.toFixed(2);
+
+		return true;
+	}
+	else
+	{
+		alert("Quantity can not be zero or blank !!!");
+		var calculatedData = parseFloat(splittedprevVal[1]) / parseFloat(priceVal);
+		document.getElementById('qty' + SplittedVal[1]).value = calculatedData.toFixed();
+		return false;
+	}
+}
+
+function deleteLine(index)
+{ // alert('<?=$ship[0]['shipping_price']?>');
+	var newValueShipping = <?= $ship[0]['shipping_price'] ?> ;
+	var splitValues = index.split('row');
+	var priceValuesIndividual = document.getElementById('Val_' + splitValues[1]).innerHTML;
+	var priceSplitted = priceValuesIndividual.split(" ");
+	var shhp = <?= $ship[0]['shipping_price'] ?> ;
+	var priceVal = <?= $price ?> ;
+	table = document.getElementById("myTable")
+	row = document.getElementById(index)
+	table.removeChild(row);
+	var cnt = document.getElementById('countdiv').value;
+	//alert("count div"+cnt);
+	document.getElementById('countdiv').value = parseFloat(cnt);
+	var finalval = document.getElementById('total_Value_text').value;
+	var numberData3 = parseFloat(finalval) - parseFloat(priceSplitted[1]);
+	numberData3 = numberData3.toFixed(2);
+	document.getElementById('total_Value_text').value = numberData3;
+	document.getElementById('total_Value').innerHTML = "$ " + numberData3;
+	var final = document.getElementById('total_Value_text').value;
+	document.getElementById('total_Value').innerHTML = "$ " + (parseFloat(final));
+}
+
+function calculateqty()
+{
+	if (document.getElementById('total_Value_text').value == 0)
+	{
+		alert("Please select atleast one Tee's !!!");
+		return false;
+	}
+	else
+	{ //alert("hello");
+		var cnt = document.getElementById('countdiv').value;
+		var qua = 0;
+		var totalPrice = 0;
+		for (i = 1; i <= cnt; i++)
+		{
+			qua = parseFloat(qua) + parseFloat(document.getElementById('qty' + i).value);
+			totalPrice = parseFloat(totalPrice) + parseFloat(document.getElementById('Val_' + i).value);
+		}
+		qua = parseFloat(qua) + parseFloat(document.getElementById('qty').value);
+		document.getElementById('totquanty').value = qua;
+		if (document.getElementById('cemail').value == "")
+		{
+			alert("Please enter your paypal email address");
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+}
+
+function calcurate(id)
+{
+	var priceVal = <?= $price ?> ;
+	var shhp = <?= $ship[0]['shipping_price'] ?> ;
+	var calVal = id * priceVal;
+	var oldval = document.getElementById('firs_defaultVal').innerHTML;
+	var splittedold = oldval.split(" ");
+	var valData = document.getElementById('qty').value;
+	var myLength = valData.length;
+	var flagNewData = 0;
+	var myLength = valData.length;
+	var flagNewData = 0;
+	// alert(myLength);
+	if (myLength == 1 || myLength == 0) //To check only when entering first character.
+	{
+		if (valData == '0' || valData == '')
+		{ // alert(valData+"valData");
+			flagNewData = 1;
+			//return false;
+		}
+		else
+		{ //alert("else");
+			flagNewData = 0;
+		}
+	}
+	if (flagNewData == 0)
+	{ // alert("hello"+calVal);
+		var total_text_Price = document.getElementById('total_Value_text').value;
+		var newval = document.getElementById('firs_defaultVal').innerHTML;
+		var splittednew = newval.split(" ");
+		var CalculatedFinalVal = "";
+		if (splittedold[1] > splittednew[1])
+		{ //alert("if1");
+			var differenceVal = (parseFloat(splittedold[1]) - parseFloat(splittednew[1]));
+			var finalval = document.getElementById('total_Value_text').value;
+			var numberData3 = parseFloat(total_text_Price) - parseFloat(differenceVal);
+			if (numberData3.toFixed(2) == shhp)
+			{
+				document.getElementById('total_Value').innerHTML = "$ " + 1;
+				document.getElementById('total_Value_text').value = priceVal;
+				CalculatedFinalVal = priceVal;
+			}
+			else
+			{
+				document.getElementById('total_Value').innerHTML = "$ " + numberData3.toFixed(2);
+				document.getElementById('total_Value_text').value = numberData3.toFixed(2);
+				CalculatedFinalVal = numberData3.toFixed(2);
+			}
+		}
+		else if (splittedold[1] < splittednew[1])
+		{
+			var differenceVal = (parseFloat(splittednew[1]) - parseFloat(splittedold[1]));
+			var numberData4 = parseFloat(total_text_Price) + parseFloat(differenceVal);
+			document.getElementById('total_Value').innerHTML = "$ " + numberData4.toFixed(2);
+			document.getElementById('total_Value_text').value = numberData4.toFixed(2);
+			CalculatedFinalVal = numberData4.toFixed(2);
+		}
+		else
+		{ //alert("if222");
+			document.getElementById('firs_defaultVal').innerHTML = "$ " + calVal;
+			document.getElementById('total_Value').innerHTML = "$ " + calVal;
+			document.getElementById('total_Value_text').value = calVal;
+			CalculatedFinalVal = calVal;
+		}
+		var final = document.getElementById('total_Value').innerHTML;
+		var splitfinal = final.split(" ");
+		document.getElementById('total_Value').innerHTML = "$ " + (parseFloat(splitfinal[1]));
+		return true;
+	}
+	else
+	{
+		alert("Quantity can not be zero or blank !!!");
+		var calculatedData = parseFloat(splittedold[1]) / parseFloat(priceVal);
+		//alert(calculatedData);
+		document.getElementById('qty').value = calculatedData.toFixed();
+		return false;
+	}
+}
+*/
+$("#purchase_error").mouseover(function(e)
+{
+	$("#info_div").slideDown();
+});
+$("#purchase_error").mouseleave(function(e)
+{
+	$("#info_div").slideUp();
+});
+
+        </script>
+
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "979bb7a1-5d01-4a4b-a5a0-8b6b83d0f802", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+	<?php include ("footer_1.phtml"); ?>
+	</body>
+</html>

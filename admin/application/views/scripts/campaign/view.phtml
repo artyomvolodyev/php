@@ -1,0 +1,114 @@
+<?php
+global $mySession;
+$db=new Db();
+
+$qur=$db->runquery("SELECT * FROM  ".LAUNCHCAMPAIGN." WHERE campaign_id='".$this->campid."'");
+?>
+		
+        
+        
+<script type="text/javascript" src="<?=APPLICATION_URL?>tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+
+<div class="mws-panel grid_8">
+    <div class="mws-panel-header">
+        <span class="mws-i-24 i-check"><?=$this->pageHeading?></span>
+    </div>
+    <div class="mws-panel-body">
+      
+    
+            <div style="display:none;" class="mws-form-message error" id="mws-validate-error"></div>
+                    <div class="mws-form-inline">
+                        
+                        <div class="mws-form-row" style="margin-left:10px; padding-top:10px; width:600px; height:30px;">
+                        	<div style="float:left; width:150px; height:20px;">
+                            	<label>Campaign Title:</label>
+                            </div>
+                            <div style="font-family:Calibri; font-size:16px; color:#333;  width:300px; height:20px;">
+                               <?php echo $qur[0]['title']; ?>
+                            </div>
+                        </div>
+                        
+                       <div class="mws-form-row" style="margin-left:10px; padding-top:10px; width:600px; height:30px;">
+                          <div style="float:left; width:150px; height:20px;">
+                                <label>Base Price(in $):</label>
+                            </div>
+                            <div style="font-family:Calibri; font-size:16px; color:#333;  width:60px; height:20px; float:left;">
+                                <?php echo $qur[0]['base_price']; ?>
+                            </div>
+                        </div>
+                        
+                         <div class="mws-form-row" style="margin-left:10px; padding-top:10px; width:600px; height:30px;">
+                           <div style="float:left; width:150px; height:20px;">
+                                 <label>Selling Price(in $):</label>
+                             </div>
+                              <div style="font-family:Calibri; font-size:16px; color:#333;  width:60px; height:20px; float:left;">
+                                 <?php echo $qur[0]['selling_price']; ?>
+                            </div>
+                        </div>
+                        
+                          <div class="mws-form-row" style="margin-left:10px; padding-top:10px; width:600px; height:auto;">
+                        	<div style="width:150px; height:20px;">
+                            	<label>Description:</label>
+                             </div>
+                             <div style="font-family:Calibri; font-size:16px; color:#333; height:auto;">
+                                 <?php echo $qur[0]['description'] ?>
+                            </div>
+                        </div>
+                        
+                       
+                       <div class="mws-form-row" style="margin-left:10px; padding-top:20px; width:600px; height:30px;">
+                        	 <div style="float:left; width:150px; height:20px;">
+                            	<label>Launched On</label>
+                             </div>
+                          <div style="font-family:Calibri; font-size:16px; color:#333;  width:200px; height:20px; float:left;">
+                                <?php echo  $qur[0]['launch_date'] ?>
+                            </div>
+                        </div>
+                        
+                        <div class="mws-form-row" style="margin-left:10px; padding-top:10px; width:600px; height:30px;">
+                        	<div style="float:left; width:150px; height:20px;">
+                            	<label>Campaign length(in days):</label>
+                             </div>
+                             <div style="font-family:Calibri; font-size:16px; color:#333;  width:60px; height:20px; float:left;">
+                                 <?php echo $qur[0]['campaign_length'] ?>
+                            </div>
+                        </div>
+                        
+                       <div class="mws-form-row" style="margin-left:10px; padding-top:10px; width:600px; height:30px;">
+                        	<div style="float:left; width:150px; height:20px;">
+                           		 <label>Goal(No. Of Tshirts):</label>
+                              </div>
+                             <div style="font-family:Calibri; font-size:16px; color:#333;  width:60px; height:20px; float:left;">
+                                <?php echo $qur[0]['goal'] ?>
+                            </div>
+                        </div>
+                        
+                      
+                        
+                      <div class="mws-form-row" style="margin-left:10px; padding-top:10px; width:600px; height:30px;">
+                         <div style="float:left; width:100px; height:20px;">
+                            	<label>Sold:</label>
+                             </div>
+                            <div style="font-family:Calibri; font-size:16px; color:#333;  width:60px; height:20px; float:left;">
+                                <?php echo $qur[0]['sold']?>
+                            </div>
+                        </div>
+                    
+                       <div class="mws-form-row" style="margin-left:10px; padding-top:10px; width:600px; height:30px;">
+                        	 <div style="float:left; width:100px; height:20px;">
+                            	<label>URL Choosed:</label>
+                             </div>
+                            <div style="font-family:Calibri; font-size:16px; color:#333;  width:60px; height:20px; float:left;">
+                                <?php echo $qur[0]['url'] ?>
+                            </div>
+                        </div>
+                        
+                        <div class="mws-form-row" style="margin-left:10px; padding-top:20px;">
+                        	   <a href="<?=APPLICATION_URL_ADMIN?>campaign/index" style="text-decoration:none; cursor:pointer;">
+                               		<input type="button" name="back" value="Back" class="mws-button red" />
+                                 </a>
+                        </div>
+                        
+                  </div>   
+    		</div> 	
+</div> 

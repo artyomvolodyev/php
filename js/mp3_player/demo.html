@@ -1,0 +1,181 @@
+<!doctype html>	
+<html>
+<head>
+	<title>Mp3 player demo</title>
+	<script type="text/javascript" src="js/swfobject/swfobject.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript">
+	(function($){
+	  $.nano = function(template, data) {
+	    return template.replace(/\{([\w\.]*)\}/g, function (str, key) {
+	      var keys = key.split("."), value = data[keys.shift()];
+	      $.each(keys, function () { value = value[this]; });
+	      return (value === null || value === undefined) ? "" : value;
+	    });
+	  };
+	})(jQuery);
+	</script>
+	<style type="text/css">
+	html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}input,textarea,select{*font-size:100%;}legend{color:#000;}
+	body 
+	{
+		width:700px; margin: 20px auto; 
+		font:14px arial,helvetica,clean,sans-serif;
+		color: #3B3F3E;
+	}
+	h1,h2,h3 {font-weight:bold; margin-bottom:10px;}
+	h1 { font-size:21px; }
+	h2 { font-size:18px; }
+	h3 { font-size:16px; }
+	.top-line { height:1px; border-bottom:1px solid #777; margin:10px 0 15px 0; }
+	.middle-line { height:1px; border-bottom:1px solid #777;margin:10px 0 10px 0; }
+	.file-problems  {  border-collapse: separate; background-color:#c3c3c3; border-spacing:1px; }
+	.file-problems td, .file-problems th  { padding:5px; }
+	.file-problems td { background-color: #fff }
+	.file-problems th { background-color: #eee }
+	a, a:visited { color:#366CBE }
+	a:hover { color:blue }
+	a.ta { font-weight:bold; }
+	.db-details  {  border-collapse: separate; background-color:#c3c3c3; border-spacing:1px; }
+	.db-details td, .db-details th  { padding:5px; }
+	.db-details td { background-color: #fff }
+	.db-details th { background-color: #eee }
+	.red { color: #BA2A0A; }
+	.html-code { width: 700px; height:270px; }
+	</style>
+</head>
+<body>
+
+	<table>
+	<tr>
+		<td style="padding:0 15px 5px 0"><a href="http://www.spencer-tech.com/" target="_blank"><img src="http://www.spencer-tech.com/hc/logo.png" width="366" height="53" alt="" /></a></td>
+		<td style="padding:0 15px 12px 0; vertical-align:bottom"><h1 style="margin:0">MP3 Player Demo</h1></td>
+	</tr>
+	</table>
+	<div class="top-line"></div>
+	
+	<h3>Mp3 player code generator.</h3>
+
+	<form method="post" action="#" rel="mp3player-settings" onsubmit="return ApplyMp3PlayerSettings()">
+	<table class="db-details">
+	<tr>
+		<th>Player width:</th>
+		<td><input type="text" name="width" value="400" /></td>
+	</tr>
+	<tr>
+		<th>Player height:</th>
+		<td><input type="text" name="height" value="240" /></td>
+	</tr>
+	<tr>
+		<th>Color:</th>
+		<td><input type="text" name="bgcolor" value="#AEEBFD" /></td>
+	</tr>
+	<tr>
+		<th>Config Url:</th>
+		<td><input type="text" name="configUrl" value="http://www.spencer-tech.com/demos/mp3_player/demo2.xml" style="width:500px"/></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="submit" value="Apply settings" />
+		</td>
+	</tr>
+	</table>
+	</form>	
+	
+	<div class="middle-line"></div>
+	<h3>Mp3 player demo.</h3>
+	
+	<div rel="mp3player-panel">
+	
+	</div>
+	
+	
+	<div class="middle-line"></div>
+	
+	<h3>Here is how the Html-code looks like on your site.</h3>
+	<textarea name="ta" class="html-code"></textarea>
+	</pre>
+	
+	<script type="text/javascript">
+	
+	var tplContainer = '<div id="idBlockDemo2"> \
+		\r\n\
+		<p>mp3 player demo container</p> \r\n\
+		<p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p> \
+		\r\n\
+	</div>';
+	
+	var tplCode = '<' + 'script type="text/javascript"' + '>\
+	\r\n\
+	var params = {\
+	\r\n\
+		bgcolor: "{bgcolor}"\
+	\r\n\
+	};\
+	\r\n\
+	var flashvars = {\
+	\r\n\
+		configURL: "{configUrl}"\
+	\r\n\
+	};\
+	\r\n\
+	var attributes = { };\
+	\r\n\
+	swfobject.embedSWF("mp3player.swf", "idBlockDemo2", {width}, {height}, "9.0.115",\r\n\
+			"js/swfobject/expressInstall.swf", flashvars, params, attributes);\
+	\r\n\
+	<' + '/script>';
+	
+	function krEncodeEntities(s)
+	{
+		return $("<div/>").text(s).html();
+	}
+	function krDencodeEntities(s)
+	{
+		return $("<div/>").html(s).text();
+	}
+	        
+	function ApplyMp3PlayerSettings()
+	{
+		//clear old
+		$('div[rel="mp3player-panel"]').html(tplContainer);
+		
+		var sel = $('form[rel="mp3player-settings"]');
+		var width = sel.find('input[name="width"]').val();
+		var height = sel.find('input[name="height"]').val();
+		var bgcolor = sel.find('input[name="bgcolor"]').val();
+		var configUrl = sel.find('input[name="configUrl"]').val();
+		
+		//embed new
+		var params = {
+			bgcolor: bgcolor
+		};
+		var flashvars = {
+			configURL: configUrl
+		};
+		var attributes = {};
+		swfobject.embedSWF("mp3player.swf", "idBlockDemo2", width, height, "9.0.115", 
+			"js/swfobject/expressInstall.swf", flashvars, params, attributes);
+			
+		//prepare code
+		var tplParams = {bgcolor: bgcolor, configUrl: configUrl, width: width, height: height};
+		var codeHtml = $.nano(tplCode, tplParams);
+			
+		//show code
+		var html = tplContainer;
+		var html = krEncodeEntities(tplContainer);
+		html += '\r\n\r\n';
+		html += krEncodeEntities(codeHtml);
+		$('textarea[name="ta"]').html(html);
+		
+		return false;
+	}
+	
+	ApplyMp3PlayerSettings();
+	</script>
+	
+	
+	
+</body>
+</html>	

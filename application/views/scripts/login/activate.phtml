@@ -1,0 +1,70 @@
+<?php
+
+global $mySession;
+
+$db=new Db();
+
+?>
+
+
+
+
+<p>
+<div align="center" style="background-color:#BE1E2D; width:600px; height:150px; margin-bottom:70px; position: relative; left: 370px">
+
+    <div align="left" style="margin-left:10px; padding-bottom:5px;">
+
+        <?php
+
+        if($this->aStat=='1')
+
+        {
+
+            ?>
+            <label style="font-family:Corbel; font-size:18px; color:#ffffff; position: relative; top: 50px ">
+                Thank You!<br /><br />
+                Your Account is activated successfully.<br  />
+                To Access and Manage your account
+                <a href="<?=APPLICATION_URL?>login/index" style="text-decoration:none; color:#000;">
+                    Click Here</a> to Login.
+            </label>
+
+        <?php
+
+        }
+
+        if($this->aStat=='2')
+
+        {
+
+            ?>
+            <label style="font-family:Corbel; font-size:18px; color:#ffffff; position: relative; left: 180px; top: 50px">
+                <h3>Your Account already activated</h3>
+            </label>
+
+        <?php
+
+        }
+
+        if($this->aStat=='3')
+
+        {
+
+        ?>
+        <label style="font-family:Corbel; font-size:18px; color:#000000; ">
+            <h3>The account activation link you are using is invalid or expired.</h3>
+
+
+            <?php
+
+            }
+
+            ?>
+
+    </div>
+</div>
+	
+
+
+
+       

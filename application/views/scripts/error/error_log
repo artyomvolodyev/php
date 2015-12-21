@@ -1,0 +1,2 @@
+[29-Sep-2012 00:12:09] PHP Fatal error:  Using $this when not in object context in /home/futbol/public_html/application/views/scripts/error/error.phtml on line 3
+[30-Sep-2012 04:09:07] PHP Fatal error:  Using $this when not in object context in /home/futbol/public_html/application/views/scripts/error/error.phtml on line 3

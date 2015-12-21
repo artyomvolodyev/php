@@ -1,0 +1,86 @@
+<div class="mws-panel grid_10">
+    <div class="mws-panel-header">
+        <span class="mws-i-24 i-table-1"><?=$this->pageHeading?></span>
+    </div>
+   <script>
+function validformdata()
+{ 
+	var x = document.getElementById("allusers").checked;
+	if (!x) {
+		if(document.getElementById('rightValues').value == '')
+              {
+			alert("Please select atleast one user for sending mails");
+			
+		} else {
+			
+			return true;
+		}
+    	} else {
+		return true;
+	}
+	return false;
+}
+
+
+	</script>	
+    <div class="mws-panel-body">
+	 <form name="myform" id="myform" class="mws-form" action="<?php echo $this->url(array('controller'=>'users', 'action'=>'csendmail'), 'default', true)?>" method="post" onsubmit="return validformdata();">
+
+        <section >
+    		<div>
+       		<select id="leftValues" size="15" multiple>
+				 <?php for($i=0;$i<count($this->sql);$i++) {	?>
+					<option value="<?=$this->sql[$i]['email']?>::<?=$this->sql[$i]['user_id']?>::<?=$this->sql[$i]['name']?>" style="margin:2px 0px" ><?=$this->sql[$i]['email']?></option>
+				<?php } ?>
+
+			</select>
+	    </div>
+	    <div>
+       	 <input type="button" id="btnLeft" value="&lt;&lt;" />
+	        <input type="button" id="btnRight" value="&gt;&gt;" />
+	    </div>
+	    <div>
+       	 <select id="rightValues" size="13" name="rightValues[]" multiple>
+	           
+       	 </select>
+		 <div style="margin-top: 10px; width: 307px;"><input type="checkbox" value="1" id="allusers" name="allusers" />Send Mail To All Users <input type="submit" id="sendmail" name="sendmail" value="Send Mail" style="float: right; margin-left: 81px;" /></div>
+	    </div>
+	</section>
+	</form>
+	</div>    	
+</div>
+</div>
+<style>
+SELECT {
+    width: 200px;
+    box-sizing: border-box;
+}
+SECTION {
+    padding: 8px;
+    background-color: #f0f0f0;
+    overflow: auto;
+}
+SECTION > DIV {
+    float: left;
+    padding: 4px;
+}
+SECTION > DIV + DIV {
+    width: 40px;
+    text-align: center;
+}
+</style>
+<script>
+$("#btnLeft").click(function () {
+    var selectedItem = $("#rightValues option:selected");
+    $("#leftValues").append(selectedItem);
+});
+
+$("#btnRight").click(function () {
+    var selectedItem = $("#leftValues option:selected");
+    $("#rightValues").append(selectedItem);
+});
+
+$("#rightValues").change(function () {
+    var selectedItem = $("#rightValues option:selected");
+});
+</script>

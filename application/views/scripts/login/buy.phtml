@@ -1,0 +1,290 @@
+
+
+
+
+
+
+<table style="border:0px solid; width:300px" cellpadding="0" cellspacing="0">
+<tr align="left">
+  Finalize your order
+</tr>
+<tr>
+    
+       <script type="text/javascript">
+           var inputCount = 0;
+
+            function addRow(id) {
+                //set row number
+                inputCount++;
+                var tbody = document.getElementById(id);
+                html=""
+                  var row = document.createElement("TR");
+                  row.setAttribute("id", "row"+inputCount)
+                  tbody.appendChild(row);
+               // html +="<td>Qty</td>"
+                html +="<td  style=' width:50px' ><input type='text'  style=' width:50px' name='items_" + inputCount + "' ></td>"
+                html +="<td style='padding-left:0px'><select   style='width:50px' name='items_" + inputCount + "'><option>S</option><option>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL</option></select></td>"
+               // html +="<td>Size </td>"
+                html +="<td  style=' width:50px'><label Width='50px' name='items_" + inputCount + "'>g</label></td>"
+				html +="<td><input type='Button' class='Button' onclick=deleteLine('row"+inputCount+"') value='Remove'></td>"
+				
+               // alert(html)
+                row.innerHTML = html
+
+
+
+
+            }
+
+            function deleteLine(index) {
+                table = document.getElementById("myTable")
+             row = document.getElementById(index)
+
+                table.removeChild(row);
+            }
+        </script>
+        <table id="myTable"  style="border:0px solid; width:300px" cellpadding="0" cellspacing="0" border="0">
+           <tr>
+                <td align=left  style=' width:50px'>
+                    Qty
+                </td>
+               
+                <td  style=' width:50px'>
+                    Size 
+                </td>
+                
+                <td  style=' width:50px'>
+                    Price 
+                </td >
+               			 
+                <td  style=' width:50px'>
+                  
+                </td>                                        
+            </tr>
+            <tr>
+                <td align=left style=' width:50px'>
+                   <label><?=$this->myform1->qty ?></label>
+                </td>
+                
+                <td align=left>
+           			 <?=$this->myform1->size ?>
+                </td>
+                
+                <td align=left>
+                    p
+                </td>
+                
+                <td>
+                    <a href="javascript:addRow('myTable')">Addanother</a>
+                </td>                                        
+            </tr>
+        </table>                                
+    </td>
+</tr>
+<tr>
+ 
+</tr>
+</table>
+
+<!--/*<div style="width:500px; height: auto;">
+<div align="left" style="font-size:20px">
+<label>Finalize your order</label>
+</div>
+
+
+<div style="width:500px;">
+<div style="float:left; width:50px;">
+<label>Qty</label>
+</div>
+<div style="float:left; width:50px;margin-left:50px">
+<label>Size</label>
+</div>
+<div style="width:50px;">
+<label>Price</label>
+</div>
+</div>
+
+
+<div style="width:500px;">
+<div style="float:left; width:50px;">
+<label><?=$this->myform1->qty ?></label>
+</div>
+<div style="float:left; width:50px; margin-left:50px">
+<label><?=$this->myform1->size ?></label>
+</div>
+<div style="width:50px;">
+<label>Branch </label>
+</div>
+</div>
+ 
+
+
+</div>
+
+<div style="border:0px solid #dbdbdb;border-radius:3px;width:500px;height:415px;display:none; margin-top:0px" id="tbl">
+               <TABLE id="dataTable"  width="406" border="0" align="left" cellpadding="0" cellspacing="0">
+                    <TR id="row">
+                    
+                        <TD width="100" valign="top">
+                                
+                        </TD>
+                        
+                    </TR>
+                    
+                     <tr id="row">
+                        <div id="song">
+                        
+                       </div>
+                       
+                       <div id="cap">
+                         
+                       </div>
+                       <div id="song1">
+                        
+                       </div>
+                      </tr> 
+                    
+                </TABLE>
+                
+                <div align="left" style="width:400px;">
+                <div style="float:left; margin-left:-50px;">
+                
+                 <button type="button"  style="height:30px;cursor:pointer;" onclick="showdiv('dataTable'); ">Add another</button>
+                
+                 </div>
+                 <div style=" margin-top:10px">
+                 
+                  <button type="button"  style="height:30px;cursor:pointer;" onclick="deleteRow('dataTable','row')">Remove last size</button>
+                 
+                  </div>
+                 </div>
+ 
+            </div>
+           
+<input type="hidden" name="imgname" id="imgname" value="0"/>
+<input type="hidden" name="caption" id="caption" value="0"/>
+
+
+<div align="left" style="width:500px; margin-top:10px;" id="out">
+<div style="float:left; margin-left:0px">
+
+ <button type="button"  style="height:30px;cursor:pointer;" onclick="showdiv('dataTable'); ">Add another</button>
+
+ </div>
+
+ </div>
+ 
+
+
+</div>
+
+<script>
+function showdiv(tableID)
+{ 
+if(document.getElementById('tbl').style.display='none')
+{
+	 document.getElementById('out').style.display='none'
+	 document.getElementById('tbl').style.display='block';
+}
+ 
+var table = document.getElementById(tableID);
+var rowCount = table.rows.length;
+var row = table.insertRow(rowCount);
+
+
+var imgid=document.getElementById('imgname').value;
+var cid=document.getElementById('caption').value;
+imgid=parseInt(imgid)+parseInt(1);
+cid=parseInt(cid)+parseInt(1);
+
+//document.getElementById('imgname7').className='textbox';
+//document.getElementById('imgname6').className='textbox';
+
+document.getElementById('imgname').value=imgid;
+document.getElementById('caption').value=cid;
+
+//var cell1 = row.insertCell(0);
+
+var cell0 = row.insertCell(0);
+var newdiv=document.createElement('input');
+newdiv.style.width = "50px";
+newdiv.style.margin = "0px";
+newdiv.placeholder = "1";
+
+
+var cell1 = row.insertCell(1);
+var newdiv5=document.createElement('select');
+newdiv5.style.width = "50px";
+newdiv5.style.margin = "2px";
+
+var cell2 = row.insertCell(2);
+var newdiv4=document.createElement('label');
+newdiv4.style.width = "50px";
+newdiv4.style.margin = "0px";
+newdiv4.style.marginLeft = "30px";
+//newdiv4.style.marginBottom = "30px";
+//newdiv4.placeholder = "Enter Address";
+cell2.innerHTML ='Branch';
+document.createElement('br');
+
+
+
+
+newdiv.setAttribute('id','song'+imgid);
+newdiv.setAttribute('name','song'+imgid);
+
+newdiv5.setAttribute('id','cap'+imgid);
+newdiv5.setAttribute('name','cap'+imgid);
+newdiv5.innerHTML='<option>S</option><br/><option>M</option><br/><option>L</option><br/><option>XL</option><br/><option>2XL</option><br/><option>3XL</option>';
+
+newdiv4.setAttribute('id','song1'+imgid);
+newdiv4.setAttribute('name','song1'+imgid);
+
+//cell3.innerHTML ='<br/>';
+//cell3.innerHTML ='<br/>';
+//cell3.innerHTML ='<p><b>Branch Details</b></p>';
+
+document.getElementById('song').appendChild(newdiv);
+
+
+document.getElementById('cap').appendChild(newdiv5);
+
+document.getElementById('song1').appendChild(newdiv4);
+
+
+cell0.appendChild(newdiv);
+cell1.appendChild(newdiv5);
+cell2.appendChild(newdiv4);
+
+
+
+}
+function deleteLine(object) {
+                var table = document.getElementsByTagName("myTable")[0];
+                var tBody = table.getElementsByTagName("tbody")[0];
+                var rows = tBody.getElementsByTagName("tr");
+
+                while (object.tagName != 'TR') {
+                    object = object.parentNode;
+                }
+                var row = rows[object.rowIndex];
+
+                tBody.removeChild(row);
+            }
+</script>
+<script>
+function deleteRow(tableID,row)  
+{   
+    // alert('hii');
+	  var table = document.getElementById(tableID);
+	  //var rowCount = table.rows.length;
+	  
+	  //document.getElementById(tableID).removeChild(document.getElementById(row));  
+	  table.removeChild(document.getElementById(row));
+	 // alert(rowCount);
+	 // var row = document.getElementById('row');  
+      //parentNode.removeChild(row);
+	  //tableID.parentNode.removeChild(row);
+	  
+} 
+</script>*/-->

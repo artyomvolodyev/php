@@ -1,0 +1,115 @@
+<div style="width:700px;" style="float:left;">
+
+	<div style="width:700px; float:left">
+    
+        <div style="margin-left:10px; margin-top:10px; margin-bottom:30px; float:left; width:500px;">
+        	<label class="myaccheading">Details<br /></label>
+            
+            <hr style="width:500px; color:#999;" align="left"/>
+           
+        <form method="post" action="<?=$this->url(array('controller'=>'payment', 'action'=>'savevalues', 'url'=>$this->url), 'default', true)?>">  
+          	 <div>
+               
+                   <div style="margin-top:10px">
+                   	  <label class="myaccsubtitles">First Name</label>
+                   </div>
+                   
+                   <div style="margin-top:5px;">
+                   	  <?=$this->myform->fname?>
+                   </div>
+                   
+                    <div style="margin-top:10px">
+                   		 <label class="myaccsubtitles">Last Name</label>
+                   </div>
+                   
+                    <div style="margin-top:5px;">
+                     	<?=$this->myform->lname?>
+                   </div>
+                
+                    <div style="margin-top:10px">
+                   		 <label class="myaccsubtitles">Email Id</label>
+                   </div>
+                   
+                    <div style="margin-top:5px;">
+                     	<?=$this->myform->emailid?>
+                   </div>
+                    
+                  
+             
+              
+                		 <div style="width:480px; height:30px; margin-top:10px;">     
+                       		 <div style="float:left; width:180px; font-family:Calibri; font-size:18px; color:#030;">
+                            <!--  <a href="<?=APPLICATION_URL?>payment/pay/url/<?=$this->sql[0]['url']?>" style="text-decoration:none;">-->
+                               <?=$this->myform->paypalchk?> 
+                             </div>
+                         </div>   
+                              
+                         <div style="padding-top:10px; width:450px; height:30px;">
+                         	<input type="submit" name="submit" value="Submit" class="nextbtn"> 
+                          
+                          </div>  
+                
+           </div>
+        </form>
+        
+        </div>
+        
+    </div>
+
+
+</div>
+
+
+<script type="text/javascript">
+
+function validfname()
+{ 
+  var flag=0;
+  
+if(document.getElementById("zipcode").value!="")
+ {
+  var name=document.getElementById("zipcode").value;
+  var alpha=/^[0-9]+$/;
+
+  if(!name.match(alpha)) 
+  {
+   document.getElementById('zip_code').style.display="block";
+   flag=1;
+  }
+  else
+  {
+   document.getElementById('zip_code').style.display="none";
+  
+  }
+ }
+	
+	if(flag==0)
+	return true;
+	else
+	return false;
+		
+}
+	
+	
+	
+   
+   function validformdata()
+	{ var flag=0;
+		if(document.getElementById('fir_name').style.display=='block')
+		{  
+			flag=1;
+			
+			return false;
+		}
+		if(document.getElementById('las_name').style.display=='block')
+		{ 
+			flag=1;
+			return false;
+		}
+		if(flag==0)
+		{
+			return true;
+		}
+	}
+
+</script>

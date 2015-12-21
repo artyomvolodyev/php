@@ -1,0 +1,58 @@
+<div class="mws-panel grid_8">
+                	<div class="mws-panel-header">
+                    	<span class="mws-i-24 i-check"><?=$this->pageTitle?></span>
+                    </div>
+                    <div class="mws-panel-body">
+                    	<form name="myform" id="mws-validate" action="" method="post" novalidate="novalidate" class="mws-form">
+                         
+                        	<div style="display:none;" class="mws-form-message error" id="mws-validate-error"></div>
+                        	<div class="mws-form-inline">
+                            	<div class="mws-form-row">
+                                	<label> Number of Today registered users :</label>
+                                	<div class="mws-form-item large">
+                                  <?php /*?>  <?php if(count($this->Data)>0) { ?><?php */?>
+                                    <label>	<?=$this->Data[0]['countu'];?></label>
+                                  <?php /*?> <?php  } 
+								   else { ?> <label> <?php echo "0"; } ?> </label><?php */?>
+                                    </div>
+                                </div>
+                                <div class="mws-form-row">
+                                	<label> Total number of registered users :</label>
+                                	<div class="mws-form-item large">
+                                    
+                                     <label>	<?=$this->Data1[0]['countt'];?></label>
+                                    
+                                    </div>
+                                </div>
+                                <div class="mws-form-row">
+                                	<label> Number of comments made :</label>
+                                	<div class="mws-form-item large">
+                                    
+                                    	 <label>	<?=$this->Data2[0]['countc'];?></label>
+                                         
+                                    </div>
+                                </div>
+                                <div class="mws-form-row">
+                                	<label> Number of images uploaded:</label>
+                                	<div class="mws-form-item large">
+                                    	 <label>	<?=$this->Data3[0]['countp'];?></label>
+                                    </div>
+                                </div>
+                                
+                            	
+                                
+                                <div class="mws-form-row">
+                                	<label>Number of votes per day:</label>
+                                	<div class="mws-form-item large">
+                              <label>	<?=$this->Data3[0]['countp'];?></label>
+                                    
+                                    </div>
+                                </div>
+                                
+                            	 
+                            	 
+                            </div>
+                            
+                        </form>
+                    </div>    	
+                </div>

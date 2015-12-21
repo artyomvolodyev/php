@@ -1,0 +1,332 @@
+<?php $db=new Db(); ?>
+<div class="mws-panel grid_8">
+                	<div class="mws-panel-header">
+                    	<span class="mws-i-24 i-table-1"><?=$this->pageHeading?></span>
+                    </div>
+                    <div class="mws-panel-body">
+                        <div class="mws-panel-toolbar top clearfix ">
+                        <ul>
+                   <li><a class="mws-ic-16 ic-accept" href="<?php echo $this->url(array('controller'=>'tshirt', 'action'=>'tshirtproduct'), 'default', true)?>" title="Add">Add</a></li>
+           			 <li><a class="mws-ic-16 ic-cross" href="javascript:void(0)" title="Delete" onclick="deleteitem()">Delete</a></li>
+                       
+                        </ul>
+                        </div>
+                        <table class="mws-datatable-fn mws-table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th><input type="checkbox" name="deletebcchk" id="deletebcchk" onclick="return checkall(this)" /></th>
+                                    <th >Front Image</th>
+                                    <th class="visible-desktop">Highl. Front</th>
+                                    <th class="visible-desktop">Shadow Front</th>
+                                    <th class="visible-desktop">Back Image</th>
+                                    <th class="visible-desktop">Highl. Back</th>
+                                    <th class="visible-desktop">Shadow Back</th>
+                                    <th>Title</th>
+                                    <th class="hidden-phone">Base Price</th>
+                                    <th class="visible-desktop">Shipping Price</th>
+                                    <th class="visible-desktop">Color(s)</th>
+                                    <th class="">Edit</th>
+                                    <th>Status</th>
+                                    <th class="visible-desktop">Order</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<?php
+						
+								
+					for($i=0;$i<count($this->sql);$i++)
+					{
+                        //$start++;
+                   if($this->sql[$i]['status']==1){ $image ='tick.png';  }
+                    if($this->sql[$i]['status']==0){ $image ='cross.png';  } 
+					$qur=$db->runquery("SELECT * FROM  ".TSHIRT_PRICE." where campagin_id=".$this->sql[$i]['t_cat_id']."");
+					?>
+
+                                    <tr class="gradeX" id="item_<?=$this->sql[$i]['t_cat_id'] ?>">
+                                        <td><?=$i+1;?></td>
+                                        <td>
+                                            <input name='check<?=$i;?>' id='check<?=$i+1;?>' value='<?=$this->sql[$i]['t_cat_id'];?>'
+                                                onchange='return check_check("bcdel","deletebcchk")' type='checkbox'>
+                                            <script>
+                                                $('#bcdel').html(''); document.getElementById('deletebcchk').checked = false;
+                                            </script>
+                                        </td>
+                                        <td align="center" class="center">
+											<?php  $img=$this->sql[$i]['image'];
+                                            
+                                            if($img!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/front/'.$img) )
+                                            { 
+                                            ?>
+                                            <img alt="<?=$this->sql[$i]['image']?>" src="<?=IMAGES_URL?>tshirtdesigns/front/<?=$img?>" height="45px;" width="45px;" border="0">
+                                            <?php 
+                                            }
+                                            else
+                                            {
+                                            ?>
+                                            <img alt="<?=$this->sql[$i]['image']?>" src="<?=IMAGES_URL?>coupon_img.png" height="45px;" width="45px;" border="0">
+                                            <?php 
+                                            }
+                                            ?>
+                                        
+                                        </td>
+                                        <td align="center" class="center visible-desktop">
+											<?php  $imgFH=$this->sql[$i]['frontHeigh'];
+                                            
+                                            if($imgFH!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/front/'.$imgFH) )
+                                            { 
+                                            ?>
+                                            <img alt="<?=$this->sql[$i]['frontHeigh']?>" src="<?=IMAGES_URL?>tshirtdesigns/front/<?=$imgFH?>" height="45px;" width="45px;" border="0">
+                                            <?php 
+                                            }
+                                            else
+                                            {
+                                            ?>
+                                            <img alt="<?=$this->sql[$i]['frontHeigh']?>" src="<?=IMAGES_URL?>coupon_img.png" height="45px;" width="45px;" border="0">
+                                            <?php 
+                                            }
+                                            ?>
+                                        
+                                        </td>
+                                        
+                                         <td align="center" class="center visible-desktop">
+											<?php  $imgFS=$this->sql[$i]['frontShadow'];
+                                            
+                                            if($imgFS!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/front/'.$imgFS) )
+                                            { 
+                                            ?>
+                                            <img alt="<?=$this->sql[$i]['frontShadow']?>" src="<?=IMAGES_URL?>tshirtdesigns/front/<?=$imgFS?>" height="45px;" width="45px;" border="0">
+                                            <?php 
+                                            }
+                                            else
+                                            {
+                                            ?>
+                                            <img alt="<?=$this->sql[$i]['frontShadow']?>" src="<?=IMAGES_URL?>coupon_img.png" height="45px;" width="45px;" border="0">
+                                            <?php 
+                                            }
+                                            ?>
+                                        
+                                        </td>
+                                         <td align="center" class="center visible-desktop">
+                                        	<?php  
+											if($this->sql[$i]['totalimage']==2 &&  $this->sql[$i]['backimage']!="")
+											{
+											 ?>
+                                      
+										
+											<?php $backimage=$this->sql[$i]['backimage'];
+											$backimageH=$this->sql[$i]['backHeigh'];
+											$backimageS=$this->sql[$i]['backShadow'];
+											?>
+                                           
+                                               <?php
+                                            
+                                            if($backimage!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/back/'.$backimage) )
+                                            { 
+                                            ?>  
+                                            <img alt="<?=$this->sql[$i]['backimage']?>" src="<?=IMAGES_URL?>tshirtdesigns/back/<?=$backimage?>" height="45px;" width="45px;" border="0">
+                                             
+											<?php 
+                                            }
+                                            else
+                                            {
+                                            ?>
+                                            
+                                            <img alt="<?=$this->sql[$i]['backimage']?>" src="<?=IMAGES_URL?>coupon_img.png" height="45px;" width="45px;" border="0">
+                                           
+                                            <?php 
+                                            }
+											} else
+											echo "Not Added";
+                                            ?>
+											
+                                            </td>
+                                            <td align="center" class="center visible-desktop">
+                                            <?php 
+											if($this->sql[$i]['totalimage']==2 &&  $this->sql[$i]['backimage']!="")
+											{
+											 
+											  if($backimageH!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/back/'.$backimageH) )
+                                            { 
+                                            ?> 
+                                            <img alt="<?=$backimageH?>" src="<?=IMAGES_URL?>tshirtdesigns/back/<?=$backimageH?>" height="45px;" width="45px;" border="0">
+                                           
+											<?php 
+                                            }
+                                            else
+                                            {
+                                            ?>
+                                            
+                                            <img alt="<?=$backimageH?>" src="<?=IMAGES_URL?>coupon_img.png" height="45px;" width="45px;" border="0">
+                                             
+                                            <?php 
+                                            }
+											}else
+											echo "not added";
+											?>
+                                            </td>
+                                            <td align="center" class="center visible-desktop">
+											<?php 	if($this->sql[$i]['totalimage']==2 &&  $this->sql[$i]['backimage']!="")
+											{
+											  if($backimageS!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/back/'.$backimageS) )
+                                            { 
+                                            ?>  
+                                            <img alt="<?=$backimageS?>" src="<?=IMAGES_URL?>tshirtdesigns/back/<?=$backimageS?>" height="45px;" width="45px;" border="0">
+                                              
+											<?php 
+                                            }
+                                            else
+                                            {
+                                            ?>
+                                           
+                                            <img alt="<?=$backimageS?>" src="<?=IMAGES_URL?>coupon_img.png" height="45px;" width="45px;" border="0">
+                                             
+                                            <?php 
+                                            }
+											}else
+											echo "not added";
+											?>
+                                        </td>
+
+                                         <td><?=$this->sql[$i]['name']?></td>
+                                         <td class="hidden-phone"><?=$qur[0]['base_price']?></td>
+                                         <td class="visible-desktop"><?=$qur[0]['shipping_price']?></td>
+                                         <td class="visible-desktop"><?php
+                                            $colorVersions = explode(',', $this->sql[$i]['colorcode']);
+                                            foreach($colorVersions AS $cVCtr => $colorVersion){
+                                                $cV = trim($colorVersion);
+                                                $r = hexdec(substr($cV,0,2));
+                                                $g = hexdec(substr($cV,2,2));
+                                                $b = hexdec(substr($cV,4,2));
+                                                if($r + $g + $b > 382){
+                                                    $fCol = '#000';
+                                                }else{
+                                                    $fCol = '#FFF';
+                                                }
+                                                ?><span style="font-family:'Consolas', 'Bitstream Vera Sans Mono', 'Courier New', 'Courier', 'monospace';background-color:#<?php echo $cV; ?>;margin:2px;padding:3px;color:<?php echo $fCol;?>"><?php echo $cV; ?></span><?php
+                                                if(($cVCtr+1) >= 1 && ($cVCtr+1)%1==0){
+                                                    ?><br/><?php
+                                                }
+                                            }?>
+                                        </td>
+                                        <td class="center">
+											<a href="<?=APPLICATION_URL_ADMIN?>tshirt/tshirtproduct/id/<?=$this->sql[$i]['t_cat_id']?>">
+												<img src="<?=APPLICATION_URL_ADMIN;?>css/icons/16/edit.png" border='0' />
+											</a>
+                                        </td> 
+                                        
+                                        <td>
+											<a href="<?=APPLICATION_URL_ADMIN?>tshirt/changeproductstatus/Id/<?=$this->sql[$i]['t_cat_id']?>/Status/<?=$this->sql[$i]['status']?>"> 
+											<?php 
+		
+											   if($this->sql[$i]['status']==1)
+											   {
+												   $status=$this->sql[$i]['status'];
+												 ?>
+												
+												   <img src=<?=IMAGES_URL_ADMIN?>tick.gif onClick="f1('<?=$this->sql[$i]['id']?>','<?= $status?>')" />
+												  
+													<?php
+												}
+												if($this->sql[$i]['status']==0)
+												{
+													$status=$this->sql[$i]['status'];
+													 ?>
+													  <img src="<?=IMAGES_URL_ADMIN?>cross.png" onClick="f1('<?=$this->sql[$i]['id']?>','<?= $status?>')"/>
+													  <?php  
+												} 
+											?>
+										   </a>   
+										</td>
+										<td class="t_sort_order"><?=$this->sql[$i]['t_sort']; ?></td>
+	                                </tr>
+									<?php
+								}
+								?>
+                                
+                                 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Panels End -->
+            </div>
+
+            
+<script>
+function deleteitem()
+{
+	var totInput=document.getElementsByTagName('input');
+	var r="";
+	for(var i=0;i<totInput.length;i++)
+	{
+			if(totInput[i].type=="checkbox")
+			{
+				if(totInput[i].checked==true && totInput[i].name!='deletebcchk')
+				{
+					r+=totInput[i].value+"|";
+				}
+			}
+	}
+	if(r=="")
+	{
+		alert('Please choose a record to delete.');
+	}
+	else
+	{
+		var confirmation = confirm("Are you sure want to delete ?");
+		if(confirmation!=true){
+		return false;
+		} 
+		$.ajax({ url: "<?=APPLICATION_URL_ADMIN."tshirt/deletenewproduct"?>",
+			type: "POST",
+			data: ({Id:r}),
+			success: function(data){   
+				window.location.href=window.location.href;
+			}
+			});	
+		
+	}
+		
+
+	
+}
+
+function checkall(thisid)
+{
+  for(var i=1;document.getElementById('check'+i);i++)
+  	{
+  		if(document.getElementById(thisid.id).checked==true){document.getElementById('check'+i).checked = true;}
+  		if(document.getElementById(thisid.id).checked==false){document.getElementById('check'+i).checked = false;}
+	}	
+}
+
+$(function() {
+    $( "tbody" ).sortable({
+      connectWith: ".gradeX",
+	  cursor: "move",
+	  stop: function(event,ui) {
+		 var order = $(this).sortable("serialize");
+		 
+		 
+		 console.log(order);
+		 $.ajax({url: "<?=APPLICATION_URL_ADMIN."tshirt/updaterecordslistings"?>",
+			type:"POST",
+			data:order,
+			success: function(data){   
+				window.location.href=window.location.href;
+			}
+			});
+			
+			
+		 } 
+    }).disableSelection();
+  
+});
+</script>
+
+            
+            
+            
+            

@@ -1,0 +1,198 @@
+<div class="mws-panel grid_8">
+                	<div class="mws-panel-header">
+                    	<span class="mws-i-24 i-check"><?=$this->pageHeading?></span>
+                    </div>
+                    <div class="mws-panel-body">
+                         <form name="myform" id="myform" class="mws-form" action="<?php echo $this->url(array('controller'=>'users', 'action'=>'updateuser','userId'=>$this->userId), 'default', true)?>" method="post" enctype="multipart/form-data">
+						 
+
+                        	<div style="display:none;" class="mws-form-message error" id="mws-validate-error"></div>
+                        	<div class="mws-form-inline">
+                            	 <div class="mws-form-row" style="color:#333; font-weight:bold">
+                                	<label>Your Details:</label>
+                                </div>
+                                <div class="mws-form-row">
+                                	<label>Name  <span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->name?>
+                                    </div>
+                                </div>
+                               <!-- <div class="mws-form-row">
+                                	<label>Password  <span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->password?>
+                                    </div>
+                                </div>-->
+                            	<div class="mws-form-row">
+                                	<label>Artist Name  <span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->artist_name?>
+                                    </div>
+                                </div>
+                                <div class="mws-form-row">
+                                	<label>Last Name <span class="error2">*</span> </label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->last_name?>
+                                    </div>
+                                </div>
+                                 <div class="mws-form-row">
+                                	<label>Date Of Birth  <span class="error2">*</span></label>
+                                       
+                                	<div class="mws-form-item large">
+                                    <input type="text" name="dob" id="dob" style="background: url('<?=APPLICATION_URL?>/images/icon.png') no-repeat scroll left -874px transparent;
+    display: block; padding: 5px 35px 0 50; border:none; text-align:right; width:120px; cursor:pointer;  color:#000000" <?php if($_REQUEST['dob']!=""){ ?>  value="<?=$_REQUEST['dob'];?>" <?php } else { ?>
+    value="<?= $this->date1; ?>"  <?php } ?> />
+                                    	<?php /*?><?=$this->myform->dob?><?php */?>
+                                   </div>
+                                </div>
+                                 <div class="mws-form-row">
+                                	<label>Gender  <span class="error2">*</span> </label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->gender?>
+                                    </div>
+                                </div>
+                               
+                                <div class="mws-form-row">
+                                	<label>Location <span class="error2">*</span> </label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->location?>
+                                    </div>
+                                </div>
+                           
+                                <div class="mws-form-row">
+                                	<label>Country <span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                    <?=$this->myform->country?>
+                                    </div>
+                                </div>
+                                 
+                                 <div class="mws-form-row">
+                                	<label>Occupation <span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                    <?=$this->myform->occupation?>
+                                    </div>
+                                </div>
+                                
+                                 <div class="mws-form-row">
+                                	<label>About Me <span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                    <?=$this->myform->about_me?>
+                                    </div>
+                                </div>
+                                
+                                 <div class="mws-form-row">
+                                	<label>Blog_URL <span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                    <?=$this->myform->blog_url?>
+                                    </div>
+                                </div>
+                                
+                                 <div class="mws-form-row">
+                                	<label>Website_URL <span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                    <?=$this->myform->website_url?>
+                                    </div>
+                                </div>
+                                
+                                <div class="mws-form-row">
+                                	<label>Profile Image:  <span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                     <?=$this->myform->user_pic?> &nbsp;</td>
+
+                                   <img src="<?=IMAGES_URL?>profileimgs/<?=$this->profileImage;?>" width="100" height="100" />
+                                    <?=$this->myform->old_profile_image?>
+                                    </div>
+                                </div>
+                                
+                               <div class="mws-form-row">
+                                	<label>Change Password:</label>
+                               <div>
+                                <input type="checkbox" name="changePass" id="changePass" onclick="showPassDiv(this);" value="1" <?php if($_REQUEST['changePass']==1) { ?> checked="checked" onload="showPassDiv(this);" 
+                                
+   <?php } else {} ?>  />
+                            	</div>
+                            </div>
+                          <?php if($_REQUEST['changePass']==1) { ?>
+                                 <div class="mws-form-row">
+                                	<label>New Password:</label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->npassword?>
+                                    </div>
+                                </div>
+                                 <div class="mws-form-row">
+                                	<label>Confirm Password:  </label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->cpassword?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php
+						  } else
+						  ?>
+                          <div id="ChangePassDiv" style="display:none;">
+                            	 <!--<div class="mws-form-row">
+                                	<label>Old Password:</label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->password?>
+                                    </div>
+                                </div>-->
+                                 <div class="mws-form-row">
+                                	<label>New Password:</label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->npassword?>
+                                    </div>
+                                </div>
+                                 <div class="mws-form-row">
+                                	<label>Confirm Password:  </label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->cpassword?>
+                                    </div>
+                                </div>
+                            </div>
+                             
+                            <div class="mws-button-row">
+                            	<input type="submit" name="Update Profile" id="Update Profile" value="Update Profile" class="mws-button red">
+                            </div>
+                            </div>
+                        </form>
+                    </div>    	
+                </div>
+ <script>
+ $(function(){
+ $('#dob').datepicker({
+ changeMonth: true,
+ changeYear: true,
+ dateFormat: 'yy/mm/dd',
+ });
+ });
+ </script>
+<script type="text/javascript">
+function show()
+{
+
+  document.getElementById('password').style.display='block'	;
+  document.getElementById('msg').style.display='none';
+}
+</script>
+<script language="javascript">
+function ChangeCountry()
+{
+	document.getElementById('DisplayCountry').style.display="none";
+	document.getElementById('ChooseCountry').style.display="block";
+}
+</script>
+<script language="javascript">
+function showPassDiv(obj)
+{
+	if(obj.checked==true)
+	{
+		document.getElementById('ChangePassDiv').style.display="block";
+	}
+	else
+	{
+		document.getElementById('ChangePassDiv').style.display="none";	
+	}
+}
+</script>
+
+                

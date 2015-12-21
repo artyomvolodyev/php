@@ -1,0 +1,98 @@
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>style.css" />
+<!--<script src="--><?//=APPLICATION_URL?><!--js/bootstrap.min.js" type="text/javascript"></script>-->
+
+
+
+<div style="position: relative; bottom: 570px; left: 480px; width: 400px;">
+<?php if($this->testing=="") { ?>
+<div id="loginas" class="work_section_two" style="display:block">
+<?php } else {	?>
+<div id="loginas" class="work_section_two" style="display:none">
+<?php } ?>
+<form method="post" name="login" action="<?=$this->url(array('controller'=>'login', 'action'=>'logined','l'=>$this->l), 'default', true)?>">
+    <div class="track2">
+        <p>LOGIN </p>
+
+        <h1>Email Address</h1>
+        <?=$this->myform->emailid?>
+
+        <h1>Password</h1>
+        <?=$this->myform->pass?>
+
+
+		<a href="<?=APPLICATION_URL?>login/forgotpassword" style="text-decoration:none;">
+            <h2  style="cursor:pointer;"> Forgot your password</h2>
+        </a>
+
+        <button>SIGN IN NOW</button>
+<!--		<input type="submit" name="loginbtn" id="loginbtn" value="Sign In Now" class="accbutton">-->
+		<label onclick="opennewdiv();"><a href="#"><h3>Or create an Account</h3></a></label>
+
+        </div>
+</form>
+</div>
+</div>
+
+
+<?php if($this->testing!="") { ?>
+<div id="signupas" class="work_section_two  mainprofile" style="display:block">
+<?php } else { ?>
+<div id="signupas" style="display:none" class="work_section_two  mainprofile">
+<?php } ?>
+<form method="post" name="signup" action="<?=$this->url(array('controller'=>'login', 'action'=>'signuped','l'=>$this->l), 'default', true)?>" style="position: relative; left: 500px">
+    <div class="top10pxmargin " style="margin-top:0px;">
+        <label class="myaccsubtitles">Public Name</label>
+    </div>
+    <div class="top5pxmargin">
+        <?=$this->myformsignup->publicname?>
+    </div>
+
+	<div class="top10pxmargin ">
+		<label class="myaccsubtitles">Email Address</label>
+	</div>
+	<div class="top5pxmargin ">
+		<?=$this->myformsignup->signupemailid?>
+	</div>
+
+	<div class="top10pxmargin ">
+		<label class="myaccsubtitles">Password</label>
+	</div>
+	<div class="top5pxmargin ">
+		<?=$this->myformsignup->signuppass?>
+	</div>
+
+	<div class="top10pxmargin ">
+		<label class="myaccsubtitles">Confirm Password</label>
+	</div>
+	<div class="top5pxmargin ">
+		<?=$this->myformsignup->signupcnfrmpass?>
+	</div>
+
+	<div class="top10pxmargin " style="padding-bottom: 70px">
+		<input type="submit" name="loginbtn" style="width:240px" id="loginbtn" value="Create Your Account" class="accbutton">
+		<label style="color:#006853; font-size:16px; cursor:pointer;vertical-align:middle;" onclick="opennewdiv();">or Already Have an Account</label>
+
+	</div>
+
+</form>
+</div>
+
+
+<script type="text/javascript">
+function opennewdiv()
+{
+	if(document.getElementById('loginas').style.display=="block")
+	{
+					document.getElementById('signupas').style.display="block";
+					document.getElementById('how_in_right').innerHTML='Create New Account';
+					document.getElementById('loginas').style.display="none";
+	}
+	else
+	{
+	document.getElementById('signupas').style.display="none";
+	document.getElementById('loginas').style.display="block";
+	document.getElementById('how_in_right').innerHTML='Login';
+	}
+}
+</script>

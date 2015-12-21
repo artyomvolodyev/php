@@ -1,0 +1,19 @@
+@media only screen and (min-width: 240px) and (max-width: 319px) {
+ 
+
+/*--------------------------------------*/
+
+/*--------------------------------------*/
+
+.zerogrid{width:340px;}
+header{display:block;}
+.logo_main{display:none;}
+#nav_bg	{ background:none;}
+.bot_signup a { padding-bottom:20px;}
+.footer_logo{padding-right:0px;}
+.footer_social{ display:-moz-inline-grid; float:none;}
+.footer_social img { margin-bottom:12px;}
+nav{width:100%; background:none;}
+.menu{display:none !important;}
+.minimenu{display:block !important;}
+nav{ width:auto !important;}

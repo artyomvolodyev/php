@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<cross-domain-policy>
+    <allow-access-from domain="*"/>
+</cross-domain-policy>
+
+<config>
+<settings>
+<musicFolder>demos/mp3_player/mp3/</musicFolder>
+<picturesFolder>demos/mp3_player/pics/</picturesFolder>
+<showPlaylist>true</showPlaylist>
+<defaultCover>
+<show>false</show>
+<width>100</width>
+<imageURL>cover.jpg</imageURL>
+</defaultCover>
+<logo>
+<show>false</show>
+<imageURL>logo.png</imageURL>
+<href>http://www.spencer-tech.com</href>
+</logo>
+<button>
+<show>false</show>
+<text/>
+<href/>
+</button>
+<showBtnHtml>false</showBtnHtml>
+<showBtnInfo>false</showBtnInfo>
+</settings>
+<song>
+<artist>Artist #1</artist>
+<title>Title #1</title>
+<length>253</length>
+<fileName>1.mp3</fileName>
+<cover>cover1.jpg</cover>
+</song>
+<song>
+<artist>Artist #2</artist>
+<title>Title #2</title>
+<length>209</length>
+<fileName>2.mp3</fileName>
+<cover>cover2.jpg</cover>
+</song>
+</config>

@@ -1,0 +1,593 @@
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js">
+stLight.options({publisher: "3d850bbe-5c79-4a6c-a25c-2a90a451ef5e", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+
+
+
+
+<?php
+global $mySession;
+$db=new Db();
+
+$campstatus= $this->sql[0]['campaign_status'];
+
+
+   $row1=$db->runQuery("select DATE_ADD('".$this->sql[0]['launch_date']."', INTERVAL '".$this->sql[0]['campaign_length']."' DAY) AS nextDate,DATE_ADD('".$this->sql[0]['launch_date']."', INTERVAL -1 DAY) AS prevDate");
+		
+		$enddate=$row1[0]['nextDate'];
+              
+		$newdat2=explode(" ",$enddate);
+		$newdat3=explode("-",$newdat2[0]);                            // comes in Y-M-D format
+		$newdat4=$newdat3[2]."/".$newdat3[1]."/".$newdat3[0];                // D/m/Y format
+		//$this->view->newdat4=$newdat4;
+		//echo "ended on ".$newdat4;  die;
+		
+
+	$diff = strtotime($enddate) - strtotime(date('Y-m-d H:i:s'));	
+	
+		$day_difference = floor($diff / (60*60*24));
+	
+		if($day_difference>0)
+			{	
+				 $years = floor($diff / (365*60*60*24));
+ 				 $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+				 $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+ 				 $hours = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24- $days* 60*60*24)/(60*60));
+			}
+			
+
+?>
+
+<div style="width:1000px; height:auto; clear:both;">
+	
+    <?php
+	 
+	if($this->sql!="" and count($this->sql)>0)
+	{
+	?>
+         <div style="width:1000px; height:10px;">
+         </div>
+     
+  <div style="width:550px; height:650px; float:left;">  
+                   
+      <div style="font-family:Tahoma; font-size:34px; color:#00F; width:500px; height:70px;">
+               
+               <div align="left" style=" width:500px; height:35px; font-family:Corbel; float:left; font-size:30px; color:#333333;">    		
+               	<b>	<?=$this->sql[0]['title']?> </b>
+               </div>
+               
+               <div align="right" style="width:100px; height:20px;">
+               		
+                    
+                	<!--<span class='st_facebook_hcount' displayText='Facebook'></span>
+                    <span class='st_twitter_hcount' displayText='Tweet'></span>
+                    <span class='st_googleplus_hcount' displayText='Google +'></span>-->
+                    
+               </div>
+               
+               <hr style="width:960px; color:#999;" align="left"/>
+      </div>
+      		   
+               <div style="width:1000px; height:10px;">
+               </div>
+                   
+     <div id="front_i" style="width:450px; height:550px;position:absolute;display:block;">
+     	
+        	<img src="<?=IMAGES_URL?>designtee.png"  />   
+     </div>
+     
+      <div id="back_i" style="width:450px; height:550px;position:absolute;display:none;">
+     	
+        	<img src="<?=IMAGES_URL?>backtee.png"  />   
+     </div>
+     
+     <div align="center" style="width:450px;height:20px; font-family:Calibri; font-size:18px; color:#0099CC;position:absolute;margin-top:550px;">
+     		<span onclick="showtee();" style="cursor:pointer;">front</span>/<span  onclick="showtee1();" style="cursor:pointer;">back</span>
+     </div>
+ 
+ </div>
+     
+         <div style="height:700px; width:10px; float:left;">
+         </div>
+     
+     <div style="width:400px; height:auto; float:left;">
+     						
+                           <div style="width:400px; height:100px;">
+                           	
+                            	<span class='st_facebook_hcount' displayText='Facebook'></span>
+                                <span class='st_twitter_hcount' displayText='Tweet'></span>
+                                <span class='st_googleplus_hcount' displayText='Google +'></span>
+                                
+        				   </div> 
+                            
+            <div align="left" style="width:400px; height:auto; margin-top:10px; ">
+            		
+                            <div style="height:auto; width:10px; float:left">
+                            </div>
+                    
+                    
+                   <div style="font-family:Tahoma; font-size:20px; color:#666; width:380px; height:40px;">
+                   		About This
+                      
+                       <div style="width:380px; height:2px;">
+                         <hr style="width:350px; color:#999;" align="left"/>
+                       </div>
+                   </div>
+                   
+                   <div style="font-family:Tahoma; color:#030; width:380px; font-size:12px;">
+                   <table width="100%" cellpadding="0" cellspacing="0">
+                   <tr>
+                   <td align="left" valign="top"><?=$this->sql[0]['description']?></td>
+                   </tr>
+                   </table>
+                   </div>
+                   
+                           <div style="width:300px; height:20px;">
+                           </div>
+            </div>
+            
+          
+            
+           
+            <div align="left" style="width:340px; height:80px; background-image:url(<?=IMAGES_URL?>buynow.png); background-repeat:no-repeat;">
+                  
+                 		<div style="width:60px; height:80px; float:left;">
+                        </div>
+                  
+                  <div style="width:40px; height:20px; padding-top:20px; font-family:Calibri; font-size:28px; color:#000;float:left;">
+                       $<?=$this->sql[0]['selling_price']?>
+                  </div>
+                  
+                  <div style="width:150px; margin-left:20px; padding-top:10px; height:50px; float:left;">
+                  		 <?php
+					   if($mySession->TeeLoggedID!="" || $day_difference==0)
+					   {
+					   ?>
+                      	 	<input type="button" name="button" value="Buy Now" class="buybtn" /> 
+                       <?php
+					   }
+					   else
+					   {
+						   ?>
+                                <a id="edit1"  href="#inline1" style="font-size:24px; color:#923000; text-decoration:none;">
+                                <!--<a href="<?=APPLICATION_URL?>payment/show" style="text-decoration:none;"> -->
+                                	<input type="submit" name="submit" value="Buy Now" class="buybtn" /> 
+                                </a>
+                            <?php
+					   }
+					   ?>
+                  </div>
+                  
+            </div>
+            
+        
+     		<div align="right" style="width:340px; height:30px; padding-top:5px;">
+            	
+                	  <a id="edit2"  href="#inline2" style="font-size:18px; color:#06F; text-decoration:none;">Size info</a>
+                    
+            </div>
+                   
+                        
+ 
+  <div align="left" style="width:380px; height:130px; float:left; background-color:#CCC; margin-left:10px;">
+            
+                                    <div style="width:10px; height:150px; float:left;">
+                                    </div>
+                            	
+                            
+                            <div style="width:350px; height:40px; margin-top:8px;">
+                                    	
+                                   <?php
+								      if($campstatus!=0)
+									 {
+								   ?>   
+                                        <div align="center" style="font-family:'Arial'; font-size:17px; color:#606060; height:20px; width:370px;">
+                                        	<b>The design will only print if reached its goal!</b>
+                                        </div>
+                                        <div align="center" style="font-family:'Arial'; font-size:14px; color:#606060; font-weight:normal; width:350px; height:20px;">
+                                        	<?=$this->sql[0]['sold'] ?> shirts were reserved towards a goal of  <?=$this->sql[0]['goal'] ?>
+                                        </div>
+                                        <?php
+									 }
+									 if($this->sql[0]['sold']!= $this->sql[0]['goal'] && $campstatus==0)
+									 {
+										 ?>
+                                        <div align="center" style="font-family:'Arial'; font-size:17px; color:#606060; height:20px; width:370px;">
+                                        	<b>This campaign din't reached its goal!</b>
+                                        </div>
+                                        <div align="center" style="font-family:'Arial'; font-size:14px; color:#606060; font-weight:normal; width:350px; height:20px;">
+                                        	<?=$this->sql[0]['sold'] ?> shirts were reserved towards a goal of  <?=$this->sql[0]['goal']?>
+                                        </div>
+										 <?php
+									 }
+									  if($this->sql[0]['sold']== $this->sql[0]['goal'] && $campstatus==0)
+									 {
+										 ?>
+                                         <div align="center" style="font-family:'Arial'; font-size:17px; color:#606060; height:20px; width:370px;">
+                                        	<b>This campaign reached its goal!</b>
+                                        </div>
+                                        <div align="center" style="font-family:'Arial'; font-size:14px; color:#606060; font-weight:normal; width:350px; height:20px;">
+                                        	<?=$this->sql[0]['sold'] ?> shirts were reserved towards a goal of  <?=$this->sql[0]['goal']?>
+                                        </div>
+                                         <?php
+									 }
+									 ?>
+                             </div>
+       	<?php $s=$this->sql[0]['sold']; $g=$this->sql[0]['goal']; @$w=($s/$g)*100; //echo $w ;  ?>                                 
+                                 	
+                                    <div style="width:350px; height:10px;">
+                                    </div>
+                                    
+                            <div style="width:<?=@$w?>%;height:8px;border-radius:8px; ">
+                            	<div align="center" style="height:8px; width:<?=@$w?>%; border-radius:8px;background-color:#2a8eab">
+                                </div>
+                            </div>
+                                    
+                                    
+                                    <div style="width:350px; height:20px;">
+                                    </div>
+                             
+                                    
+                              <div align="center" style="width:350px; height:20px;">
+                                    	<div style="width:15px; height:15px; float:left;">
+                                    	   <img src="<?=IMAGES_URL?>timerclock.png" height="20" width="20" />
+                                        </div>
+                                        <div style="float:left; width:10px; height:10px;">
+                                        </div>
+                                    	
+                                   <?php
+								   
+														$row1=$db->runQuery("select DATE_ADD('".$value['launch_date']."', INTERVAL '".$value['campaign_length']."' DAY) AS nextDate,DATE_ADD('".$value['launch_date']."', INTERVAL -1 DAY) AS prevDate");
+														//echo "...launch...".$value['launch_date'];
+														//echo $value['campaign_length'];
+														//echo "..End..".$enddate=$row1[0]['nextDate'];
+														$enddate=$row1[0]['nextDate'];
+														$newdat2=explode(" ",$enddate);// function breaks string into ARRAY
+														$newdat3=explode("-",$newdat2[0]);                            // comes in Y-M-D format
+														$newdat4=$newdat3[2]."/".$newdat3[1]."/".$newdat3[0];                // D/m/Y format
+														//$this->view->newdat4=$newdat4;
+														
+														$diff = strtotime($enddate) - strtotime(date('Y-m-d H:i:s'));	
+														
+														$day_difference = floor($diff / (60*60*24));
+														$hours=	$day_difference*24;													
+														
+														
+														//echo "............day diffrenc is:".$day_difference; 
+														//echo "...........end date is:".$enddate;
+														//echo "..........end date is:".$newdat4;
+														//echo "...........hours is : ".$hours;die;
+								    if($day_difference>0)
+									 {
+								   ?>   
+                                      
+                                       <div style="font-family:'Arial'; font-size:18px; color:#606060; font-weight:normal;">
+                                        	 <?=$day_difference?> days and <?=$hours?> hours left.
+                                        </div>
+                                        <?php
+									 }
+									 else
+									 {
+									 ?>
+                                     	<div style="font-family:'Arial'; font-size:18px; color:#606060; font-weight:normal;">
+                                        	This campaign ended on <?=$newdat4?>
+                                        </div>
+                                     <?php
+									 }
+									 ?>
+                                     
+                              </div>
+                                    <!--<img src="images/teebar.png" />-->
+        </div>
+            
+     </div>
+     
+     <?php
+	}
+	else
+	{
+	 ?>
+    
+        	<div align="center" style="background-color:#CCC; width:600px; height:150px; border:#666 solid 1px; border-radius:5px; margin-bottom:70px;">
+        	
+                <div align="left" style="margin-left:10px; padding-bottom:5px;">
+
+           
+	<label style="font-family:Corbel; font-size:26px; color:#030; ">
+       The URL does not exists.
+            </label>
+
+           </div>
+
+     </div>
+  
+	 <?php
+	}
+	 ?>
+
+</div>
+  
+
+   <!--  -----------------------------------------payment div --------------------------------------------------------- -->
+                  <?php  $price=$this->sql[0]['selling_price']; 
+				  ?>
+                  
+                     
+                        <div id="inline1" style="display:none;">
+                        	
+  <form method="post" action="<?=$this->url(array('controller'=>'payment', 'action'=>'register','url'=>$this->sql[0]['url']), 'default', true)?>">   
+                                <table style="border:0px solid; width:500px" cellpadding="0" cellspacing="0">
+                                    <tr align="left">
+                                      <div align="left" style="font-size:24px; font-family:Calibri; color:#0000CC">
+                                                    Finalize your order
+                                                </div>
+                                    </tr>
+                                <tr>
+                                 <td>
+      
+        <table id="myTable"  style="border:0px solid; width:500px" cellpadding="0" cellspacing="0" border="0">
+           <tr>
+                <td align=left  style='width:50px;  padding-left:20px;'>
+                    Qty
+                </td>
+               
+                <td style='width:50px; padding-left:20px;'>
+                    Size 
+                </td>
+                
+                <td  style='width:50px;padding-left:20px;'>
+                    Price 
+                </td >
+               		 <td  style='width:50px'>
+                  
+                </td>  	 
+                                                      
+            </tr>
+            <tr>
+                <td align=left style="width:50px; padding-left:20px;">
+                   <label><?=$this->myform1->qty ?></label>
+                </td>
+                
+                
+                
+                <td align=left style="width:50px; padding-left:20px;">
+           			 <?=$this->myform1->size ?>
+                </td>
+                
+               
+                <td align=left style='width:50px; padding-left:50px;'>
+                    <?=$price?>
+                </td>
+             
+             <input type="hidden" id="countdiv" name="countdiv" value="0" />
+             
+                <td style="width:150px;">
+                    <a href="javascript:addRow('myTable')" style="text-decoration:none; font-family:Calibri; font-size:18px; color:#030;">Add Another Size</a>
+                </td>                                        
+            </tr>
+        </table> 
+        
+                                 
+    </td>
+</tr>
+<tr>
+ 
+</tr>
+</table>
+
+
+                               
+                                <div style="width:480px; height:30px; margin-top:10px;"> 
+                                	<!-- <a href="<?=APPLICATION_URL?>payment/register/url/<?=$this->sql[0]['url']?>" style="text-decoration:none;">-->
+                                		<input type="submit" value="Checkout" name="Checkout" class="addanother">
+                              		<!--</a>-->
+                                </div>
+                                
+                                </form>
+                           <!--<div style="width:480px; height:30px; margin-top:10px;">     
+                       		 <div style="float:left; width:150px;">
+                              <a href="<?=APPLICATION_URL?>payment/pay/url/<?=$this->sql[0]['url']?>" style="text-decoration:none;">
+                                <button type="button" style="background-color:#000;color:#FFFFFF; height:30px;cursor:pointer;">Pay With PayPal</button>
+                              </a>
+                             </div>
+                            
+                            <div style="float:left; width:150px;">
+                                <a href="<?=APPLICATION_URL?>payment/index/url/<?=$this->sql[0]['url']?>" style="text-decoration:none;">
+                                 <input type="button" value="Pay Through Credit" style="background-color:#999900; color:#000000; height:30px; cursor:pointer;">
+                                 </a>
+                             </div>
+                            
+                            </div>--> 
+                            
+                        </div>
+                        
+                        
+                        <div id="inline2" style="display:none;">
+                          
+                          <div style="width:350px;">
+                        	
+          <?php
+		  $Data=$db->runQuery("select * from ".TSHIRT_SIZE."");
+		  
+		   if(count($Data)>0 && $Data!="")
+			{
+				
+				foreach($Data as $key=>$value)
+				{
+                   
+				   ?>    
+                          
+                            	
+                                	<div style="width:260px;">
+                                    	<div style="float:left; width:125px; height:20px; font-family:Calibri; border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	 <?php echo $value['size']; ?>
+                                        </div>
+                                        
+                                        <div style="width:130px; float:left; height:20px; font-family:Calibri;  border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	 <?php echo $value['size_inch']; ?>
+                                        </div>
+                                    </div>
+                                    
+                    <?php
+				}
+				}
+				?>
+                                    <!--<div style="width:260px;">
+                                    	<div style="float:left; width:125px; height:20px; font-family:Calibri; border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	S
+                                        </div>
+                                        
+                                        <div style="width:130px; float:left; height:20px; font-family:Calibri;  border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	34"- 36"
+                                        </div>
+                                        
+                                        <div style="float:left; width:125px; height:20px; font-family:Calibri; border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	M
+                                        </div>
+                                        
+                                        <div style="width:130px; float:left; height:20px; font-family:Calibri;  border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	38"- 40"
+                                        </div>
+                                        
+                                        <div style="float:left; width:125px; height:20px; font-family:Calibri; border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	L
+                                        </div>
+                                        
+                                        <div style="width:130px; float:left; height:20px; font-family:Calibri;  border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	42"- 44"
+                                        </div>
+                                        
+                                        <div style="float:left; width:125px; height:20px; font-family:Calibri; border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	XL
+                                        </div>
+                                        
+                                        <div style="width:130px; float:left; height:20px; font-family:Calibri;  border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	46"- 48"
+                                        </div>
+                                        
+                                         <div style="float:left; width:125px; height:20px; font-family:Calibri; border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	2XL
+                                        </div>
+                                        
+                                        <div style="width:130px; float:left; height:20px; font-family:Calibri;  border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	50"- 52"
+                                        </div>
+                                        
+                                         <div style="float:left; width:125px; height:20px; font-family:Calibri; border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	3XL
+                                        </div>
+                                        
+                                        <div style="width:130px; float:left; height:20px; font-family:Calibri;  border:#999999 solid 1px; font-size:14px; color:#999;">
+                                        	54"- 56"
+                                        </div>
+                                        
+                                    </div>-->
+                                    
+                              
+                            </div>
+                            
+                        </div>
+
+					
+
+
+<!--<link rel="stylesheet" type="text/css" href="<?=CSS_URL?>mainpage.css"/>
+<link rel="stylesheet" type="text/css" href="<?=CSS_URL?>inner.css"/>-->
+
+
+<link rel="stylesheet" href="<?=APPLICATION_URL?>fancybox/source/jquery.fancybox.css?v=2.1.0" media="screen"  />
+
+
+
+
+<script type="text/javascript" src="<?=APPLICATION_URL?>fancybox/lib/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="<?=APPLICATION_URL?>fancybox/source/jquery.fancybox.js?v=2.1.0"></script>
+  
+  <script type="text/javascript">
+	$(document).ready(function() {
+										
+	$('#edit1').fancybox();
+												
+	});
+  </script>
+  
+  
+<script type="text/javascript">
+	$(document).ready(function() {
+										
+	$('#edit2').fancybox();
+												
+	});
+  </script>  
+  
+ <script type="text/javascript">
+           var inputCount = 0;
+
+            function addRow(id) {
+				 
+                //set row number
+                //inputCount++;
+				var inputCount=document.getElementById('countdiv').value;
+				inputCount=parseInt(inputCount)+parseInt(1);
+				document.getElementById('countdiv').value=inputCount;
+				
+				
+                var tbody = document.getElementById(id);
+                html=""
+                  var row = document.createElement("TR");
+                  row.setAttribute("id", "row"+inputCount)
+                  tbody.appendChild(row);
+               // html +="<td>Qty</td>"
+                html +="<td  style=' width:50px' ><input type='text'  style=' width:50px' name='qty" + inputCount + "' id='qty" + inputCount + "'></td>"
+                html +="<td style='padding-left:0px'><select   style='width:50px' name='size" + inputCount + "' id='size" + inputCount + "'><option>S</option><option>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL</option></select></td>"
+               // html +="<td>Size </td>"
+                html +="<td  style=' width:45px'><label Width='50px' name='items_" + inputCount + "'><?=$price?></label></td>"
+				html +="<td><input type='Button' class='addanother' onclick=deleteLine('row"+inputCount+"') value='Remove'></td>"
+				
+               // alert(html)
+                row.innerHTML = html
+
+
+
+
+            }
+
+            function deleteLine(index) {
+                table = document.getElementById("myTable")
+             row = document.getElementById(index)
+
+                table.removeChild(row);
+				var cnt= document.getElementById('countdiv').value;
+				document.getElementById('countdiv').value=cnt-1;
+            }
+			
+			
+			function calculateqty()
+			{
+				var cnt= document.getElementById('countdiv').value;
+				var qua=0;
+				for(i=1;i<=cnt;i++)
+				{
+					qua=parseInt(qua)+parseInt(document.getElementById('qty'+i).value);
+				}
+				qua=parseInt(qua)+parseInt(document.getElementById('qty').value);
+				//alert(qua);
+			}
+			
+			
+			 
+function showtee()
+{
+	document.getElementById('front_i').style.display='block'
+	document.getElementById('back_i').style.display='none';
+}
+
+			
+function showtee1()
+{
+	document.getElementById('front_i').style.display='none'
+	document.getElementById('back_i').style.display='block';
+}		
+        </script>
+        
+
+

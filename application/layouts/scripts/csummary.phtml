@@ -1,0 +1,19 @@
+<?php
+global $mySession;
+$db=new Db();
+
+$userid=$mySession->TeeLoggedID;
+
+?>
+<div class="work_left" style="width:25%;">
+	<div class="mene_about">
+            <div class="heading_menu_how">
+              <h3>Payment Summary</h3>
+             <li>Size: <?php echo $mySession->sizes; ?></li>
+              <li>Quantatity: <?php echo $mySession->totalquantity; ?></li>
+		<li>Total Price: <?php echo $mySession->amount; ?></li>
+
+			</div>
+        </div>
+
+</div>

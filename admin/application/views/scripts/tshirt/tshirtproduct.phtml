@@ -1,0 +1,378 @@
+<!--<script src="<?=APPLICATION_URL?>jscolor/jscolor.js" type="text/javascript"></script>
+--><?php
+	global $mySession;
+	$db=new Db();
+	
+?>
+<style>
+.imgdisplayclassk{
+ margin-left: 330px;
+    margin-top: -41px;
+    position: absolute;
+}
+</style>
+<div class="mws-panel grid_8">
+     <div class="mws-panel-header">
+             <span class="mws-i-24 i-check"><?=$this->pageHeading?></span>
+      </div>
+            <div class="mws-panel-body">
+            <?php if($this->id=="")
+			{ ?>
+					<form name="myform" id="myform" class="mws-form" action="<?php echo $this->url(array('controller'=>'tshirt', 'action'=>'saveproduct'), 'default', true)?>" method="post" enctype="multipart/form-data">
+		<?php	}
+		else if($this->id!="")
+		{ ?>
+					<form name="myform" id="myform" class="mws-form" action="<?php echo $this->url(array('controller'=>'tshirt', 'action'=>'saveproduct','id'=>$this->id), 'default', true)?>" method="post" enctype="multipart/form-data">
+
+		<?php }
+		
+		?>           	 <table align="center" cellpadding="5" cellspacing="5" border="0" style="margin-left:30px;">
+								<div style="display:none;" class="mws-form-message error" id="mws-validate-error"></div>
+                                <div class="mws-form-inline">
+                                 <div class="mws-form-inline">
+                                 <div class="mws-form-row" style="color:#F00; font-size:17px">
+                                        <label >NOTE :  </label>
+                                        <div class="mws-form-item large">
+                                             Maximum-height=420, Maximum-Width=450 For all images. <br />
+                                      		Highlighted , Shadow Images for both front and back should be of similar size. So that product will appear good on front end.
+                                        </div>
+                                        </div>
+                                 
+                                 
+                                  <div class="mws-form-row">
+                                        <label>Title : <span class="error2">*</span> </label>
+                                        <div class="mws-form-item large">
+                                        <?=$this->myform->title?>
+                                        </div>
+                                        </div> 
+                                        
+                                        <div class="mws-form-row">
+                                        <label>Color Code : <span class="error2">*</span> </label>
+                                        <div class="mws-form-item large">
+                                        <?=$this->myform->colorcode?>
+                                        <br />
+                                        Enter Color Code of  T-shirt You are uploading.
+                                        </div>
+                                        </div> 
+                                        
+                                        
+                                    <div class="mws-form-row">
+                                    <label>Upload Image For Front : </label>
+                                    
+                                    <div class="mws-form-item large" style="width:300px;">
+                                    <?=$this->myform->image?>
+                                    <?php if($this->id!="")
+                                    {  echo $this->myform->oldicon;
+                                    ?>
+                                    <?php 
+                                    if($this->sql['image']!='')
+                                    {
+                                    
+                                    
+                                    $img2=$this->sql['image'];
+                                    
+                                    if($img2!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/front/'.$img2) )
+                                    { 
+                                    ?>
+                                    <div class="imgdisplayclassk">
+                                    <img alt="<?=$this->sql['image']?>" src="<?=IMAGES_URL?>tshirtdesigns/front/<?=$img2?>" height="50px;" width="50px;" border="0">
+                                    </div>
+                                    <?php 
+                                    }
+                                    else
+                                    {
+                                    ?>   <div class="imgdisplayclassk">alt="<?=$this->sql['image']?>" src="<?=IMAGES_URL?>coupon_img.png" height="50px;" width="50px;" border="0">
+                                    </div>
+                                    <?php 
+                                    }
+                                    ?>
+                                    <?php
+                                    }
+                                    
+                                    }?>
+                                    </div> 
+                                    
+                                    </div>
+                                    
+                                    
+                                    <div class="mws-form-row">
+                                    <label>Higlighted Image For Front  : </label>
+                                    
+                                    <div class="mws-form-item large" style="width:300px;">
+                                    <?=$this->myform->frontHeigh?>
+                                    <?php if($this->id!="")
+                                    {  echo $this->myform->oldfrontHeigh;
+                                    ?>
+                                    <?php 
+                                    if($this->sql['frontHeigh']!='')
+                                    {
+                                    
+                                    
+                                    $img2=$this->sql['frontHeigh'];
+                                    
+                                    if($img2!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/front/'.$img2) )
+                                    { 
+                                    ?>
+                                    <div class="imgdisplayclassk">
+                                    <img alt="<?=$this->sql['frontHeigh']?>" src="<?=IMAGES_URL?>tshirtdesigns/front/<?=$img2?>" height="50px;" width="50px;" border="0">
+                                    </div>
+                                    <?php 
+                                    }
+                                  
+                                    ?>
+                                    <?php
+                                    }
+                                    
+                                    }?>
+                                    </div> 
+                                    
+                                    </div>
+                                    
+                                    <div class="mws-form-row">
+                                    <label>Shadow Image For Front  : </label>
+                                    
+                                    <div class="mws-form-item large" style="width:300px;">
+                                    <?=$this->myform->frontShadow?>
+                                    <?php if($this->id!="")
+                                    {  echo $this->myform->oldfrontShadow;
+                                    ?>
+                                    <?php 
+                                    if($this->sql['frontShadow']!='')
+                                    {
+                                    
+                                    
+                                    $img2=$this->sql['frontShadow'];
+                                    
+                                    if($img2!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/front/'.$img2) )
+                                    { 
+                                    ?>
+                                    <div class="imgdisplayclassk">
+                                    <img alt="<?=$this->sql['frontShadow']?>" src="<?=IMAGES_URL?>tshirtdesigns/front/<?=$img2?>" height="50px;" width="50px;" border="0">
+                                    </div>
+                                    <?php 
+                                    }
+                                    else
+                                    {
+                                    ?>   <div class="imgdisplayclassk">
+                                    <img  src="<?=IMAGES_URL?>coupon_img.png" height="50px;" width="50px;" border="0">
+                                    </div>
+                                    <?php 
+                                    }
+                                    ?>
+                                    <?php
+                                    }
+                                    
+                                    }?>
+                                    </div> 
+                                    
+                                    </div>
+
+                                    
+                                <?php if($this->sql['backimage']!='' && $this->sql['totalimage']=='2')
+								{ ?>
+                                 <div  id="j_back_s_end_image_k" style="display:block">
+								<?php }
+								else{?>
+                                <div  id="j_back_s_end_image_k" style="display:none">
+                                <?php } ?>
+                                <div class="mws-form-row" >
+                                	<label>Upload Image For Back : </label>
+                                	<div class="mws-form-item large" style="width:300px;">
+                                    	<?=$this->myform->backimage?> 
+                                        
+                                     <?php if($this->id!="")
+										{  echo $this->myform->backoldicon;
+										
+										?>
+                                        <?php 
+										if($this->sql['backimage']!='' && $this->sql['totalimage']=='2')
+										{
+										
+										
+										 $img2=$this->sql['backimage'];
+                                            
+                                            if($img2!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/back/'.$img2) )
+                                            { 
+                                            ?>  <div class="imgdisplayclassk" id="backimageDiv7">
+                                            <img alt="<?=$this->sql['backimage']?>" src="<?=IMAGES_URL?>tshirtdesigns/back/<?=$img2?>" height="50px;" width="50px;" border="0">
+                                            </div>
+											<?php 
+                                            }
+                                            else
+                                            {
+                                            ?>
+                                              <div class="imgdisplayclassk" id="backimageDiv7">
+                                            <img src="<?=IMAGES_URL?>coupon_img.png" height="50px;" width="50px;" border="0">
+                                            </div>
+                                            <?php 
+                                            }
+                                            ?>
+                                        <?php
+										}
+										}?>
+                                    </div>
+                                </div>
+                                   
+                                    <div class="mws-form-row">
+                                    <label>Higlighted Image For Back  : </label>
+                                    
+                                    <div class="mws-form-item large" style="width:300px;">
+                                    <?=$this->myform->backHeigh?>
+                                    <?php if($this->id!="")
+                                    {  echo $this->myform->oldbackHeigh;
+                                    ?>
+                                    <?php 
+                                    if($this->sql['backHeigh']!='')
+                                    {
+                                    
+                                    
+                                    $img2=$this->sql['backHeigh'];
+                                    
+                                    if($img2!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/back/'.$img2) )
+                                    { 
+                                    ?>
+                                    <div class="imgdisplayclassk">
+                                    <img alt="<?=$this->sql['backHeigh']?>" src="<?=IMAGES_URL?>tshirtdesigns/back/<?=$img2?>" height="50px;" width="50px;" border="0">
+                                    </div>
+                                    <?php 
+                                    }
+                                  
+                                    ?>
+                                    <?php
+                                    }
+                                    
+                                    }?>
+                                    </div> 
+                                    
+                                    </div>
+                                    
+                                    <div class="mws-form-row">
+                                    <label>Shadow Image For Back  :  </label>
+                                    
+                                    <div class="mws-form-item large" style="width:300px;">
+                                    <?=$this->myform->backShadow?>
+                                    <?php if($this->id!="")
+                                    {  echo $this->myform->oldbackShadow;
+                                    ?>
+                                    <?php 
+                                    if($this->sql['backShadow']!='')
+                                    {
+                                    
+                                    
+                                    $img2=$this->sql['backShadow'];
+                                    
+                                    if($img2!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/back/'.$img2) )
+                                    { 
+                                    ?>
+                                    <div class="imgdisplayclassk">
+                                    <img alt="<?=$this->sql['backShadow']?>" src="<?=IMAGES_URL?>tshirtdesigns/back/<?=$img2?>" height="50px;" width="50px;" border="0">
+                                    </div>
+                                    <?php 
+                                    }
+                                    else
+                                    {
+                                    ?>   <div class="imgdisplayclassk">
+                                    <img  src="<?=IMAGES_URL?>coupon_img.png" height="50px;" width="50px;" border="0">
+                                    </div>
+                                    <?php 
+                                    }
+                                    ?>
+                                    <?php
+                                    }
+                                    
+                                    }?>
+                                    </div> 
+                                    
+                                    </div>
+                                </div>
+                               <div class="mws-form-row">
+                                	<label>Upload Back Image Also:  <span class="error2">*</span></label>
+                                	<div class="mws-form-item large" style="width:300px;">
+                                    <?php if($this->sql['backimage']!='' && $this->sql['totalimage']=='2' && $this->id!='')
+									{ ?>
+                                     <input name='checkData1' id='checkData1' value='backimageData777' onchange='displaybackimage();' type='checkbox' checked="checked">
+                                     <?php }
+									 else
+									 { ?>
+                                     <input name='checkData1' id='checkData1' value='backimageData777' onchange='displaybackimage();' type='checkbox' >
+                                     <?php } ?>
+                                    </div>
+                                </div>
+                                
+                                
+                                        <div class="mws-form-row">
+                                        <label>Base Price (in $):</label>
+                                        <div class="mws-form-item large">
+                                        <?=$this->myform->base_price?>
+                                        </div>
+                                        </div>
+                                        
+                                        <div class="mws-form-row">
+                                        <label>Shipping Rate (in $)</label>
+                                        <div class="mws-form-item">
+                                        <?=$this->myform->shippingprice?>
+                                        </div>
+                                        </div>
+                                        
+                                        
+                                 </div> 
+                                       
+                                  
+                              
+                                </div>
+                                	  <div class="mws-button-row">
+                                 
+                            
+                              
+                                <input type="submit" name="Submit" id="Submit" value="Submit" class="mws-button red">
+                      
+                            </div>
+                          </div>
+                    </table>
+                        </form>
+      </div>    	
+</div>
+
+
+                
+      <script>
+	  function displaybackimage()
+	  {
+		  if(document.getElementById('checkData1').checked==true)
+		  {
+			  document.getElementById('j_back_s_end_image_k').style.display='block';
+		  }
+		  else
+		  {       <?php if($this->id!="")
+					 { if($this->sql['backimage']!='' && $this->sql['totalimage']=='2')
+										{
+										
+										
+										 $img2=$this->sql['backimage'];
+                                            
+                                            if($img2!="" and file_exists(SITE_ROOT.'images/tshirtdesigns/'.$img2) )
+                                            {  ?>
+						document.getElementById('backimageDiv7').innerHTML='';
+					
+						document.getElementById('backoldicon').value='';
+						
+						<?php } } }?>
+							document.getElementById('backimage').value='';
+						document.getElementById('j_back_s_end_image_k').style.display='none';
+		  }
+	  }
+function checknummspK(e)
+{ 
+
+	evt=e || window.event;
+	var keypressed=evt.which || evt.keyCode;
+		if(keypressed=="35")
+	{ 
+ 		return false;
+	}
+ 
+ 	
+	
+}
+	  </script>              	
+             

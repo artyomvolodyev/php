@@ -1,0 +1,105 @@
+<form method="post" name="myform" id="myform" action="<?php echo $this->url(array('controller'=>'tshirt', 'action'=>'size'), 'default', true)?>" >
+<div class="mws-panel grid_8">
+                	<div class="mws-panel-header">
+                    	<span class="mws-i-24 i-table-1"><?=$this->pageHeading?></span>
+                    </div>
+                    <div class="mws-panel-body">
+                        <div class="mws-panel-toolbar top clearfix ">
+                        <ul>
+                       <li>
+                            <li><a class="mws-ic-16 ic-accept" href="<?php echo $this->url(array('controller'=>'tshirt', 'action'=>'editsize'), 'default', true)?>" title="Add">Add</a></li>
+                            <li><a class="mws-ic-16 ic-cross" href="javascript:void(0)" title="Delete" onclick="deleteitem()">Delete</a></li>
+                        </ul>
+                        </div>
+                        <table class="mws-datatable-fn mws-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%">No.</th>
+                                    <th><input type="checkbox" name="deletebcchk" id="deletebcchk" onclick="return checkall(this)" /></th>
+                                    <th width="45%">Size</th>
+                                     <th width="45%">In Inches</th>
+                                    <th width="5%" class="">Edit</th>
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<?php
+								
+								
+					for($i=0;$i<count($this->sql);$i++)
+					{
+					?>
+									
+									<tr class="gradeX">
+                                        <td><?=$i+1;?></td>
+                                        <td>
+                                            <input name='check<?=$i;?>' id='check<?=$i+1;?>' value='<?=$this->sql[$i]['sizeid'];?>'
+                                                   onchange='return check_check("bcdel","deletebcchk")' type='checkbox'>
+                                            <script>
+                                                $('#bcdel').html(''); document.getElementById('deletebcchk').checked = false;
+                                            </script>
+                                        </td>
+                                        <td><?=$this->sql[$i]['size']?></td>
+                                       
+                                         <td><?=$this->sql[$i]['size_inch']?></td>
+                                         
+                                        <td class="center">
+                                         <a href="<?=APPLICATION_URL_ADMIN?>tshirt/editsize/sno/<?=$this->sql[$i]['sizeid']?>">
+            <img src="<?=APPLICATION_URL_ADMIN;?>css/icons/16/edit.png" border='0' />
+            </a>
+           
+                                           
+                                        </td> 
+                                      
+	                                </tr>
+									<?php
+								}
+								?>
+                                
+                                 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Panels End -->
+            </div>
+            </form>
+
+<script type="text/javascript">
+
+function deleteitem()
+{
+	var totInput = document.getElementsByTagName('input');
+    var r = "";
+    for(var i=0;i<totInput.length;i++)
+    {
+        if(totInput[i].type == "checkbox") {
+            if(totInput[i].checked == true && totInput[i].name != 'deletebcchk') {
+                r+=totInput[i].value+"|";
+            }
+        }
+    }
+
+    if(r == "") {
+        alert('Please choose a record to delete.');
+    } else {
+        var confirmation = confirm("Are you sure want to delete ?");
+        if(confirmation != true) {
+            return false;
+        }
+        $.ajax({ url: "<?php echo APPLICATION_URL_ADMIN.'tshirt/deletetshirtsize'; ?>",
+            type: "POST",
+            data: ({ids:r}),
+            success: function(data){
+            window.location.href=window.location.href;
+        }});
+    }
+}
+
+</script>
+
+            
+            
+            
+            

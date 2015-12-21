@@ -1,0 +1,24 @@
+<div class="work_section_two  mainprofile" id="forgotpass">
+	<form name="myform" id="myform" method="post" action="<?=$this->url(array('controller'=>'login', 'action'=>'processreset','requestId' =>$this->requestId), 'default', true)?>">
+	
+	<div class="top10pxmargin " style="margin-top:0px;">
+		<label class="myaccsubtitles">Password</label>
+	</div>
+	
+	<div class="top5pxmargin ">
+		<?=$this->myform->newpassword?>
+	</div>
+	
+	<div class="top10pxmargin ">
+		<label class="myaccsubtitles">Confirm Password</label>
+	</div>
+	
+	<div class="top5pxmargin ">
+		<?=$this->myform->cnfrmpassword?>
+	</div>
+	
+	<div class="top10pxmargin ">
+		<input type="submit" name="loginbtn" id="loginbtn" style="width:260px" value="Reset Your Password" class="accbutton">
+	</div>
+	</form>
+</div>     

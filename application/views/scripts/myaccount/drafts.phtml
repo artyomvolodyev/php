@@ -1,0 +1,57 @@
+<?php
+global $mySession;
+$db=new Db();
+$userid=$mySession->TeeLoggedID;
+?>
+<div class="work_section_two maindraftcampaign">
+	<?php	if($this->nocamp!="")	{	?>
+			<label class="draftcampaignlabel">You Don't Have any saved drafts.</label>
+	<?php  } if(count($this->Data)>0 && $this->Data!="") {
+		foreach($this->Data as $key=>$value) {
+			$campid = $value['campaign_id'];
+		?>
+	<div class="rowdraftcampaign" >
+		<div class="col1" >
+			<a href="<?=APPLICATION_URL?>launchcampaign/adddescription/cidresume/<?=$campid?>">
+				<div class="teediv" >
+					<?php if($value['tee_image']!="" and  file_exists(SITE_ROOT.'images/usersdesign/'.$value['tee_image'])){ ?>
+					<div id="Tees0">
+					<img src="<?=APPLICATION_URL?>images/usersdesign/<?=$value['tee_image']?>"  width="70" height="70" border="0" />
+					</div>
+					<?php } else { ?>
+					<img src="<?=IMAGES_URL?>designtee.png" width="70" height="70" border="0" />
+					<?php } ?>
+				</div>
+			</a>
+			<div class="detailsdiv">
+				<?php   if($value['title']!=""){?>
+				<div class="col1" >
+					<b> <?php echo $value['title']; ?> </b>
+				</div>
+				<?php  } else  { ?>
+				<a href="<?=APPLICATION_URL?>launchcampaign/adddescription/cidresume/<?=$campid?>">
+				<div class="col1" >
+					No Title choosen
+				</div>
+				</a>
+				<?php  }  ?>
+				<div class="col2">
+					<a href="<?=APPLICATION_URL?>launchcampaign/adddescription/cidresume/<?=$campid?>">
+					resume
+					</a>
+					<a href="<?=APPLICATION_URL?>myaccount/delete/cid/<?=$campid?>">
+						&nbsp;| delete &nbsp;
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="col2">
+			Details
+		</div>
+		<div class="col3">
+			<?php  echo $value['draft_date']; ?>
+		</div>
+	</div>
+<?php  } } ?>
+</div>
+

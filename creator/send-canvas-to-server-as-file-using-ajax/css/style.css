@@ -1,0 +1,114 @@
+
+/* ================================
+   Base
+   ================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body {
+  background: url(img/debut_light.png) repeat 0 0 scroll;
+}
+
+/* ================================
+   Typography
+   ================================ */
+
+.go-back {
+  font-family: 'PT Sans Narrow', sans-serif;
+  font-size: 14px;
+  color: #747474;  
+  text-shadow: 0 1px 0 #fff;
+}
+
+/* ================================
+   Navigation
+   ================================ */
+
+nav {
+  height: 40px;
+  line-height: 40px;
+  background-color: rgba(255, 255, 255, .8);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+  padding: 0 40px;
+}
+
+nav > div:first-child {
+  float: right;
+}
+
+nav > div:last-child {
+  float: left;
+}
+
+nav > div iframe {
+  padding-top: 10px;
+  vertical-align: top;
+}
+
+nav > div:first-child iframe {
+  margin-right: 10px;
+}
+
+/* ================================
+   Canvas
+   ================================ */
+
+.canvas-wrapper {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.canvas-wrapper canvas {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .3);
+  border-radius: 4px;
+}
+
+.upload-wrapper,
+.return-data {
+  text-align: center;
+  margin-top: 60px;
+}
+
+#upCanvas {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  text-shadow: 0 1px 0 #fff;
+  display: inline-block;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #B3B3B3;
+  color: #5C5C5C;
+  box-shadow: 0 0 6px rgba(0, 0, 0, .2);
+  cursor: pointer;
+  background: #FEFEFE;
+}
+
+.return-data {
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 14px;
+  color: #747474;  
+  text-shadow: 0 1px 0 #fff;
+}
+
+.return-data a {
+  border-bottom: 1px dotted;
+  color: #007580;
+}

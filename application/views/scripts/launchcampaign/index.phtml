@@ -1,0 +1,508 @@
+<?php $db=new Db();?>
+
+
+
+<!-- Style Css-->
+<!--    <link rel="stylesheet" href="style.css">-->
+
+<!-- Jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+<!--<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/smoothness/jquery-ui-1.9.2.custom.min.css" />-->
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/jquery.fancyProductDesigner.css">
+<!--<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/prettify.css">-->
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/jquery.fancyProductDesigner-fonts.css" />
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/plugins.min.css" />
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/icon-font.css" />
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/jquery-ui.css" />
+
+
+<script src="<?=APPLICATION_URL?>creator/js/jquery-ui.min.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/js/fabric.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/js/plugins.js" type="text/javascript"></script>
+
+<script src="<?=APPLICATION_URL?>creator/js/jquery.fancyProductDesigner.min.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/js/prettify.js" type="text/javascript"></script>
+<!--<script src="--><?//=APPLICATION_URL?><!--creator/js/bootstrap-scripts.js" type="text/javascript"></script>-->
+
+<script src="<?=APPLICATION_URL?>creator/js/script.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>js/jquery.blockUI.js" type="text/javascript"></script>
+
+
+<!--<link rel="stylesheet" type="text/css" href="--><?//=APPLICATION_URL?><!--creator/css/bootstrap.css"/>-->
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">-->
+
+
+
+
+<!--<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/main.css">-->
+
+<style>
+    #thsirt-output{display:none;}
+    .sp-container {top:302px;}
+</style>
+<script type="text/javascript">
+    // Convert DataURL to Blob object
+    function dataURLtoBlob(dataURL) {
+        // Decode the dataURL
+        var binary = atob(dataURL.split(',')[1]);
+        // Create 8-bit unsigned array
+        var array = [];
+        for(var i = 0; i < binary.length; i++) {
+            array.push(binary.charCodeAt(i));
+        }
+        // Return our Blob object
+        return new Blob([new Uint8Array(array)], {type: 'image/png'});
+    }
+
+    jQuery(document).ready(function() {
+        jQuery(document).bind("ajaxStart", function(){
+            jQuery.blockUI({ message: '<h1 style="text-align:center;padding:50px 0px;"><img src="<?=APPLICATION_URL?>images/ajax-loader.gif" alt="loading" />  Please Wait...</h1>' });
+         }).bind("ajaxComplete", function(){
+                jQuery.unblockUI();
+                // wire up upload button with hidden element
+                $('#upload-button').click(function(){
+                    $('.fpd-add-text > .fpd-input-text').removeClass('fpd-show-up'); // hide "add text" input if open
+                    $('#my-custom-design-upload').click();
+                    return false;
+                });
+                $('#my-add-icon-btn').click(function (evt) {
+                    $('.fpd-add-text > .fpd-input-text').removeClass('fpd-show-up'); // hide "add text" input if open
+                });
+                // for adding custom text to designer
+                $('#my-custom-text-field').keyup(function(evt){
+                    if (evt.keyCode == 13) {
+                        evt.stopPropagation();
+                        addCustomText();
+                    }
+                });
+                $('#my-text-add-btn').click(function (evt) {
+                    evt.stopPropagation();
+                    addCustomText();
+                });
+                // upload method (Ajax) for custom image
+                document.getElementById('my-custom-design-upload').onchange = function (e) {
+                    if(window.FileReader) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(e.target.files[0]);
+                        reader.onload = function (e) {
+                            var image = new Image;
+                            image.src = e.target.result;
+                            image.onload = function() {
+                                // Get Our File
+                                var file= dataURLtoBlob(e.target.result);
+                                // Create new form data
+                                var fd = new FormData();
+                                // Append our image
+                                fd.append("CustomImage", file);
+
+                                var customimage_cr = parseInt($('#customimage_cr').val());
+                                customimage_cr = customimage_cr + 1;
+                                $('#customimage_cr').val(customimage_cr);
+
+                                //upload image to server
+                                $.ajax({
+                                    url: "<?php echo APPLICATION_URL; ?>uploadFile.php",
+                                    type: "POST",
+                                    data:fd,
+                                    processData: false,
+                                    contentType: false
+                                }).done(function(respond){
+                                    if(respond!= ""){
+                                        $('#customimage').val(respond);
+                                        return true;
+                                    }else{
+                                        return false;
+                                    }
+                                });
+
+                                //Get aspect and set width
+                                var maxWidth = 400,
+                                    maxHeight = 300,
+                                    scaling = 1;
+
+                                // image broader than high
+                                if(this.width > maxWidth && this.width > this.height) {
+                                    scaling = maxWidth / this.width;
+                                }
+
+                                // image height is eequal to width
+                                if(this.width > maxWidth && this.width == this.height) {
+                                    scaling = maxWidth / this.width;
+                                }
+
+                                // image higher than broad
+                                if(this.height > maxHeight  && this.height > this.width) {
+                                    scaling = maxHeight / this.height;
+                                }
+
+                                srcWidth = this.width;
+                                srcHeight = this.height;
+
+                                resizeWidth = srcWidth;
+                                resizeHeight = srcHeight;
+
+                                aspect = resizeWidth / resizeHeight;
+
+                                if (resizeWidth > maxWidth){
+                                    resizeWidth = maxWidth;
+                                    resizeHeight = resizeWidth / aspect;
+                                }
+                                if (resizeHeight > maxHeight){
+                                    aspect = resizeWidth / resizeHeight;
+                                    resizeHeight = maxHeight;
+                                    resizeWidth = resizeHeight * aspect;
+                                }
+
+                                var layerName = 'Uploaded Image '+$('#customimage_cr').val();
+                                var editorWidth = 500;
+                                fpd.addElement(
+                                    'image',
+                                    e.target.result,
+                                    layerName,
+                                    {
+                                        colors: '',
+                                        zChangeable: true,
+                                        removable: true,
+                                        draggable: true,
+                                        resizable: true,
+                                        rotatable: true,
+                                        x: editorWidth/2,
+                                        y: 600/2,
+                                        scale: scaling.toFixed(2),
+                                        width:srcWidth,
+                                        height:srcHeight
+                                    }
+                                );
+
+                                // $('.fpd-context-dialog .fpd-dialog-head .fpd-right .fpd-close-dialog').click(); // close/hide the "Add" popup dialog
+                            };
+                        };
+                    } else {
+                        alert('FileReader API not available, please use a modern browser like any recent version of Firefox, Safari, Chrome and IE!');
+                    }
+                };
+         });
+
+        fpd = $('#fpd').fancyProductDesigner({
+            editorMode: true,
+            fonts: ['Arial', 'Helvetica', 'Times New Roman', 'Verdana', 'Geneva', 'Fearless'],
+            elementParameters: {x: 100, y: 300, removable: true, resizable: true, draggable: true, rotatable: true},
+            textParameters: {x: 200, y: 300, colors: "#000000", removable: true, resizable: true, draggable: true, rotatable: true}
+        }).data('fancy-product-designer');
+
+        $("#showPaletteOnly").spectrum({
+            showPaletteOnly: true,
+            showPalette:true,
+            showSelectionPalette:false,
+            color: 'blanchedalmond',
+            palette: [
+                    ['black', 'white', 'blanchedalmond',
+                    'rgb(255, 128, 0);', 'hsv 100 70 50'],
+                    ['red', 'yellow', 'green', 'blue', 'violet']
+            ]
+        });
+
+        $('#fpd').bind('productCreate', function(evt){
+            $('#thsirt-output').html('Tshirt structure placeholder');
+            $('#thsirt-price').text(fpd.getPrice());
+        }).bind('priceChange', function(evt, price, currentPrice) {
+            $('#thsirt-price').text(currentPrice);
+            $('#KM-Price').html('$'+fpd.getPrice());
+            if(! $('#KM-Price-Ctr').is(":visible")){
+                $('#KM-Price-Ctr').show(500);
+            }
+        }).bind('ready', function(evt) {
+             <?php
+                if($this->recreation_product && strlen($this->recreation_product) > 5){
+                    global $mySession;
+                    //error_log(print_r(Zend_Session::namespaceGet('default'), true));
+                ?>
+                    /*console.log('Loaded product JSON');
+                    console.log(JSON.parse('<?php echo $this->recreation_product; ?>'));*/
+                    fpd.loadProduct(JSON.parse('<?php echo $this->recreation_product; ?>'));
+                <?php
+                }
+             ?>
+        });
+
+        $('#print-button').click(function(){
+            fpd.print();
+            return false;
+        });
+
+        $('#recreation-button').click(function(){
+            $('#recreation-form').attr('action', '<?=APPLICATION_URL?>launchcampaign/setgoal');
+            saveDesignViews();
+            return false;
+        });
+
+        $('#recreation-button-setgoal-link').click(function(){
+            $('#recreation-form').attr('action', '<?=APPLICATION_URL?>launchcampaign/setgoal');
+            saveDesignViews();
+            return false;
+        });
+/*
+        $('#recreation-button-add-link').click(function(){
+            saveDesignViews();
+            $('#recreation-form').attr('action', '<?=APPLICATION_URL?>launchcampaign/adddescription');
+            $('#recreation-form').submit();
+            return false;
+        });*/
+
+    });
+
+    function addCustomText(){
+        var $input = $('#my-custom-text-field');
+        var text = $input.val();
+
+        if (text && text.length > 0) {
+            var textParams = {x: 250, y: 230, colors: "#000000", removable: true, resizable: true, draggable: true, rotatable: true};
+            fpd.addElement(
+                'text',
+                text,
+                text,
+                textParams
+            );
+        }
+
+        $('.fpd-add-text > .fpd-input-text').removeClass('fpd-show-up');
+        $input.val('');
+    }
+
+    function saveDesignViews(){
+        var product = fpd.getProduct(false);
+        var productJSON = JSON.stringify(product);
+        $('#recreation_product').val(productJSON);
+
+        var view = '',
+            frontFileName = '', frontFileNameField = '', frontDataUrl = '',
+            backFileName = '', backFileNameField = '', backDataUrl = '' ;
+
+        var productViews = fpd.getViewsDataURL();
+        console.log(productViews);
+        var productViewNr = productViews.length;
+
+        for(var i=0; i < productViewNr; ++i) {
+            var currTime = Math.floor(Date.now() / 1000);
+            if(i==0){
+                frontFileName = 'front'+currTime;
+                frontFileNameField = 'front_img';
+                frontDataUrl = productViews[i];
+            }else{
+                backFileName = 'back'+currTime;
+                backFileNameField = 'back_img';
+                backDataUrl = productViews[i];
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: "<?=APPLICATION_URL?>launchcampaign/savedesignimage",
+            data: {frontImage:frontDataUrl, frontFileName:frontFileName, backImage:backDataUrl, backFileName:backFileName}
+        }).done(function( response ) {
+            if(response){
+                console.log(response);
+                response = JSON.parse(response);
+                console.log(response);
+                $('#'+frontFileNameField).val(response.frontimage);
+                $('#'+backFileNameField).val(response.backimage);
+                $('#mig_id').val(response.mig_id);
+                $('#recreation-form').submit();
+            }
+        });
+    }
+
+</script>
+
+
+<!--------------top info end--------------->
+<section id="content">
+	<div class="zerogrid">
+		<div class="row block">
+			<div class="breadcrumb_code">
+                <div class="col-md-12 thre_div" style="padding-bottom: 60px">
+                    <div class="col-md-4">
+                        <img src="<?php echo IMAGES_URL;?>Layer-21.png" alt="<?php echo SITE_NAME; ?>" >
+                        <h3>Start your campaign</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="<?php echo IMAGES_URL;?>Layer-22.png" alt="<?php echo SITE_NAME; ?>" >
+                        <h3>Set your goal</h3>
+
+                    </div>
+                    <div class="col-md-4">
+                        <img src="<?php echo IMAGES_URL;?>Layer-22.png" alt="<?php echo SITE_NAME; ?>" >
+                        <h3>Add description</h3>
+                    </div>
+                </div>
+
+			</div>
+			<div id="capmaingn_main_page_wrap">
+				<div class="bot_cam" id="main-container">
+					<div id="content">
+						<div id="fpd" class="">
+
+						<?php if($this->product != "" && count($this->product) > 0) {
+							foreach($this->product as $product)	{
+								$frontimg = $product['image'];
+
+								$Individual_Price=$db->runquery("select * from ".TSHIRT_PRICE." where campagin_id='".$product['t_cat_id']."'");
+                                ?>
+                                <div class="fpd-product" id="product<?=$product['t_cat_id']?>" title="<?=$product['name']?>" data-thumbnail="<?=APPLICATION_URL?>images/tshirtdesigns/front/<?=$frontimg?>" align="center">
+                                <?php
+                                $editorWidth = 500;
+                                if($frontimg != "" and file_exists(SITE_ROOT.'images/tshirtdesigns/front/'.$frontimg) )
+                                {
+
+
+                                    $filename=APPLICATION_URL.'images/tshirtdesigns/front/'.$frontimg;
+                                    $image = TeeImageUtils::imageCreateFromFile($filename);
+                                    $width = imagesx($image);
+                                    $height = imagesy($image);
+                                    $pixel = imagecreatetruecolor(1, 1);
+                                    imagecopyresampled($pixel, $image, 0, 0, 0, 0, 1, 1, $width, $height);
+                                    $rgb = imagecolorat($pixel, 0, 0);
+                                    $color = imagecolorsforindex($pixel, $rgb);
+                                    list($w, $h) = getimagesize($filename);
+                                    $x1 = $editorWidth/2;
+                                    $y1 = 600/2;
+
+                                    $filenameFH=$product['frontHeigh'];
+                                    $filenameFHData=APPLICATION_URL.'images/tshirtdesigns/front/'.$filenameFH;
+                                    list($wfh, $hfh) = getimagesize($filenameFHData);
+                                    $xfh = $editorWidth-$wfh;
+                                    $yfh = $hfh;
+                                    $diff_w_fh=$x1-$xfh;
+                                    $diff_h_fh=$y1-$yfh;
+
+                                    $filenameFS=$product['frontShadow'];
+                                    $filenameFSData=APPLICATION_URL.'images/tshirtdesigns/front/'.$filenameFS;
+                                    list($wfs, $hfs) = getimagesize($filenameFSData);
+                                    $xfs = $editorWidth-$wfs;
+                                    $yfs = $hfs;
+                                    $diff_w_fs=$x1-$xfs;
+                                    $diff_h_fs=$y1-$yfs;
+
+                                    $colorCode = $product['colorcode'];
+                                    $colorCodeArray = explode(',', $colorCode);
+                                    if(count($colorCodeArray)){
+                                        for($i=0;$i<count($colorCodeArray);$i++){
+                                            $cCode = trim($colorCodeArray[$i]);
+                                            $cCodeLen = strlen($cCode);
+                                            switch($cCodeLen){
+                                                case 3:
+                                                case 6:
+                                                    $cCode = '#'.$cCode;
+                                                    break;
+                                                default:
+                                                    if($cCodeLen){
+                                                        if($cCode{0} !== '#'){
+                                                            $cCode = '#'.$cCode;
+                                                        }
+                                                    }
+                                                    break;
+                                            }
+                                            $colorCodeArray[$i] = $cCode;
+                                        }
+                                        $colorCode = implode(',', $colorCodeArray);
+                                    }
+                                ?>
+
+                                <img src="<?=APPLICATION_URL?>images/tshirtdesigns/front/<?=$frontimg?>" title="Shirt"  data-parameters='{"x": <?=$x1?>, "y":<?=$y1;?> ,"colors": "<?php echo $colorCode; ?>", "price": <?=$Individual_Price[0]['base_price']?>}'  border='0' />
+
+                                    <?php if($filenameFH!='' && file_exists(SITE_ROOT.'images/tshirtdesigns/front/'.$filenameFH)){ ?>
+                                    <img src="<?=APPLICATION_URL?>images/tshirtdesigns/front/<?=$filenameFH?>"  title="<?=$Individual_Price[0]['base_price']?>@KM@<?=$product['t_cat_id']?>" data-parameters='{"x": <?=($xfh+$diff_w_fh)?>, "y":<?=($yfh+$diff_h_fh);?> }' border='0'  max-height="<?=$h?>px" max-width="<?=$w?>px"/>
+                                <?php } ?>
+
+                                    <?php
+                                    if($filenameFS!='' && file_exists(SITE_ROOT.'images/tshirtdesigns/front/'.$filenameFS)){ ?>
+                                        <img src="<?=APPLICATION_URL?>images/tshirtdesigns/front/<?=$filenameFS?>" title="<?=$Individual_Price[0]['base_price']?>@KM@<?=$product['t_cat_id']?>" data-parameters='{"x": <?=($xfs+$diff_w_fs)?>, "y":<?=($yfs+$diff_h_fs);?> }'  border='0' max-height="<?=$h?>px" max-width="<?=$w?>px" />
+                                    <?php } ?>
+
+                            <?php } ?>
+
+                            <span title="Text" data-parameters='{"x": 250, "y": 200, "removable": true, "draggable": true, "rotatable": true, "resizable": true, "colors": "#000000"}' ></span>-->
+
+                            <?php
+                            $backimage=$product['backimage'];
+                            if($backimage != "" and file_exists(SITE_ROOT.'images/tshirtdesigns/back/'.$backimage) and $product['totalimage']==2){
+                                $imageBack=IMAGES_URL."tshirtdesigns/back/".$backimage;
+                                list($w2, $h2) = getimagesize($imageBack);
+                                /*$x2=(575-$w2)/2;
+                                $y2=(600-$h2)/2;*/
+                                $x2 = $editorWidth/2;
+                                $y2 = 600/2;
+                            ?>
+                                <div class="fpd-product" title="<?=$product['name']?> (back)" data-thumbnail="<?=APPLICATION_URL?>images/tshirtdesigns/back/<?=$backimage?>">
+                                    <img src="<?=APPLICATION_URL?>images/tshirtdesigns/back/<?=$backimage?>" title="<?=$Individual_Price[0]['base_price']?>@KM@<?=$product['t_cat_id']?>"  data-parameters='{"x": <?=$x2?>, "y":<?=$y2;?> ,"colors": "Shirt"}'  border='0' />
+                                    <?php
+                                    if($product['backHeigh']!='' && file_exists(SITE_ROOT.'images/tshirtdesigns/back/'.$product['backHeigh'])) { ?>
+                                        <img src="<?=APPLICATION_URL?>images/tshirtdesigns/back/<?=$product['backHeigh']?>"  title="<?=$Individual_Price[0]['base_price']?>@KM@<?=$product['t_cat_id']?>" data-parameters='{"x": <?=($xfh+$diff_w_fh)?>, "y":<?=($yfh+$diff_h_fh);?> }' border='0'  max-height="<?=$h2?>px" max-width="<?=$w2?>px"/>
+                                    <?php
+                                    }
+                                    if($product['backShadow']!='' && file_exists(SITE_ROOT.'images/tshirtdesigns/back/'.$product['backShadow'])) { ?>
+                                        <img src="<?=APPLICATION_URL?>images/tshirtdesigns/back/<?=$product['backShadow']?>" title="<?=$Individual_Price[0]['base_price']?>@KM@<?=$product['t_cat_id']?>" data-parameters='{"x": <?=($xfs+$diff_w_fs)?>, "y":<?=($yfs+$diff_h_fs);?> }'  border='0' max-height="<?=$h2?>px" max-width="<?=$w2?>px" />
+                                    <?php
+                                    } ?>
+                                </div>
+                            <?php
+                            }
+                            ?>
+                        </div>
+                        <?php
+                            }
+                        }
+                        ?>
+							<div class="fpd-design">
+								<?php if($this->icons!="" && count($this->icons)>0){
+									foreach($this->icons as $icons){
+										if($icons['icon']!="" and file_exists(SITE_ROOT.'images/tshirt-icons/'.$icons['icon'])){ ?>
+											<img src="<?=APPLICATION_URL?>images/tshirt-icons/<?=$icons['icon']?>" title="<?=$icons['title']?>" data-parameters='{"x": 215, "y": 200, "colors": "#<?=$icons['colorcode']?>","removable": true, "draggable": true, "rotatable": true, "resizable": true, "scale": 0.4}' />
+										<?php
+										}
+									}
+								}
+								?>
+							</div>
+						</div>
+						<div class="api-buttons clearfix" style="text-align: right;">
+							<form action="<?=APPLICATION_URL?>launchcampaign/setgoal" id="recreation-form" method="post">
+                                <input type="hidden" id="priceValueKM" name="priceValueKM" value="" />
+                                <input type="hidden" id="idValueKM" name="idValueKM" value="" />
+								<input type="hidden" name="recreation_product" value="" id="recreation_product" />
+                                <input type="hidden" name="front_img" value="" id="front_img" />
+                                <input type="hidden" name="back_img" value="" id="back_img" />
+                                <input type="hidden" name="mig_id" value="" id="mig_id" />
+								<input type="hidden" id="customimage" name="customimage" />
+                                <input type="hidden" id="customimage_cr" name="customimage_cr" value="0" />
+							</form>
+						</div>
+						<div id="thsirt-output" class="output"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bot_margin" style="padding-bottom: 200px">
+<!--			<div class="get_started"><a href="#" id="recreation-button"><span class="btn">next step</span></a></div>-->
+            <button class="btn get_started" id="recreation-button">NEXT STEP</button>
+		</div>
+	</div>
+
+</section>
+
+<script type="text/javascript">
+    function showtee(){
+        document.getElementById('front_i').style.display='block'
+        document.getElementById('back_i').style.display='none';
+    }
+    function showtee1(){
+        document.getElementById('front_i').style.display='none'
+        document.getElementById('back_i').style.display='block';
+    }
+</script>
+<div>
+
+</div>

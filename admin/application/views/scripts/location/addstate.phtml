@@ -1,0 +1,41 @@
+<?php
+	global $mySession;
+	$db=new Db();
+?>
+<div class="mws-panel grid_8">
+     <div class="mws-panel-header">
+             <span class="mws-i-24 i-check"><?=$this->pageHeading?></span>
+      </div>
+            <div class="mws-panel-body">
+					<form name="myform" id="myform" class="mws-form" action="<?php echo $this->url(array('controller'=>'location', 'action'=>'savestate'), 'default', true)?>" method="post" enctype="multipart/form-data">
+                        	 <table align="center" cellpadding="5" cellspacing="5" border="0" style="margin-left:30px;">
+								<div style="display:none;" class="mws-form-message error" id="mws-validate-error"></div>
+                                <div class="mws-form-inline">
+                              <!--  <div class="mws-form-row">
+                                	<label>Country name :  <span class="error2">*</span></label>
+                                	<div class="mws-form-item large" style="width:300px;">
+                                    	   <?=$this->myform->country?>
+                                    </div>
+                                </div>-->
+                                
+                                 <div class="mws-form-row">
+                                	<label>State name :  <span class="error2">*</span></label>
+                                	<div class="mws-form-item large" style="width:300px;">
+                                    	   <?=$this->myform->state?>
+                                    </div>
+                                </div>
+                                	  <div class="mws-button-row">
+                            	<input type="submit" name="Add"  value="Add" class="mws-button red">
+                            </div>
+                          </div>
+                    </table>
+                        </form>
+      </div>    	
+</div>
+
+
+
+
+                
+                    	
+             

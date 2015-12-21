@@ -1,0 +1,97 @@
+<div align="center" style="width:100%; background-image:url(<?=IMAGES_URL?>mainbackg.png); background-repeat:repeat;">
+
+<div style="width:100%">
+
+	<div style="height:auto; padding-top:50px; padding-bottom:50px;">
+
+    
+
+    	<div  class="loginlayout" style="background-color:#FFFFFF; width:auto;border: 1px solid #B0B0B0;border-radius: 4px;">
+
+        	
+
+            <div style="padding-top:20px; padding-left:20px; padding-bottom:5px; text-align:left;">
+
+            
+
+                 <div style="float:left; width:884px;">
+
+                    <label class="loginheading" style="color: #006853; font-size: 22px;"><b>To Contact this artist you can send Mail : </b></label>
+
+                          
+
+                </div>
+
+                      <div >
+
+                    <label class="loginheading"  ><a href="<?=APPLICATION_URL?>user/view/user_id/<?=$this->id?>" class="loginheading" style="color: #006853; font-size: 22px;">Back </a></label>
+
+                          
+
+                </div>
+
+                <br />
+
+			<form method="post" name="login" action="">
+
+            	
+
+                
+
+                		<div style="margin-top:5px;">
+
+                    	<label class="loginfont1"  style="color: #006853; font-size: 16px;">Email Address</label>
+
+                    </div>
+
+                    
+
+                   <div style="margin-top:5px;">
+
+                    	 <div style="display:none;"><?=$this->dataQry['emailid']?></div>*****
+
+                    </div>
+
+                    
+
+                
+
+                	<div style="margin-top:5px;">
+
+                    	<label class="loginfont1" style="color: #006853; font-size: 16px;">Message</label>
+
+                    </div>
+
+                    
+
+                   <div style="margin-top:5px;">
+
+                    	 <?=$this->myform->Message?>
+
+                    </div>
+
+                    
+
+               
+
+                    <div style="margin:10px 0px;">
+
+                    	<input type="submit" id="loginbtn" name="loginbtn" value="Send" class="accbutton">
+
+                    </div>
+
+       
+
+                </form>
+
+
+
+			</div>
+
+          </div>
+
+</div>
+
+</div>
+
+</div>

@@ -1,0 +1,342 @@
+<?php
+global $mySession;
+$db=new Db();
+?>
+
+<div style="margin-left: 30px; width: 659px;" class="work_section_two  mainprofile">
+	<form action="<?php echo $this->url(array('controller'=>'payment', 'action'=>'paythroughcredit','url'=>$this->url), 'default', true)?>" method="post">
+		<div style="margin-top:0px;" class="top10pxmargin ">
+			<label class="myaccsubtitles">First Name</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->fname?> (as it appears on your card)
+			<!--
+                	<div id="fir_name" style="display:none" class="mycss">
+	                Enter character only
+       	         </div>
+             		-->
+		</div>
+		<div class="top10pxmargin ">
+			<label class="myaccsubtitles">Last Name</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->lname?> (as it appears on your card)
+			<!--
+                	<div id="las_name" style="display:none" class="mycss">
+	                Enter character only
+       	         </div>
+             		-->
+
+		</div>
+		<div  class="top10pxmargin ">
+			<label class="myaccsubtitles">Email Address</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->emailid?>
+		</div>
+		<div class="top10pxmargin ">
+			<label class="myaccsubtitles">Address</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->address?>
+		</div>
+		<div  class="top10pxmargin ">
+			<label class="myaccsubtitles">City</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->city?>
+		</div>
+		<div  class="top10pxmargin ">
+			<label class="myaccsubtitles">State/Province</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->state?>
+		</div>
+		<div  class="top10pxmargin ">
+			<label class="myaccsubtitles">Zip/Postal Code</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->zipcode?>
+		</div>
+		<div  class="top10pxmargin ">
+			<label class="myaccsubtitles">Telephone Number</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->phnno?>
+		</div>
+		<div  class="top10pxmargin ">
+			<label class="myaccsubtitles">Credit Card Number</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->creditcardno?>
+		</div>
+		<div  class="top10pxmargin ">
+			<label class="myaccsubtitles">Card Type</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->creditcardtype?>  <img src="<?=IMAGES_URL?>cards.png" width="140" height="20" />
+		</div>
+		<div  class="top10pxmargin ">
+			<label class="myaccsubtitles">Expiration Date</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->exprymonth?> -  <?=$this->myform->expryyear?>
+		</div>
+		<div  class="top10pxmargin ">
+			<label class="myaccsubtitles">CVV2 Number</label>
+		</div>
+		<div class="top5pxmargin ">
+			<?=$this->myform->cvvno?>  (See Below)
+		</div>
+		<div class="top10pxmargin ">
+			<input type="submit" class="accbutton" value="Reserve Tshirt" onclick="this.form.submit();"  id="submit" name="submit">
+			<a style="text-decoration:none;" href="<?=APPLICATION_URL?><?=$this->url?>"> <input type="button" class="accbutton" value="Cancel" id="cancel" name="cancel"> </a>
+		</div>
+		<div class="top10pxmargin ">
+			<img src="<?=IMAGES_URL?>card.png" width="160" height="100" />
+		</div>
+
+<script type="text/javascript">
+
+
+
+function checknummsp(e)
+{
+ evt=e || window.event;
+ var keypressed=evt.which || evt.keyCode;
+ //alert(keypressed);
+ if(keypressed!="48" &&  keypressed!="49" && keypressed!="50" && keypressed!="51" && keypressed!="52" && keypressed!="53" && keypressed!="54" && keypressed!="55" && keypressed!="56" && keypressed!="57" && keypressed!="8")
+ {
+   return false;
+ }
+}
+
+
+function checkcharonly(e)
+{
+ evt=e || window.event;
+ //var keypressed=evt.which || evt.keyCode;
+ //alert(keypressed);
+  var keypressed = e.charCode || e.keyCode || 0;
+            // allow backspace, tab, delete, arrows, letters, numbers and keypad numbers ONLY
+            return (
+                keypressed == 8 ||
+				 keypressed == 32 ||
+
+                (keypressed >= 65 && keypressed <= 90) ||
+                (keypressed >= 97 && keypressed <= 122)) ;
+
+}
+
+
+
+//
+//function validfname()
+//{
+//  var flag=0;
+// if(document.getElementById("fname").value!="")
+// {
+//  var name=document.getElementById("fname").value;
+// var alpha1=/^[a-zA-Z]+$/;
+//
+//  if(!name.match(alpha1))
+//  {
+//   //alert("Use alphabets only, integers & spaces nt allowed");
+//   document.getElementById('fir_name').style.display="block";
+//   //return false;
+//   flag=1;
+//  }
+//  else
+//  {
+//   document.getElementById('fir_name').style.display="none";
+//  }
+// }
+//
+//
+//
+// if(document.getElementById("lname").value!="")
+// {
+//  var name=document.getElementById("lname").value;
+//
+//  var alpha1=/^[a-zA-Z]+$/;
+//
+//
+//  if(!name.match(alpha1))
+//  {
+//   document.getElementById('las_name').style.display="block";
+//   flag=1;
+//   //document.getElementById("lname").focus();
+//   //return false;
+//  }
+//  else
+//  {
+//    document.getElementById('las_name').style.display="none";
+//    //return true;
+//  }
+// }
+//
+//
+// if(document.getElementById("companyname").value!="")
+// {
+//  var name=document.getElementById("lname").value;
+//  var alpha=/^[a-zA-Z]+[\s]+[a-zA-Z]+$/;
+//  var alpha1=/^[a-zA-Z]+$/;
+//  if(!name.match(alpha) && !name.match(alpha1))
+//  {
+//   document.getElementById('cmpny_name').style.display="block";
+//   flag=1;
+//   //document.getElementById("lname").focus();
+//   //return false;
+//  }
+//  else
+//  {
+//    document.getElementById('cmpny_name').style.display="none";
+//    //return true;
+//  }
+// }
+//
+//
+// if(document.getElementById("city").value!="")
+// {
+//  var name=document.getElementById("city").value;
+//  var alpha=/^[a-zA-Z]+[\s]+[a-zA-Z]+$/;
+//  var alpha1=/^[a-zA-Z]+$/;
+//  if(!name.match(alpha) && !name.match(alpha1))
+//  {
+//   document.getElementById('city_val').style.display="block";
+//   flag=1;
+//   //document.getElementById("lname").focus();
+//   //return false;
+//  }
+//  else
+//  {
+//    document.getElementById('city_val').style.display="none";
+//    //return true;
+//  }
+// }
+//
+//
+// if(document.getElementById("state").value!="")
+// {
+//  var name=document.getElementById("state").value;
+//  var alpha=/^[a-zA-Z]+[\s]+[a-zA-Z]+$/;
+//  var alpha1=/^[a-zA-Z]+$/;
+//  if(!name.match(alpha) && !name.match(alpha1))
+//  {
+//   document.getElementById('state_val').style.display="block";
+//   flag=1;
+//   //document.getElementById("lname").focus();
+//   //return false;
+//  }
+//  else
+//  {
+//    document.getElementById('state_val').style.display="none";
+//    //return true;
+//  }
+// }
+//
+//
+//
+// if(document.getElementById("zipcode").value!="")
+// {
+//  var name=document.getElementById("zipcode").value;
+//  var alpha=/^[0-9]+$/;
+//
+//  if(!name.match(alpha))
+//  {
+//   document.getElementById('zip_code').style.display="block";
+//   flag=1;
+//  }
+//  else
+//  {
+//   document.getElementById('zip_code').style.display="none";
+//
+//  }
+// }
+//
+//
+// if(document.getElementById("phnno").value!="")
+// {
+//
+//  var name=document.getElementById("phnno").value;
+//  var alpha=/^[0-9]+$/;
+//
+//  if(!name.match(alpha))
+//  {
+//   document.getElementById('phn_no').style.display="block";
+//   flag=1;
+//  }
+//  else
+//  {
+//   document.getElementById('phn_no').style.display="none";
+//
+//  }
+// }
+//
+//
+// if(document.getElementById("cvvno").value!="")
+// {
+//  var name=document.getElementById("cvvno").value;
+//  var alpha=/^[0-9]+$/;
+//
+//  if(!name.match(alpha))
+//  {
+//   document.getElementById('cvv_no').style.display="block";
+//   flag=1;
+//  }
+//  else
+//  {
+//   document.getElementById('cvv_no').style.display="none";
+//
+//  }
+// }
+//
+//
+// if(document.getElementById("creditcardno").value!="")
+// {
+//  var name=document.getElementById("creditcardno").value;
+//  var alpha=/^[0-9]+$/;
+//
+//  if(!name.match(alpha))
+//  {
+//   document.getElementById('cardno').style.display="block";
+//   flag=1;
+//  }
+//  else
+//  {
+//   document.getElementById('cardno').style.display="none";
+//
+//  }
+// }
+//
+//
+// if(flag==0)
+//	return true;
+//	else
+//	return false;
+//
+//}
+//
+//
+//
+//   function validformdata()
+//	{ var flag=0;
+//		if(document.getElementById('fir_name').style.display=='block')
+//		{
+//			flag=1;
+//
+//			return false;
+//		}
+//		if(document.getElementById('las_name').style.display=='block')
+//		{
+//			flag=1;
+//			return false;
+//		}
+//		if(flag==0)
+//		{
+//			return true;
+//		}
+//	}
+ </script>
+	</form>
+</div>

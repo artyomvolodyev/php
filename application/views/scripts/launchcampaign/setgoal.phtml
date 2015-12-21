@@ -1,0 +1,370 @@
+<?php
+global $mySession;
+$db=new Db();
+//error_log('setgoal.phtml session '.print_r($_SESSION['default'], true));
+?>
+
+
+<!--<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/smoothness/jquery-ui-1.9.2.custom.min.css" />-->
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/jquery.fancyProductDesigner.css">
+<!--<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/prettify.css">-->
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/jquery.fancyProductDesigner-fonts.css" />
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/plugins.min.css" />
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/icon-font.css" />
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/jquery-ui.css" />
+
+
+<!--<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/main.css">-->
+
+<script src="<?=APPLICATION_URL?>creator/js/jquery-ui.min.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/js/fabric.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/js/plugins.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/js/jquery.fancyProductDesigner.min.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/js/prettify.js" type="text/javascript"></script>
+<!--<script src="--><?//=APPLICATION_URL?><!--creator/js/bootstrap-scripts.js" type="text/javascript"></script>-->
+<script src="<?=APPLICATION_URL?>creator/js/script.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>creator/js/recreator.js" type="text/javascript"></script>
+<script src="<?=APPLICATION_URL?>js/jquery.blockUI.js" type="text/javascript"></script>
+
+
+<!--
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/smoothness/jquery-ui-1.9.2.custom.min.css" />
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>creator/css/jquery.fancyProductDesigner.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>-->
+<style type="text/css">
+    .fpd-product-container > div > ul.fpd-views {
+        bottom: 20px;
+        list-style: outside none none;
+        position: absolute;
+        right: 10px;
+    }
+    ul.fpd-views > li {
+        background: #fafafa none repeat scroll 0 0;
+        cursor: pointer;
+        float: left;
+        margin-right: 10px;
+        padding: 5px;
+    }
+    ul.fpd-views > li:hover {
+        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.3);
+        transition: all 300ms ease-out 0s;
+    }
+    ul.fpd-views > li > img {
+        display: block;
+        margin: 0 auto;
+        max-height: 40px;
+        max-width: 50px;
+    }
+</style>
+<script>
+	$(function() {
+
+        $( "#slider-range-min" ).slider({
+            range: "min",
+            value: <?php echo ($mySession->no_of_t && $mySession->no_of_t > 0) ? $mySession->no_of_t : 10; ?>,
+            min: 10,
+            max: 1000,
+            slide: function( event, ui ) {
+                $( "#tshirt" ).val(ui.value );
+            },
+            change: function( event, ui ) {
+                var val1=$("#tshirt").val();
+                $.ajax({
+                    url: '<?=APPLICATION_URL?>launchcampaign/calculateit',
+                    data:{tno:val1},
+                    type: 'post',
+                    success: function(data){
+                        document.getElementById('basep').innerHTML = data;
+                        assignvalue(val1);
+                    }
+                });
+            }
+        });
+
+        $( "#tshirt" ).val($( "#slider-range-min" ).slider( "value" ));
+
+	});
+
+</script>
+<script>
+	window.onload = function() {assignvalue(tshirt.value); }
+</script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+        //pass the sent product from $_POST
+        //recreateProduct('#recreation-container',<?php echo $mySession->recreation_product; ?>);
+        var currSellingPrice = document.getElementById('sellingprice').value;
+        console.log(currSellingPrice);
+        checkprice(currSellingPrice); // on load
+        calculate(); // on load
+	});
+
+</script>
+
+
+<style>
+
+    .fpd-recreation {
+        margin-left: 0px !important;
+        width: auto !important;
+    }
+    .frontBack {
+        position: relative !important;
+        right: 0px !important;
+        top: -69px !important;
+        width: 26% !important;
+        height: 0px  !important;
+        margin-top: 0px  !important;
+        padding-left: 0px  !important;
+        float:right;
+    }
+    .ui-widget-content {
+        background: url("../images/process366.png") repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+    }
+
+    .ui-state-default , .ui-widget-content .ui-state-default{
+        height: 33px !important;
+        width: 33px !important;
+        border:0px !important;
+        background: url("../images/slider_scr.png") repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+    }
+    .ui-slider .ui-slider-range,.ui-slider-horizontal .ui-slider-range {
+      background: #006853 !important;
+      background-position:none !important;
+    }
+</style>
+
+<!--------------top info end--------------->
+
+
+
+<form method="post" id="setgoalfrm" name="setgoalfrm" action="<?=$this->url(array('controller'=>'launchcampaign', 'action'=>'savevalue' ,'cid'=>$this->cid), 'default', true)?>">
+<section id="content">
+	<div class="zerogrid">
+		<div class="row block">
+            <div class="breadcrumb_code">
+                <ul class="breadcrumb">
+					<li class="create_bread1" id="set_your_goal"><a href="<?=APPLICATION_URL?>launchcampaign/index">
+                            <img src="<?php echo IMAGES_URL;?>Layer-21.png" alt="<?php echo SITE_NAME; ?>"/>
+                            <div style="font-size: 15px; font-weight: bolder; position: relative; left: -30px;">
+                                START YOUR COMPAIGN
+                            </div>
+                        </a></li>
+					<li style="position: relative; top: -20px" class="set_bread1" id="set_your_goal"><a href="<?=APPLICATION_URL?>launchcampaign/setgoal" >
+                            <img src="<?php echo IMAGES_URL;?>Layer-22.png" alt="<?php echo SITE_NAME; ?>"/>
+                            <div style="font-size: 15px; font-weight: bolder;">
+                                SET YOUR GOAL
+                            </div>
+                        </a></li>
+					<li style="position: relative; top: -20px" class="add_bread1" id="set_your_goal"><a href="javascript:void(0)" onclick="submitform('setgoalfrm');">
+                            <img src="<?php echo IMAGES_URL;?>Layer-23.png" alt="<?php echo SITE_NAME; ?>"/>
+                            <div style="font-size: 15px; font-weight: bolder;">
+                                ADD DESCRIPTION
+                            </div>
+                        </a></li>
+				</ul>
+			</div>
+
+            <div id="capmaingn_main_page_wrap">
+				<div class="bot_cam" id="main-container">
+					<div class="goal_section_left">
+						<div>
+                            <div class="goal_sales_title">Sales Goal</div>
+                            <div class="goal_scroller" >
+                                <div id="slider-range-min" style="height: 27px;margin-left: 37px;width: 366px;border:0px !important;">
+                                </div>
+                            </div>
+                            <div class="no_of_tee">$ <label id="basep"><?=$this->sql[0]['base_price']?></label> base price per tee
+                                <div style="font-family:Gotham Book; color:#101010; font-size:14px; display:inline;">with a goal of</div>
+                                <span class="textbox"><input type="text" id="tshirt" name="no_of_tee" style="width:50px; font-weight:bold;background: none repeat scroll 0 0 rgba(0, 0, 0, 0);" onkeyup=" assintosliderval(this.value);" onkeypress="return checknummsp(event,this.value);" /></span>
+                                <input type="hidden" name="basepricefield" value=" <?=$this->sql[0]['base_price']?> "  />
+                            </div>
+                            <div class="goal_discp">Your goal is the minimum number of shirts that need to be reserved before the shirts are printed!</div>
+                            <div class="selling_title">Selling Price</div>
+                            <?php
+                            $currSellingPrice = ($mySession->setgoalvalues && array_key_exists('sellingprice', $mySession->setgoalvalues) && $mySession->setgoalvalues['sellingprice'] > 0) ? $mySession->setgoalvalues['sellingprice'] : $this->sql[0]['base_price']+2;
+                            ?>
+                            <div class="goal_amount no_of_tee">$<span class="textbox"><input type="text" style="width:100px; height:30px;" onfocus="checkprice(this.value);" onkeypress="return checknummsp(event,this.value);" onkeyup="assignprice(this.value);" onchange="checkprice(this.value);" class="setgoaltxt" id="sellingprice" name="sellingprice" value="<?php echo $currSellingPrice; ?>"/></span></div>
+                            <div class="sele_dec">With a price of $<label id="sp"><?php echo $currSellingPrice;?></label> your profit is <label id="profit_per_tee">2.00</label> per tee</div>
+                            <div class="goal_profit">Estimated profit</div>
+                            <div class="profit_des">If you reach your goal of <label id="nooftee">10</label> with a price of $<label id="price"><?php echo $currSellingPrice;?></label> you will make at least:</div>
+                            <div class="profit_amount_goal">$<label id="total_profit">20.00</label></div>
+
+						</div>
+					</div>
+
+
+
+					<div class="goal_section_two">
+						<div class="container1">
+							<div id="recreation-container"></div>
+                            <?php
+                            if($mySession->front_img){
+                                ?>
+                                <div id="Tees0">
+                                    <img src="<?php echo APPLICATION_URL.'images/usersdesign/'.$mySession->front_img; ?>" />
+                                </div><?php
+                            }
+                            if($mySession->back_img){
+                                ?>
+                                <div id="Tees1">
+                                    <img src="<?php echo APPLICATION_URL.'images/usersdesign/'.$mySession->back_img; ?>" />
+                                </div><?php
+                            }
+                            ?>
+						</div>
+
+
+
+						<div align="center" class="frontBack" id="onlyFrontDataK" >
+							<span  style="cursor:pointer;">front</span>
+						</div>
+						<div align="center" class="frontBack" id="bothdatakmanika" >
+							<?php
+							$product = Zend_Json::decode($mySession->recreation_product);
+                            //error_log('product (set goal): '.print_r($product, true));
+							$frontimg = '';
+							$backimg = '';
+                            if(array_key_exists('elements', $product)){
+                                // product has only site (most likely only front)
+                                $product = $product['elements'];
+                            }else{
+                                // there are multiple parts, let us iterate through them
+                                $product = $product;
+                            }
+                            foreach($product AS $key=>$value) {
+                                if($value['title'] == 'front') {
+                                    $frontimg = $value['elements'][0]['source'];
+                                }
+                                if($value['title'] == 'back') {
+                                    $backimg = $value['elements'][0]['source'];
+                                }
+                            }
+                            if(empty($frontimg) && count($product) >= 2){
+                                $frontimg = $product[0]['elements'][0]['source'];
+                            }
+                            if(empty($backimg) && count($product) >= 2){
+                                $backimg = $product[1]['elements'][0]['source'];
+                            }
+							?>
+							<?php if(!empty($frontimg) && !empty($backimg)) { ?>
+							<ul class="fpd-views fpd-clearfix">
+								<li onclick="showtee();"><img src="<?php echo $frontimg; ?>" title="front"></li>
+								<li onclick="showtee1();"><img src="<?php echo $backimg; ?>" title="back"></li>
+							</ul>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="bot_margin" style="padding-bottom: 200px">
+<!--			<div class="get_started"><a href="javascript:void(0);" onclick="submitform('setgoalfrm');"><span class="btn">next step</span></a></div>-->
+            <button class="btn get_started" id="recreation-button" href="javascript:void(0);" onclick="submitform('setgoalfrm')";>NEXT STEP</button>
+		</div>
+
+
+	</div>
+
+</section>
+</form>
+
+<script type="text/javascript">
+
+    function assintosliderval(v)
+    {
+        //document.getElementById('slider-range-min').value=v;
+        $(function() {
+            $( "#slider-range-min" ).slider({
+                range: "min",
+                value: v,
+                min: 10,
+                max: 1000
+            });
+        });
+        //$("#tshirt").val()=v;
+    }
+
+    function assignprice(val)
+    {
+        document.getElementById('sp').innerHTML=val;
+        document.getElementById('price').innerHTML=val;
+        calculate();
+    }
+
+    function checknummsp(e)
+    {
+        evt=e || window.event;
+        var keypressed=evt.which || evt.keyCode;
+        if(keypressed!="48" &&  keypressed!="49"
+             &&  keypressed!="46" && keypressed!="50"
+             && keypressed!="51" && keypressed!="52"
+             && keypressed!="53" && keypressed!="54"
+             && keypressed!="55" && keypressed!="56"
+             && keypressed!="57" && keypressed!="8")
+        {
+            return false;
+        }
+    }
+
+    function checkprice(value)
+    {
+        var recentprice = value;
+        var baseprice=document.getElementById('basep').innerHTML;
+        recentprice = parseFloat(recentprice);
+        baseprice = parseFloat(baseprice);
+        if(recentprice <= baseprice){
+            recentprice = (baseprice*1+1);
+            document.getElementById('sellingprice').value=parseFloat(recentprice);
+            document.getElementById('sp').innerHTML=parseFloat(recentprice);
+            document.getElementById('price').innerHTML=parseFloat(recentprice);
+        }
+        calculate();
+    }
+
+    function calculate()
+    {
+        var nooftee= document.getElementById('nooftee').innerHTML;
+        //var baseprice= <?=$this->sql[0]['base_price']?>;
+        var baseprice=document.getElementById('basep').innerHTML;
+        //alert('price : '+baseprice);
+        var sellingprice=document.getElementById('sp').innerHTML;
+        var profit_per_tee =parseFloat(sellingprice)-parseFloat(baseprice);
+
+        if(profit_per_tee < 0){
+            //sellingprice += Math.abs(profit_per_tee)
+            sellingprice = baseprice*1 + 1;
+            document.getElementById('sp').innerHTML = sellingprice;
+        }else if(profit_per_tee = 0){
+            sellingprice = sellingprice*1 + 1;
+            document.getElementById('sp').innerHTML = sellingprice;
+        }
+        profit_per_tee =parseFloat(sellingprice)-parseFloat(baseprice);
+
+        var total_profit= parseFloat(profit_per_tee) * parseFloat(nooftee);
+        if(total_profit>0) {
+            document.getElementById('total_profit').innerHTML=total_profit.toFixed(2);
+        }
+        if(profit_per_tee>0) {
+            document.getElementById('profit_per_tee').innerHTML=profit_per_tee.toFixed(2);
+        }
+    }
+
+    function assignvalue(val)
+    {
+        document.getElementById('nooftee').innerHTML=val;
+        calculate();
+    }
+
+    function submitform()
+    {
+        document.setgoalfrm.submit();
+    }
+
+
+</script>
+

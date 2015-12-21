@@ -1,0 +1,14 @@
+<?php $db=new Db();?>
+
+<h1>STORE</h1>
+
+<?php foreach($this->qry  as $qrys){
+
+    $title = $qrys['title'];
+
+    echo "<pre>";
+    print_r($title);
+    echo "</pre>";
+
+
+} ?>

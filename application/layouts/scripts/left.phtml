@@ -1,0 +1,119 @@
+<?php
+global $mySession;
+$db=new Db();
+
+$userid=$mySession->TeeLoggedID;
+
+$draftcount= $db->runQuery("select count(*) as draftcnt from ".DRAFTS." WHERE user_id='".$userid."' and resume_status='0'");
+
+$draftct=$draftcount[0]['draftcnt'];
+
+$countactive = $db->runQuery("select count(*) as mycount from ".LAUNCHCAMPAIGN." WHERE user_id='".$userid."' and campaign_status='1' and draft_status='1'");
+
+$countend = $db->runQuery("select count(*) as mycount from ".LAUNCHCAMPAIGN." WHERE user_id='".$userid."' and  campaign_status='0' and draft_status='1'");
+
+$active=$countactive[0]['mycount'];
+$end=$countend[0]['mycount'];
+
+if($myControllerName=="about" || $myControllerName=="myaccount") {?>
+	<!--------------start rsponsive left menu--------------->
+    <div class="work_left_responsive">
+		<?php if($myControllerName=="about") { ?>
+        <div class="mene_about_responsive">
+            <div class="heading_menu_how_responsive">
+              <h3>About</h3>
+              <li><a href="<?=APPLICATION_URL?>about/index/page/how_it_works">How it works</a></li>
+              <li><a href="<?=APPLICATION_URL?>about/index/page/faq">FAQ</a></li>
+              <li><a href="#">Examples</a></li>
+              <li><a href="<?=APPLICATION_URL?>about/index/page/shipping_rates">Shipping rates</a></li>
+            </div>
+        </div>
+        <div class="menu_policies_responsive">
+            <div class="heading_menu_how_responsive">
+              <h3>Policies</h3>
+              <li><a href="<?=APPLICATION_URL?>about/index/page/privacy_policy">Privacy policy</a></li>
+              <li><a href="<?=APPLICATION_URL?>about/index/page/terms_of_service">Terms of service</a></li>
+              <li><a href="<?=APPLICATION_URL?>about/index/page/contact_us">Contact Us</a></li>
+			</div>
+        </div>
+		<?php } ?>
+		<?php if(($mySession->TeeLoggedID!="")) { ?>
+		<div class="<?php if($myControllerName == "about") { ?>menu_policies_responsive<?php } else { ?>mene_about_responsive<?php } ?>">
+            <?php if($myControllerName !== "about"): ?>
+            <div class="heading_menu_how_responsive">
+				<h3>My Account</h3>
+				<li><a href="<?=APPLICATION_URL?>myaccount/activecampaign">Active
+							<?php if($active>0)	{ ?>
+							<span class="badge badge-info badge-small"><?=$active?> </span>
+							<?php	}  ?>
+				</a><li>
+				<li><a href="<?=APPLICATION_URL?>myaccount/endedcampaign">Ended
+							<?php if($end>0){ ?>
+							<span class="badge badge-info badge-small"> <?=$end?> </span>
+							<?php }  ?>
+				</a></li>
+
+				<li><a href="<?=APPLICATION_URL?>myaccount/drafts">Drafts
+							<?php if($draftct>0) { 	?>
+							<span class="badge badge-info badge-small"><?=$draftct?></span>
+							<?php } ?>
+				</a></li>
+				<li><a href="<?=APPLICATION_URL?>myaccount/profile">Profile</a></li>
+				<li><a href="<?=APPLICATION_URL?>myaccount/changepassword">Change Password</a></li>
+				<li><a href="<?=APPLICATION_URL?>myaccount/referfriends">Refer a Friend</a></li>
+			</div>
+            <?php endif; ?>
+        </div>
+		<?php } ?>
+    </div>
+    <!--------------end rsponsive left menu--------------->
+        <div class="work_left">
+			<?php if($myControllerName=="about") { ?>
+			<div class="mene_about">
+				<div class="heading_menu_how">
+				  <h3>About</h3>
+				  <li><a href="<?=APPLICATION_URL?>about/index/page/how_it_works">How it works</a></li>
+				  <li><a href="<?=APPLICATION_URL?>about/index/page/faq">FAQ</a></li>
+				  <li><a href="#">Examples</a></li>
+				  <li><a href="<?=APPLICATION_URL?>about/index/page/shipping_rates">Shipping rates</a></li>
+				</div>
+			</div>
+			<div class="menu_policies">
+				<div class="heading_menu_how">
+				  <h3>Policies</h3>
+				  <li><a href="<?=APPLICATION_URL?>about/index/page/privacy_policy">Privacy policy</a></li>
+				  <li><a href="<?=APPLICATION_URL?>about/index/page/terms_of_service">Terms of service</a></li>
+				  <li><a href="<?=APPLICATION_URL?>about/index/page/contact_us">Contact Us</a></li>
+				</div>
+			</div>
+			<?php } ?>
+			<?php if(($mySession->TeeLoggedID!="")) { ?>
+			<div class="<?php if($myControllerName=="about") { ?>menu_policies<?php } else { ?>mene_about<?php } ?>">
+                <?php if($myControllerName !== "about"): ?>
+				<div class="heading_menu_how">
+					<h3>My Account</h3>
+					<li><a href="<?=APPLICATION_URL?>myaccount/activecampaign">Active
+							<?php if($active>0)	{ ?>
+							<span class="badge badge-info badge-small"><?=$active?> </span>
+							<?php	}  ?>
+				</a><li>
+				<li><a href="<?=APPLICATION_URL?>myaccount/endedcampaign">Ended
+							<?php if($end>0){ ?>
+							<span class="badge badge-info badge-small"> <?=$end?> </span>
+							<?php }  ?>
+				</a></li>
+
+				<li><a href="<?=APPLICATION_URL?>myaccount/drafts">Drafts
+							<?php if($draftct>0) { 	?>
+							<span class="badge badge-info badge-small"><?=$draftct?></span>
+							<?php } ?>
+				</a></li>
+					<li><a href="<?=APPLICATION_URL?>myaccount/profile">Profile</a></li>
+				<li><a href="<?=APPLICATION_URL?>myaccount/changepassword">Change Password</a></li>
+				<li><a href="<?=APPLICATION_URL?>myaccount/referfriends">Refer a Friend</a></li>
+				</div>
+                <?php endif; ?>
+            </div>
+			<?php } ?>
+        </div>
+<?php } ?>

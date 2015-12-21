@@ -1,0 +1,122 @@
+
+<?php if($this->testing=="") { ?>
+<div id="loginas" class="work_section_two  mainprofile" style="display:block">
+<?php } else {	?>
+<div id="loginas" class="work_section_two  mainprofile" style="display:none">
+<?php } ?>
+<form method="post" name="login" action="<?=$this->url(array('controller'=>'login', 'action'=>'logined','l'=>$this->l), 'default', true)?>">
+<div >
+	<div class="top10pxmargin " style="margin-top:0px;">
+		<label class="myaccsubtitles">Email Address</label>
+	</div>
+
+	<div class="top5pxmargin ">
+		<?=$this->myform->emailid?>
+	</div>
+
+	<div class="top10pxmargin " >
+		<label class="myaccsubtitles">Password</label>
+	</div>
+
+	<div class="top5pxmargin ">
+		<?=$this->myform->pass?>
+	</div>
+
+	<div class="top10pxmargin " >
+		<a href="<?=APPLICATION_URL?>login/forgotpassword" style="text-decoration:none;">
+            <label style="cursor:pointer;" >Forgot Your Password ?</label>
+        </a>
+	</div>
+	<div class="top10pxmargin ">
+		<input type="submit" name="loginbtn" id="loginbtn" value="Sign In Now" class="accbutton">
+		<label style="color:#006853; font-size:16px; cursor:pointer;vertical-align:middle;" onclick="opennewdiv();">or Create New Account</label>
+	</div>
+
+</form>
+</div>
+<?php if($this->testing!="") { ?>
+<div id="signupas" class="work_section_two  mainprofile" style="display:block">
+<?php } else { ?>
+<div id="signupas" style="display:none" class="work_section_two  mainprofile">
+<?php } ?>
+<form method="post" name="signup" action="<?=$this->url(array('controller'=>'login', 'action'=>'signuped','l'=>$this->l), 'default', true)?>">
+    <div class="top10pxmargin " style="margin-top:0px;">
+        <label class="myaccsubtitles">Public Name</label>
+    </div>
+    <div class="top5pxmargin ">
+        <?=$this->myformsignup->publicname?>
+    </div>
+
+	<div class="top10pxmargin ">
+		<label class="myaccsubtitles">Email Address</label>
+	</div>
+	<div class="top5pxmargin ">
+		<?=$this->myformsignup->signupemailid?>
+	</div>
+
+	<div class="top10pxmargin ">
+		<label class="myaccsubtitles">Password</label>
+	</div>
+	<div class="top5pxmargin ">
+		<?=$this->myformsignup->signuppass?>
+	</div>
+
+	<div class="top10pxmargin ">
+		<label class="myaccsubtitles">Confirm Password</label>
+	</div>
+	<div class="top5pxmargin ">
+		<?=$this->myformsignup->signupcnfrmpass?>
+	</div>
+
+	<div class="top10pxmargin ">
+		<input type="submit" name="loginbtn" style="width:240px" id="loginbtn" value="Create Your Account" class="accbutton">
+		<label style="color:#006853; font-size:16px; cursor:pointer;vertical-align:middle;" onclick="opennewdiv();">or Already Have an Account</label>
+	</div>
+
+</form>
+</div>
+
+
+
+_____________
+
+
+<div class="work_section_one">
+        <div class="work_top_text">Selling tees with zero upfront costs and zero risk. <br>
+          We print, we ship, you keep the profit.</div>
+        <div class="seel_tees">
+          <div class="start_cam"><img src="http://teerrific.com/images/str_ic.png">
+          <div class="txt">Start your campaign</div>
+          <div class="des">Maecenas libero odio, iaculis id justo rutrum, pellentesque elementum justo. Integer pretium ut elit sed laoreet.</div>
+          </div>
+          <div id="mid_tees" class="start_cam"><img src="http://teerrific.com/images/find_ic.png">
+          <div class="txt">Find Supporters</div>
+          <div class="des">Phasellus nec vulputate erat, sed feugiat felis. Vivamus sagittis turpis eu odio adipiscing sagittis.</div>
+          </div>
+          <div class="start_cam"><img src="http://teerrific.com/images/com_goal.png">
+          <div class="txt">Complete your goal</div>
+          <div class="des"> Cras euismod tincidunt magna nec egestas. Nam euismod tortor ac accumsan porttitor.</div>
+          </div>
+        </div>
+        </div>
+        <div class="work_section_two">
+        <div class="text_sec_two">How To Get Started</div>
+        <div class="design_ur_tee">
+          <div class="both_design_ur_tee">
+          <div class="design_ur_tee_image"><img src="http://teerrific.com/images/how_sec1.png"></div>
+          <div class="ur_tee_txt">Design Your Tee<div>Maecenas libero odio, iaculis id justo rutrum, pellentesque elementum justo. Integer pretium ut elit sed laoreet. Nunc non pharetra nibh. Nullam molestie lorem eget porta commodo.</div></div>
+          </div>
+        </div>
+        <div class="design_ur_tee">
+          <div class="both_design_ur_tee">
+          <div class="design_ur_tee_image2"><img src="http://teerrific.com/images/how_sec2.png"></div>
+          <div class="ur_tee_txt2">Decide on your goal<div>Donec non quam vel nibh volutpat pellentesque. Curabitur tincidunt magna vitae lorem accumsan, ac interdum erat blandit.</div></div>
+          </div>
+        </div>
+        <div class="design_ur_tee">
+          <div class="both_design_ur_tee">
+          <div class="design_ur_tee_image"><img style="width:430px;height:308px;vertical-align:baseline" src="http://teerrific.com/images/how_sec3.png"></div>
+          <div class="ur_tee_txt">Add Title &amp; Description<div>Maecenas libero odio, iaculis id justo rutrum, pellentesque elementum justo. Integer pretium ut elit sed laoreet. Nunc non pharetra nibh. Nullam molestie lorem eget porta commodo.</div></div>
+          </div>
+        </div>
+        </div>

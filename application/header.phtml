@@ -1,0 +1,596 @@
+<?php
+
+global $mySession;
+
+$db=new Db();	
+
+?>
+
+<!--<script src="http://platform.tumblr.com/v1/share.js"></script>
+
+
+
+-->
+
+<!--<script type="text/javascript" src="<?=JS_URL?>jquery.min.js"></script>
+
+
+
+
+
+<script type="text/javascript" src="<?=APPLICATION_URL?>fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>fancybox/fancybox.css" media="screen"/>
+
+-->
+
+	<script type="text/javascript">
+
+	
+
+		$(document).ready(function() {
+
+		
+
+				$("#fancy").fancybox({
+
+				'transitionIn'		: 'elastic',
+
+				'transitionOut'		: 'elastic',
+
+				'opacity'			: true,
+
+				'overlayShow'		: true,
+
+				'overlayColor'		: '#666',
+
+				'overlayOpacity'	: 0.2,
+
+				'scrolling'			:false,
+
+				'easingIn' 			: 'swing',
+
+				'easingOut' 		: 'swing',
+
+				'autoDimensions'    : false,
+
+				'width'				: '50%',
+
+				'height'			: '60%',
+
+				'autoScale'			: true,
+
+				'type'				: 'iframe',
+
+				'speedIn'		:	200, 
+
+				'speedOut'		:	200
+
+			});
+
+		
+
+		});		
+
+</script>
+
+
+
+
+
+<div style="width:100%; height:auto; background-image:url(<?=IMAGES_URL?>mainbgrrndcolor.png); background-repeat:repeat-x;" align="center">
+
+
+
+	
+
+    	
+
+        <div style="width:1000px; height:auto;">
+
+                    
+
+                    <div style="width:365px; height:135px; float:left; margin-top:8px;" align="left">
+
+                         <div style="float:left; width:110px; height:125px;">
+
+                           <a href="<?=APPLICATION_URL?>"> <img src="<?=IMAGES_URL?>logo.png"  /></a>
+
+                         </div>
+
+                        
+
+                         <div class="teelogo" style="width:365px; height:40px; margin-top:12px;">
+
+                           
+
+                             <div style="width:245px; height:40px; float:left; margin-left:8px;">
+
+                                 TeeshirtSCRIPT T-shirts
+
+                             </div>
+
+                         </div>
+
+                         
+
+                         <div style="font-family:'Century Schoolbook'; font-size:13px; width:365px; height:20px; color:#7d7d7d;">
+
+                            <div align="right" style="width:350px; height:20px; ">
+
+                                The Online Store
+
+                             </div>
+
+                         </div>
+
+                    </div>
+
+                    
+
+            
+
+       <!-- div size different when login and when not login -->
+
+            
+
+                    <?php
+
+					if(($mySession->TeeLoggedID==""))
+
+					{
+
+					?>
+
+                    <div style="float:left; width:240px;">
+
+                         &nbsp;
+
+                    </div>
+
+                   
+
+					
+
+				
+
+					
+
+					<div style="width:390px; margin-right:0px; margin-top:0px; float:left;" align="right">
+
+                    <?php
+
+					}
+
+					?>
+
+       <!-- div size different when login and when not login -->
+
+                
+
+                     <?php
+
+					if(($mySession->TeeLoggedID!=""))
+
+					{
+
+					?>
+
+                      <div style="float:left; width:145px;">
+
+                         &nbsp;
+
+                      </div>
+
+                    
+
+                       <div style="width:485px; margin-right:0px; margin-top:0px; float:left;" align="right">
+
+                        <?php
+
+					}
+
+					?>
+
+                
+
+                
+
+                   						<div style="margin-top:10px; float:left;">
+
+                                            <span class="ahrefheader"> <a href="<?=APPLICATION_URL?>launchcampaign/index"> Launch a campaign >>  </a> </span>
+
+                                        </div>
+
+                                
+
+                      <?php /*?> <?php 	if((($myControllerName=="index") || ($myControllerName=="login") || ($myControllerName=="about")) && ($mySession->TeeLoggedID=="")) 
+
+                        {
+
+                       ?>
+
+                       					
+
+                                        
+
+                                        <div style="margin-top:10px; float:left;">
+
+                                            <span class="ahrefheader"> <a href="<?=APPLICATION_URL?>login/index/l/launch"> Launch a campaign >>  </a> </span>
+
+                                        </div>
+
+                                        
+
+                                       
+
+                         <?php
+
+						}
+
+						?>
+
+                             <?php */?>           
+
+                                                   
+
+                      <?php /*?> <?php 	if(($mySession->TeeLoggedID!="")) 
+
+                        {
+
+                       ?>
+
+                                        <div style="margin-top:10px; float:left;">
+
+                                            <span class="ahrefheader"> <a href="<?=APPLICATION_URL?>launchcampaign/index"> Launch a campaign >>  </a> </span>
+
+                                        </div>
+
+                          <?php
+
+						}
+
+						?><?php */?>
+
+                              
+
+                                        
+
+                                        <div style="float:left;">
+
+                                        &nbsp;&nbsp;&nbsp;
+
+                                        </div>
+
+                                        
+
+                                        <div style="margin-top:10px; float:left;">
+
+                                            <span class="ahrefheader"> <a href="<?=APPLICATION_URL?>about/index/page/how_it_works">How it Works </a> </span>
+
+                                        </div>
+
+                                       
+
+               <?php 
+
+             if($mySession->TeeLoggedID=="" && (($myControllerName!="index" && $myActionName!="index" ) || ($myControllerName=="launchcampaign") || ($myControllerName=="payment") || ($myControllerName=="login" && $myActionName=="index" ))) 
+
+			  {
+
+                        ?> 
+
+                                        <div style="float:left;">
+
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        </div>
+
+                                        
+
+                                        <div style="margin-top:10px; float:left;">
+
+                                           <span class="ahrefheader"> <a href="<?=APPLICATION_URL?>launchcampaign/trackorder">Track Your Order  </a> </span>
+
+                                        </div>
+
+                         <?php
+
+						}
+
+						
+
+        if((($myControllerName=="login") ||  ($myControllerName=="launchcampaign" && $myActionName=="index") || ($myControllerName=="about") || ($myControllerName=="index" && $myActionName=="index")) && ($mySession->TeeLoggedID=="")) 
+
+        {
+
+          ?>    
+
+                                        <div style="float:left;">
+
+                                        &nbsp;&nbsp;&nbsp;
+
+                                        </div>
+
+                                        
+
+                                        <div style="margin-top:10px; float:left;">
+
+                                            <span class="ahrefheader"><a href="<?=APPLICATION_URL?>login/index">Login</a></span>
+
+                                        </div>
+
+                                        
+
+         <?php
+
+		}
+
+		?>
+
+        
+
+        
+
+        	     <?php   
+
+                 if(($myControllerName=="launchcampaign") && ($mySession->TeeLoggedID==""))
+
+				{
+
+					?>
+
+                    		<!--<div style="float:left;">
+
+                                 &nbsp;&nbsp;&nbsp;&nbsp;
+
+                            </div> 
+
+                                        
+
+                            <div style="margin-top:10px; float:left; ">
+
+                            	<span class="ahrefheader"><a href="<?=APPLICATION_URL?>logindesigned/index" id="fancy">Login</a></span>
+
+                               
+
+                            </div>-->
+
+                     <?php
+
+				}
+
+				?>
+
+                          
+
+                <?php
+
+                if(($mySession->TeeLoggedID!=""))
+
+				{
+
+				?>			
+
+                			         <div style="float:left;">
+
+                                        &nbsp;&nbsp;&nbsp;
+
+                                     </div>
+
+                                        
+
+                                        <div style="margin-top:10px; float:left;">
+
+                                           <span class="ahrefheader"> <a href="<?=APPLICATION_URL?>myaccount/profile">My Account </a> </span>
+
+                                        </div>
+
+                                        
+
+                                     <div style="float:left;">
+
+                                        &nbsp;&nbsp;&nbsp;
+
+                                     </div>
+
+                                        
+
+                                    <div style="margin-top:10px; float:left;">
+
+                                        <span class="ahrefheader"><a href="<?=APPLICATION_URL?>index/logout">Logout</a></span>
+
+                                    </div>
+
+                 <?php
+
+				}
+
+				?>
+
+                                 
+
+                     </div>
+
+                    
+
+                </div>
+
+        
+
+    
+
+	
+
+</div>
+
+
+
+
+
+
+
+<!--<div style="width:1000px; height:auto">
+
+
+
+   <div style="height:130px; border:#30F solid 2px">
+
+  
+
+                 <div style="width:500px;">
+
+                       <div style="margin-top:8px; padding-left:146px; float:left;">
+
+                            <a href="<?=APPLICATION_URL?>"> <img src="<?=IMAGES_URL?>logo.png" width="109" height="122" /></a>
+
+                        </div>
+
+                        <div class="teelogo" style="padding-top:26px; margin-left:255px; padding-left:12px; width:220px">
+
+                            TeeshirtSCRIPT T-shirts
+
+                        </div>
+
+                        <div style="font-family:'Century Schoolbook'; font-size:13.39px; color:969696;  margin-left:255px; width:150px; padding-left:135px;">
+
+                            The Online Store
+
+                        </div>
+
+                  </div>
+
+			
+
+            <div style="border:#C03 solid 1px; float:right;">
+
+            
+
+                
+
+                  
+
+                   <?php 	if(($mySession->TeeLoggedID!="") || ($myControllerName=="index") || ($myControllerName=="login") || ($myControllerName=="about")) 
+
+                        {
+
+                       ?>
+
+                        	<div style="margin-top:10px; float:left; padding-left:15px">
+
+                            	<span class="ahrefheader"> <a href="<?=APPLICATION_URL?>launchcampaign/index">Launch a campaign >>  </a> </span>
+
+                            </div>
+
+                          <?php
+
+						}
+
+						
+
+                        if(($mySession->TeeLoggedID!="") || ($myControllerName=="launchcampaign" && $myActionName=="index" ) || ($myControllerName=="login" && $myActionName=="index" )) 
+
+						{
+
+                        ?>
+
+                        	<div style="margin-top:10px; float:left; padding-left:15px">
+
+                            	<span class="ahrefheader"> <a href="<?=APPLICATION_URL?>launchcampaign/index">Track Your Order  </a> </span>
+
+                            </div>
+
+                          <?php
+
+						}
+
+						
+
+                        ?>
+
+                      
+
+                            <div style="margin-top:10px; float:left; padding-left:15px">
+
+                            	<span class="ahrefheader"> <a href="<?=APPLICATION_URL?>launchcampaign/index">How it Works </a> </span>
+
+                            </div>
+
+                           <?php
+
+                        if((($myControllerName!="launchcampaign" && $myActionName!="index") ||  ($myControllerName=="about") || ($myControllerName=="index" && $myActionName=="index")) && ($mySession->TeeLoggedID=="")) 
+
+                        {
+
+                        ?>    
+
+                            <div style="margin-top:10px; float:left; padding-left:15px">
+
+                            	<span class="ahrefheader"><a href="<?=APPLICATION_URL?>login/index">Login</a></span>
+
+                            </div>
+
+                         <?php
+
+						}
+
+						?>
+
+                        
+
+                         <?php   
+
+                         if(($myControllerName=="launchcampaign" && $myActionName=="index") && ($mySession->TeeLoggedID==""))
+
+						  {
+
+							  ?>
+
+                            <div style="margin-top:10px; float:left; padding-left:15px">
+
+                            	<span class="ahrefheader"><a href="<?=APPLICATION_URL?>logindesigned/index" id="fancy">Login</a></span>
+
+                            </div>
+
+                            <?php
+
+						  }
+
+						  ?>
+
+                          <?php
+
+                           if(($mySession->TeeLoggedID!=""))
+
+						   {
+
+							   ?>
+
+                           <div style="margin-top:10px; float:left; padding-left:15px">
+
+                            	<span class="ahrefheader"><a href="<?=APPLICATION_URL?>index/logout">Logout</a></span>
+
+                            </div>
+
+                           <?php
+
+						   }
+
+						   ?>
+
+                  
+
+                    
+
+            </div>
+
+   </div>
+
+
+
+</div>-->
+

@@ -1,0 +1,90 @@
+<?php
+global $mySession;
+	$db=new Db();
+?>
+<div class="mws-panel grid_8">
+    <div class="mws-panel-header">
+        <span class="mws-i-24 i-list4"><?=$this->pageHeading?>
+       	 <div style="margin-left:800px; margin-top:-20px; "><a style="color:#FFFF00; text-decoration:none;" href="<?=APPLICATION_URL_ADMIN?>album/index">Back</a></div>
+        </span>
+    </div>
+     <div class="mws-panel-body">
+        <!--<table class="mws-table">-->
+         <table class="mws-datatable-fn mws-table" align="center">
+                <tr>
+                        <td width="150" align="center" style="font-weight:bold;">User Name : </td>
+
+                    <td> <?=$this->sql[0]['name'];?></td> 
+                    </tr>
+                 <tr>
+                       <td align="center" style="font-weight:bold;" >Artist Name :</td>
+                     <td><?=$this->sql[0]['artist_name'];?> </td>
+                  </tr>
+                  <tr>
+                        <td align="center"  style="font-weight:bold;">Artist Title :</td>
+                      <td> <?=$this->sql[0]['album_title'];?></td>
+          		</tr>
+                  <tr>
+                        <td align="center" style="font-weight:bold;">Genre :</td>
+                      <td> <?=$this->sql[0]['genre_name'];?></td>
+                 </tr>
+                 <?php if($this->sql[0]['coverimage']!="")
+				 {
+					 ?>
+                  <tr>
+                  		  <td align="center" style="font-weight:bold;">Cover Image :</td>
+                        <td> <img src="<?=IMAGES_URL?>coverimages/<?=$this->sql[0]['coverimage'];?>" width="30" height="30" /></td>
+                 </tr>
+                 <?php
+				 } 
+                 else
+                 { ?>
+                 <tr>
+                  		  <td align="center" style="font-weight:bold;">Cover Image :</td>
+                        <td> none</td>
+                 </tr>
+                 <?php } ?>
+                  <tr>
+                        <td align="center" style="font-weight:bold;">Release Year</td>
+                      <td> <?=$this->sql[0]['release_year'];?></td>
+                 </tr>
+                  <?php if($this->sql[0]['record_label']!="")
+				 {
+					 ?>
+                 <tr>
+                        <td align="center" style="font-weight:bold;">Record Label :</td>
+                       <td> <?=$this->sql[0]['record_label'];?></td>
+                 </tr>
+                   <?php
+				 } 
+                 else
+                 { ?>
+                 <tr>
+                  		  <td align="center" style="font-weight:bold;">Record Label :</td>
+                        <td> none</td>
+                 </tr>
+                 <?php } ?>
+                 <?php if($this->sql[0]['barcode']!="")
+				 {
+					 ?>
+                  <tr>
+                        <td align="center" style="font-weight:bold;">Barcode :</td>
+                      <td> <?=$this->sql[0]['barcode'];?></td>
+                 </tr>
+                  <?php
+				 } 
+                 else
+                 { ?>
+                 <tr>
+                  		  <td align="center" style="font-weight:bold;">Barcode :</td>
+                        <td> none</td>
+                 </tr>
+                 <?php } ?>
+                  <tr>
+                        <td align="center" style="font-weight:bold;">Lyrics :</td>
+                      <td> <?=$this->sql[0]['lyrics'];?></td>
+                 </tr>
+        </table>
+    </div>    	
+</div>
+

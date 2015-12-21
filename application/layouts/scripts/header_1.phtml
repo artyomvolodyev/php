@@ -1,0 +1,161 @@
+<?php
+global $mySession;
+$db=new Db();
+?>
+<!--------------Header--------------->
+<header>
+<!--	<div id="logo"><a href="--><?php //echo APPLICATION_URL;?><!--"><img src="--><?php //echo IMAGES_URL;?><!--logo1.png" alt="--><?php //echo SITE_NAME; ?><!--"/></a></div>-->
+    <!-- Latest compiled and minified Bootstrap CSS -->
+
+    <link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="<?=APPLICATION_URL?>style.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- Style Css-->
+<!--    <link rel="stylesheet" href="style.css">-->
+
+    <!-- Jquery -->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
+<!--    <script src="--><?//=APPLICATION_URL?><!--js/bootstrap.min.js" type="text/javascript"></script>-->
+    <!--    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>-->
+<!--    <script src="./bootstrap/js/bootstrap.min.js"></script>-->
+
+<!--------------Navigation--------------->
+
+    <div class="top-header ">
+        <div class="container header-inside ">
+
+            <div class="col-md-3 logo-part col-sm-12 col-xs-12">
+                <!--    <a href="tmerch.php"><img src="images/logo.png" class="img-responsive"></a>-->
+                <a href="<?php echo APPLICATION_URL;?>"><div class="img-responsive"><img src="<?php echo IMAGES_URL;?>logo31.png" alt="<?php echo SITE_NAME; ?>"/></div></a>
+            </div>
+            <div class="col-md-9 col-sm-9 col-xs-12 menu-bar">
+                <div class=" menu_links ">
+                    <nav class="navbar navbar-default">
+                        <div class=" menu_links">
+                            <!-- Brand and toggle get grouped for better mobile display -->
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div>
+                            <!-- links Start-->
+                            <div class=".bottom_menu navbar-collapse" id="bs-example-navbar-collapse-1">
+                                <ul class="nav links navbar-nav">
+                                    <li><a href="<?php echo APPLICATION_URL;?>launchcampaign/index" class="active">LAUNCH A CAMPAIGN</a></li>
+                                    <li><a href="<?php echo APPLICATION_URL;?>store/index" class="active">STORE</a></li>
+                                    <li><a href="<?php echo APPLICATION_URL;?>about/index/page/how_it_works">HOW IT WORKS</a></li>
+                                    <li><a href="<?php echo APPLICATION_URL;?>launchcampaign/trackorder">TRACK YOUR ORDER</a></li>
+                                    <?php
+                                    if(($mySession->TeeLoggedID!="")) {
+                                        $getnotify=$db->runquery("select *,".LAUNCHCAMPAIGN.".user_id as uid from ".NOTIFICATION." left join ".LAUNCHCAMPAIGN." on (".LAUNCHCAMPAIGN.".campaign_id=".NOTIFICATION.".n_camp_id) left join ".USERS." on (".LAUNCHCAMPAIGN.".user_id=".USERS.".user_id) where FIND_IN_SET('".$mySession->TeeLoggedID."',n_user_id) ");
+                                        ?>
+                                        <li><a href="<?php echo APPLICATION_URL;?>myaccount/profile">My Account</a></li>
+                                        <li><a href="<?php echo APPLICATION_URL;?>index/logout">Logout</a></li>
+                                    <?php } ?>
+                                    <?php  if((($myControllerName=="login" || $myControllerName=="error") ||  ($myControllerName=="launchcampaign" && $myActionName=="index") || ($myControllerName=="launchcampaign") || ($myControllerName=="about") || ($myControllerName=="index" && $myActionName=="index")  || ($myControllerName=="index" && $myActionName=="support") || ($myControllerName=="index" && $myActionName=="funded")) && ($mySession->TeeLoggedID==""))      { ?>
+                                        <li><a href="<?php echo APPLICATION_URL;?>login/index">LOGIN</a></li>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php
+
+/*
+ *
+
+
+<div id="nav_bg">
+	<nav class="menu">
+
+		<a href="<?php echo APPLICATION_URL;?>"><div class="logo_main"><img src="<?php echo IMAGES_URL;?>logo.png" alt="<?php echo SITE_NAME; ?>"/></div></a>
+		<ul class="menu">
+			<li><a href="<?php echo APPLICATION_URL;?>launchcampaign/index">launch a campaign</a></li>
+			<li><a href="<?php echo APPLICATION_URL;?>about/index/page/how_it_works">how it works</a></li>
+			<li><a href="<?php echo APPLICATION_URL;?>launchcampaign/trackorder">Track your order</a></li>
+			<?php
+			if(($mySession->TeeLoggedID!="")) {
+				$getnotify=$db->runquery("select *,".LAUNCHCAMPAIGN.".user_id as uid from ".NOTIFICATION." left join ".LAUNCHCAMPAIGN." on (".LAUNCHCAMPAIGN.".campaign_id=".NOTIFICATION.".n_camp_id) left join ".USERS." on (".LAUNCHCAMPAIGN.".user_id=".USERS.".user_id) where FIND_IN_SET('".$mySession->TeeLoggedID."',n_user_id) ");
+			?>
+			<li><a href="<?php echo APPLICATION_URL;?>myaccount/profile">My Account</a></li>
+			<li><a href="<?php echo APPLICATION_URL;?>index/logout">Logout</a></li>
+
+			<?php } ?>
+			<?php  if((($myControllerName=="login" || $myControllerName=="error") ||  ($myControllerName=="launchcampaign" && $myActionName=="index") || ($myControllerName=="launchcampaign") || ($myControllerName=="about") || ($myControllerName=="index" && $myActionName=="index")  || ($myControllerName=="index" && $myActionName=="support") || ($myControllerName=="index" && $myActionName=="funded")) && ($mySession->TeeLoggedID==""))      { ?>
+			<li><a href="<?php echo APPLICATION_URL;?>login/index">login</a></li>
+			<?php } ?>
+		</ul>
+		<div class="minimenu">
+			<div>MENU</div>
+			<select>
+				<option>LAUNCH A CAMPAIGN</option>
+				<option>HOW IT WORKS</option>
+				<option>TRACK YOUR ORDER</option>
+				<?php
+				if(($mySession->TeeLoggedID!="")) {
+					$getnotify=$db->runquery("select *,".LAUNCHCAMPAIGN.".user_id as uid from ".NOTIFICATION." left join ".LAUNCHCAMPAIGN." on (".LAUNCHCAMPAIGN.".campaign_id=".NOTIFICATION.".n_camp_id) left join ".USERS." on (".LAUNCHCAMPAIGN.".user_id=".USERS.".user_id) where FIND_IN_SET('".$mySession->TeeLoggedID."',n_user_id) ");
+				?>
+				<option>MY ACCOUNT</option>
+				<option>LOGOUT</option>
+				<?php } ?>
+				<?php if((($myControllerName=="login") ||  ($myControllerName=="launchcampaign" && $myActionName=="index") || ($myControllerName=="launchcampaign") || ($myControllerName=="about") || ($myControllerName=="index" && $myActionName=="index")  || ($myControllerName=="index" && $myActionName=="support") || ($myControllerName=="index" && $myActionName=="funded")) && ($mySession->TeeLoggedID==""))      { ?>
+				<option>LOGIN</option>
+			<?php } ?>
+
+			</select>
+		</div>
+	</nav>
+
+</div>
+ *
+ */
+
+?>
+
+
+<!------/Slider----->
+
+    <div class="col-md-12 no-padd col-sm-12">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!--   <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                        <li data-target="#myCarousel" data-slide-to="3"></li>
+               </ol>  -->
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+<!--                <div class="item">-->
+<!--                    <img src="--><?php //echo IMAGES_URL;?><!--slide.jpg" alt="--><?php //echo SITE_NAME; ?><!--"/>-->
+<!--                </div>-->
+<!---->
+                <div class="item active">
+                    <img src="<?php echo IMAGES_URL;?>slide2.jpg" alt="<?php echo SITE_NAME; ?>"/>
+                </div>
+
+              <!--  <div class="item active" style="margin-left: 300px">
+                    <img src="<?php /*echo IMAGES_URL;*/?>MERCH-Infograph-04.png" alt="<?php /*echo SITE_NAME; */?>"/>
+                </div>-->
+
+                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="glyphicon1 glyphicon-chevron-left1" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                    <span class="glyphicon1 glyphicon-chevron-right1" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+            <div id="clear"></div>
+        </div>
+    </div>
+

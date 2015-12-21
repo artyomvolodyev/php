@@ -1,0 +1,169 @@
+<form method="post" name="myform" id="myform" action="<?php echo $this->url(array('controller'=>'tshirt', 'action'=>'addnewicon'), 'default', true)?>" >
+<div class="mws-panel grid_8">
+                	<div class="mws-panel-header">
+                    	<span class="mws-i-24 i-table-1"><?=$this->pageHeading?></span>
+                    </div>
+                    <div class="mws-panel-body">
+                        <div class="mws-panel-toolbar top clearfix ">
+                        <ul>
+                   <li><a class="mws-ic-16 ic-accept" href="<?php echo $this->url(array('controller'=>'tshirt', 'action'=>'addnewicon'), 'default', true)?>" title="Add">Add</a></li>
+           			 <li><a class="mws-ic-16 ic-cross" href="javascript:void(0)" title="Delete" onclick="deleteitem()">Delete</a></li>
+                       
+                        </ul>
+                        </div>
+                        <table class="mws-datatable-fn mws-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%">S.No.</th>
+                                      <th><input type="checkbox" name="deletebcchk" id="deletebcchk" onclick="return checkall(this)" /></th>
+                                    <th width="45%">Icons</th>
+                                    
+                                    <th width="45%">Title</th>
+                                    <th width="45%">Color Code</th>
+                                    
+                                    <th width="5%" class="">Edit</th>
+                                     <th width="45%">Status</th>
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<?php
+								
+								
+					for($i=0;$i<count($this->sql);$i++)
+					{
+                        //$start++;
+                   if($this->sql[$i]['status']==1){ $image ='tick.png';  }
+                    if($this->sql[$i]['status']==0){ $image ='cross.png';  } 
+					?>
+									
+									<tr class="gradeX">
+                                        <td><?=$i+1;?></td>
+                                        <td>
+                                <input name='check<?=$i;?>' id='check<?=$i+1;?>' value='<?=$this->sql[$i]['id'];?>' 
+                                    onchange='return check_check("bcdel","deletebcchk")' type='checkbox'>
+                                <script> 
+                                    $('#bcdel').html(''); document.getElementById('deletebcchk').checked = false;
+                                </script>
+                            </td>
+                                        <td align="center" class="center">
+                                            <a href="<?=APPLICATION_URL_ADMIN?>tshirt/editnewicon/id/<?=$this->sql[$i]['id']?>">
+											<?php  $img=$this->sql[$i]['icon'];
+                                            if($img!="" and file_exists(SITE_ROOT.'images/tshirt-icons/'.$img) )
+                                            { 
+                                                ?>
+                                                <img alt="<?=$this->sql[$i]['title']?>" src="<?=IMAGES_URL?>tshirt-icons/<?=$img?>" height="90px;" width="90px;" border="0">
+                                                <?php
+                                            }
+                                            else
+                                            {
+                                                ?>
+                                                <img alt="<?=$this->sql[$i]['title']?>" src="<?=IMAGES_URL?>coupon_img.png" height="90px;" width="90px;" border="0">
+                                                <?php
+                                            }
+                                            ?>
+                                            </a>
+                                        </td>
+                                        
+                                         <td><?=$this->sql[$i]['title']?></td>
+                                            <td><?=$this->sql[$i]['colorcode']?></td>
+                                       
+                                
+                                        <td class="center">
+                                         <a href="<?=APPLICATION_URL_ADMIN?>tshirt/editnewicon/id/<?=$this->sql[$i]['id']?>">
+            <img src="<?=APPLICATION_URL_ADMIN;?>css/icons/16/edit.png" border='0' />
+            </a>
+           
+                                           
+                                        </td> 
+                                        
+                                        <td>
+                                        
+                               <a href="<?=APPLICATION_URL_ADMIN?>tshirt/changeiconstatus/Id/<?=$this->sql[$i]['id']?>/Status/<?=$this->sql[$i]['status']?>"> 
+                                   <?php 
+		
+		   if($this->sql[$i]['status']==1)
+		   {
+			   $status=$this->sql[$i]['status'];
+			 ?>
+			
+               <img src=<?=IMAGES_URL_ADMIN?>tick.gif onClick="f1('<?=$this->sql[$i]['id']?>','<?= $status?>')" />
+              
+			    <?php
+			}
+			if($this->sql[$i]['status']==0)
+			{
+				$status=$this->sql[$i]['status'];
+				 ?>
+                  <img src="<?=IMAGES_URL_ADMIN?>cross.png" onClick="f1('<?=$this->sql[$i]['id']?>','<?= $status?>')"/>
+                  <?php  
+		    } 
+			?>
+           </a>   
+                                      </td>
+	                                </tr>
+									<?php
+								}
+								?>
+                                
+                                 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Panels End -->
+            </div>
+            </form>
+            
+<script>
+
+	
+function deleteitem()
+{var totInput=document.getElementsByTagName('input');
+ var r="";
+ for(var i=0;i<totInput.length;i++)
+ {
+  if(totInput[i].type=="checkbox")
+  {
+   if(totInput[i].checked==true && totInput[i].name!='deletebcchk')
+   {
+    r+=totInput[i].value+"|";
+   }
+  }
+ }
+ if(r=="")
+ {
+  alert('Please choose a record to delete.');
+ }
+ else
+ {
+  var confirmation = confirm("Are you sure want to delete ?");
+  if(confirmation!=true){
+   return false;
+  } 
+$.ajax({ url: "<?=APPLICATION_URL_ADMIN."tshirt/deletenewicon"?>",
+  type: "POST",
+  data: ({Id:r}),
+  success: function(data){   
+    window.location.href=window.location.href;
+  }});
+		
+		
+ }
+
+}
+function checkall(thisid)
+{
+  for(var i=1;document.getElementById('check'+i);i++)
+  	{
+  		if(document.getElementById(thisid.id).checked==true){document.getElementById('check'+i).checked = true;}
+  		if(document.getElementById(thisid.id).checked==false){document.getElementById('check'+i).checked = false;}
+	}	
+}
+</script>
+
+            
+            
+            
+            

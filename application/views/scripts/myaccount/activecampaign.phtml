@@ -1,0 +1,94 @@
+<?php
+global $mySession;
+$db=new Db();
+$userid=$mySession->TeeLoggedID;
+$campstatus=$this->Data[0]['campaign_status'];
+?>
+<div class="work_section_two mainactivecampaign">
+    <?php	if($this->nocamp!="")	{ ?>
+        <label class="activecampaignlabel">You Don't Have any Active campaigns.
+			<a href="<?=APPLICATION_URL?>launchcampaign/index"> Click here to launch a new campaign.</a>
+        </label>
+    <?php	}
+		if(count($this->Data)>0 && $this->Data!="")
+		{
+			foreach($this->Data as $key=>$value)
+			{
+				$row1=$db->runQuery("select DATE_ADD('".$value['launch_date']."', INTERVAL '".$value['campaign_length']."' DAY) AS nextDate,DATE_ADD('".$value['launch_date']."', INTERVAL -1 DAY) AS prevDate");
+				$enddate=$row1[0]['nextDate'];
+				$newdat2=explode(" ",$enddate);// function breaks string into ARRAY
+				$newdat3=explode("-",$newdat2[0]);                            // comes in Y-M-D format
+				$newdat4=$newdat3[2]."/".$newdat3[1]."/".$newdat3[0];                // D/m/Y format
+				$diff = strtotime($enddate) - strtotime(date('Y-m-d H:i:s'));
+				$day_difference = floor($diff / (60*60*24));
+				if($day_difference<=0)
+				{
+					$dataUpdate['campaign_status']=0;
+					$conditionUpdate="campaign_id='".$value['campaign_id']."'";
+					$db->modify(LAUNCHCAMPAIGN,$dataUpdate,$conditionUpdate);
+				}
+				else
+				{
+					$years = floor($diff / (365*60*60*24));
+					$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+					$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+					$hours = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24- $days* 60*60*24)/(60*60));
+				}
+
+				$s=$value['sold']; $g=$value['goal']; @$w=($s/$g)*100; //echo $w ;  ?>
+
+                <div class="rowactivecampaign" >
+                    <div class="col1" >
+                        <a href="<?=APPLICATION_URL?><?=$value['url']?>">
+							<div class="teediv" >
+								<?php if($value['tee_image']!="" and  file_exists(SITE_ROOT.'images/usersdesign/'.$value['tee_image']))
+								{ ?>
+									<div id="Tees0">
+										<img src="<?=APPLICATION_URL?>images/usersdesign/<?=$value['tee_image']?>"  width="70" height="70" border="0" />
+									</div>
+								<?php }
+								else { ?>
+								<img src="<?=IMAGES_URL?>designtee.png" width="70" height="70" border="0" />
+
+								<?php } ?>
+
+							</div>
+                        </a>
+                        <div class="detailsdiv">
+							<a href="<?=APPLICATION_URL?><?=$value['url']?>">
+                            <div class="col1" >
+                            	<b> <?php echo $value['title']; ?></b>
+                            </div>
+							</a>
+							<?php if($w<100)   { ?>
+								<div class="col2">
+									<div align="center" style="height:8px; width:<?=@$w?>%; border-radius:8px;border:0px solid #393 ; background-color:#339933">
+									</div>
+                                </div>
+                            <?php   }  else   { ?>
+								<div class="col2">
+									<div align="center" style="height:8px; width:100%; border-radius:8px;border:0px solid #393 ; background-color:#339933">
+									</div>
+								</div>
+                            <?php  }   ?>
+                            <div class="col3">
+                                <?php $campid = $value['campaign_id']; ?>
+								<a href="<?=APPLICATION_URL?>launchcampaign/edit/cid/<?=$campid?>">
+									Edit Details
+								</a>
+								<a href="<?=APPLICATION_URL?>myaccount/end/cid/<?=$campid?>">
+									&nbsp;|  End Early
+								</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col2" >
+						<?php  echo $value['sold']; ?>&nbsp; Of &nbsp;<?php echo $value['goal']; ?>&nbsp; Sold
+                    </div>
+                    <div class="col3" >
+						Ends <?php echo $newdat4 ?>
+                    </div>
+                </div>
+            <?php	}	} ?>
+
+

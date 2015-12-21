@@ -1,0 +1,53 @@
+<?php
+global $mySession;
+	$db=new Db();
+?>
+<div class="mws-panel grid_8">
+    <div class="mws-panel-header">
+        <span class="mws-i-24 i-list3"><?=$this->pageHeading?></span>
+    </div>
+
+    <div class="mws-panel-body">
+    	 <div class="mws-panel-toolbar top clearfix">
+            <ul>
+
+                 <li><a class="mws-ic-16 ic-accept" href="<?php echo $this->url(array('controller'=>'location', 'action'=>'addstate'), 'default', true)?>" title="Add">Add</a></li>
+           			 <li><a class="mws-ic-16 ic-cross" href="javascript:void(0)" title="Delete" onclick="deleteitem()">Delete</a></li>
+               
+            </ul>
+        </div>
+        <!--<table class="mws-table">-->
+         <table class="mws-datatable-fn mws-table">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                     <th><input type="checkbox" name="deletebcchk" id="deletebcchk" onclick="return checkall(this)" /></th>
+                    <th>State Name</th>
+                    <th>Edit</th>
+                  
+                 </tr>
+            </thead>
+            <tbody>
+             <?php
+					for($i=0;$i<count($this->sql);$i++)
+					{
+					?>
+                		<tr>
+                            <td><?=$i+1;?></td>
+                             <td>
+                                <input name='check<?=$i;?>' id='check<?=$i+1;?>' value='<?=$this->sql[$i]['color_id'];?>' 
+                                    onchange='return check_check("bcdel","deletebcchk")' type='checkbox'>
+                            </td>
+                            <td><?=$this->sql[$i]['state_name'];?></td>
+                            <td>
+                            <a href="<?=APPLICATION_URL_ADMIN?>location/editstate/stateid/<?=$this->sql[$i]['state_id']?>"><img src="<?=IMAGES_URL_ADMIN?>edit.png" /></a>
+                            </td>
+                  
+                        </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>    	
+</div>

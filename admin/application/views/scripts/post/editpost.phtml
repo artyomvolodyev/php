@@ -1,0 +1,55 @@
+<script src="<?=APPLICATION_URL?>jscolor/jscolor.js" type="text/javascript"></script>
+<div class="mws-panel grid_8">
+     <div class="mws-panel-header">
+             <span class="mws-i-24 i-check"><?=$this->pageTitle?></span>
+      </div>
+            <div class="mws-panel-body">
+                 <form name="myform" id="myform" class="mws-form" action="<?php echo $this->url(array('controller'=>'post', 'action'=>'updatepost','post_id'=>$this->postid), 'default', true)?>" method="post" enctype="multipart/form-data">
+                        	 <table align="center" cellpadding="5" cellspacing="5" border="0" style="margin-left:30px;">
+								<div style="display:none;" class="mws-form-message error" id="mws-validate-error"></div>
+                                <div class="mws-form-inline">
+                                <div class="mws-form-row">
+                                	<label>Image :  <span class="error2">*</span></label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->image?>
+                                        <img src="<?=IMAGES_URL?>postimg/<?=$this->data[0]['post_image'];?>" width="60" height="60" />
+									<?=$this->myform->old_image?>
+                                    </div>
+                                </div>
+                                    <div class="mws-form-row">
+                                	<label>Look Name : <span class="error2">*</span> </label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->lookname?>
+                                    </div>
+                                </div> 
+                                <div class="mws-form-row">
+                                	<label>Look Description : <span class="error2">*</span> </label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->look_description?>
+                                    </div>
+                                </div>
+									<div class="mws-form-row">
+                                	<label>Color : <span class="error2">*</span> </label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->colorcode?>
+                                    </div>
+                                </div>
+                                   <div class="mws-form-row">
+                                	<label>Status : <span class="error2">*</span> </label>
+                                	<div class="mws-form-item large">
+                                    	<?=$this->myform->color_status?>
+                                    </div>
+                                </div>
+                                	  <div class="mws-button-row">
+                            	<input type="submit" name="Update Profile" id="Update Profile" value="Update Profile" class="mws-button red">
+                            </div>
+                          </div>
+                    </table>
+                        </form>
+      </div>    	
+</div>
+
+
+
+
+                
